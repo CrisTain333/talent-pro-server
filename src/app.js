@@ -27,4 +27,21 @@ app.use("/", (req, res) => {
   });
 });
 
+// app.use(globalErrorHandler);
+
+// Handle Not found routes
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: "Not Found",
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: "Api Not Found",
+      },
+    ],
+  });
+  next();
+});
+
 module.exports = app;
