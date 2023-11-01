@@ -2,10 +2,10 @@
   "name": "talent-pro",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "NODE_ENV=production nodemon server.js"
+    "dev": "nodemon src/server.js",
+    "start": "NODE_ENV=production  dist/server.js"
   },
   "keywords": [],
   "author": "",
