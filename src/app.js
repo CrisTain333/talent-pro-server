@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const router = require("./routes/routes");
+const {
+  globalErrorHandler,
+} = require("./middleware/globalErrorHandler");
 
 const app = express();
 
@@ -30,7 +33,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use("/api/v1", router);
 
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 // Handle Not found routes
 app.use((req, res, next) => {

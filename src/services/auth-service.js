@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 const { User_Role } = require("../constant/user-roles");
+const ApiError = require("../error/ApiError");
 
 exports.handleRegisterUser = async (userData) => {
   try {
@@ -11,11 +12,7 @@ exports.handleRegisterUser = async (userData) => {
     });
 
     if (existingUser) {
-      return {
-        success: false,
-        status: 400,
-        message: "Email already in use",
-      };
+      throw new ApiError(400, "Email already in use");
     }
     // Hash the plain password
     const hashedPassword = await bcrypt.hash(
@@ -43,17 +40,10 @@ exports.handleRegisterUser = async (userData) => {
 
     // send success message
     return {
-      success: true,
-      status: 201,
-      message: `Account created successfully`,
       token,
     };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      status: 500,
-      message: "failed to create account",
-    };
+    throw new ApiError(400, "Failed to create user");
   }
 };
