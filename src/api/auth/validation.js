@@ -31,4 +31,27 @@ const userRegisterValidation = z.object({
   }),
 });
 
-module.exports = { userRegisterValidation };
+const LoginValidation = z.object({
+  body: z.object({
+    email: z
+      .string({
+        required_error: "Email is required",
+      })
+      .min(1)
+      .max(255)
+      .email(),
+    password: z
+      .string({
+        required_error: "Password is require",
+      })
+      .min(8, {
+        message:
+          "password must contain at least 8 character(s)",
+      }), // You can adjust the minimum password length as needed
+  }),
+});
+
+module.exports = {
+  userRegisterValidation,
+  LoginValidation,
+};

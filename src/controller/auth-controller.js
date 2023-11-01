@@ -17,6 +17,20 @@ const registerUser = catchAsync(async (req, res) => {
   });
 });
 
+// ** Login
+const userLogin = catchAsync(async (req, res) => {
+  const { ...LoginData } = req.body;
+  const result = await authService.handleLogin(LoginData);
+  sendResponse(res, {
+    data: {
+      token: result?.token,
+    },
+    statusCode: 200,
+    message: "Log in successful",
+  });
+});
+
 module.exports = {
   registerUser,
+  userLogin,
 };
