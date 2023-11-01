@@ -5,7 +5,6 @@ const connectToDatabase = require("./Database/ConnectDb");
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
-const uri = process.env.DATABASE_URI;
 
 connectToDatabase();
 
