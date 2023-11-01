@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const router = require("./routes/routes");
 
 const app = express();
 
@@ -20,12 +21,14 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/", (req, res) => {
-  res.json({
-    status: 200,
-    message: "Talent Pro Server Is Running",
-  });
-});
+// app.use("/", (req, res) => {
+//   res.json({
+//     status: 200,
+//     message: "Talent Pro Server Is Running",
+//   });
+// });
+
+app.use("/api/v1", router);
 
 // app.use(globalErrorHandler);
 
