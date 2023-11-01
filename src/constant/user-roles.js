@@ -1,5 +1,5 @@
 exports.User_Role = {
   CANDIDATE: "candidate",
   RECRUITER: "recruiter",
-  ADMIN: "admin",
+  SUPER_ADMIN: "super_admin",
 };

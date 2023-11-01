@@ -1,36 +1,21 @@
 const authService = require("../services/auth-service");
 const catchAsync = require("../shared/catchAsync");
-const sendResponse = require("../shared/sendResponse");
 
 // ** Register
-const registerUser = catchAsync(async (req, res) => {
+const register = catchAsync(async (req, res) => {
   const { ...registerData } = req.body;
-  const result = await authService.handleRegisterUser(
-    registerData
-  );
-  sendResponse(res, {
-    data: {
-      token: result?.token,
-    },
-    statusCode: 200,
-    message: "Account Registered successfully",
-  });
+  const result = await authService.handleRegister(registerData);
+  res.status(201).json({ access_token: result?.token });
 });
 
-// ** Login
-const userLogin = catchAsync(async (req, res) => {
-  const { ...LoginData } = req.body;
-  const result = await authService.handleLogin(LoginData);
-  sendResponse(res, {
-    data: {
-      token: result?.token,
-    },
-    statusCode: 200,
-    message: "Log in successful",
-  });
+// ** Token
+const token = catchAsync(async (req, res) => {
+  const { ...tokenData } = req.body;
+  const result = await authService.handleToken(tokenData);
+  res.status(200).json({ access_token: result?.token });
 });
 
 module.exports = {
-  registerUser,
-  userLogin,
+  register,
+  token,
 };

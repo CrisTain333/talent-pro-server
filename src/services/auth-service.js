@@ -1,10 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
-const { User_Role } = require("../constant/user-roles");
 const ApiError = require("../error/ApiError");
 
-exports.handleRegisterUser = async (userData) => {
+exports.handleRegister = async (userData) => {
   // Check if the user already exists
   const existingUser = await User.findOne({
     $or: [{ email: userData.email }],
@@ -14,19 +13,14 @@ exports.handleRegisterUser = async (userData) => {
     throw new ApiError(400, "Email already in use");
   }
   // Hash the plain password
-  const hashedPassword = await bcrypt.hash(
-    userData.password,
-    10
-  );
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-  userData.role = User_Role.CANDIDATE;
   userData.password = hashedPassword;
 
   const result = await User.create(userData);
 
   const payload = {
-    role: userData.role,
-    id: result._id,
+    _id: result._id,
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -39,7 +33,7 @@ exports.handleRegisterUser = async (userData) => {
   };
 };
 
-exports.handleLogin = async (payload) => {
+exports.handleToken = async (payload) => {
   const { email: userEmail, password } = payload;
 
   const isUserExist = await User.findOne({
@@ -61,20 +55,15 @@ exports.handleLogin = async (payload) => {
   if (!isPasswordMatched) {
     throw new ApiError(401, "Invalid credentials");
   }
-  const { _id, role } = isUserExist;
+  const { _id } = isUserExist;
 
   const token_data = {
     _id,
-    role,
   };
 
-  const token = jwt.sign(
-    token_data,
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    }
-  );
+  const token = jwt.sign(token_data, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
 
   // send success message
   return {

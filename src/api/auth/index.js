@@ -1,26 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const {
-  registerUser,
-  userLogin,
-} = require("../../controller/auth-controller");
+const { register, token } = require("../../controller/auth-controller");
 
 const authValidation = require("./validation");
 
-const {
-  validateRequest,
-} = require("../../middleware/validateRequest");
+const { validateRequest } = require("../../middleware/validateRequest");
 
 router.use(
-  "/sign-up",
+  "/register",
   validateRequest(authValidation.userRegisterValidation),
-  registerUser
+  register
 );
 
-router.use(
-  "/sign-in",
-  validateRequest(authValidation.LoginValidation),
-  userLogin
-);
+router.use("/token", validateRequest(authValidation.LoginValidation), token);
 
 module.exports = router;

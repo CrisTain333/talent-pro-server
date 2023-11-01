@@ -27,7 +27,7 @@ const userRegisterValidation = z.object({
       .string({
         required_error: "password is require",
       })
-      .min(8), // You can adjust the minimum password length as needed
+      .min(8),
   }),
 });
 
@@ -45,9 +45,8 @@ const LoginValidation = z.object({
         required_error: "Password is require",
       })
       .min(8, {
-        message:
-          "password must contain at least 8 character(s)",
-      }), // You can adjust the minimum password length as needed
+        message: "password must contain at least 8 character(s)",
+      }),
   }),
 });
 
