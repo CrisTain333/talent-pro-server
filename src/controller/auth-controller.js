@@ -6,7 +6,7 @@ const register = catchAsync(async (req, res) => {
     const result =
         await authService.handleRegister(registerData);
     res.status(201).json({
-        access_token: result?.token
+        access: result?.token
     });
 });
 
@@ -14,7 +14,7 @@ const token = catchAsync(async (req, res) => {
     const { ...tokenData } = req.body;
     const result = await authService.handleToken(tokenData);
     res.status(200).json({
-        access_token: result?.token
+        access: result?.token
     });
 });
 
