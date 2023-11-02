@@ -10,7 +10,9 @@ const ApiError = require('../error/ApiError');
 // import { errorLogger } from '../shared/logger';
 // import handleCastError from "../error/handleCastError";
 
-const { handleZodError } = require('../error/zodErrorHandler');
+const {
+    handleZodError
+} = require('../error/zodErrorHandler');
 
 exports.globalErrorHandler = (error, req, res, next) => {
     let statusCode = 500;
