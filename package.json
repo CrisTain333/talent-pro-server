@@ -11,8 +11,14 @@
         "start": "NODE_ENV=production  dist/server.js",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
-        "lint:check": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+        "lint:fix": "lint -- --fix",
+        "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+        "prepare": "husky install",
+        "lint-prettier": "npm run lint:check && npm run prettier:check"
+    },
+    "lint-staged": {
+        "src/**/*.ts": "npm run lint-prettier"
     },
     "keywords": [],
     "author": "",
