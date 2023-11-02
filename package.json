@@ -18,7 +18,7 @@
         "lint-prettier": "npm run lint:check && npm run prettier:check"
     },
     "lint-staged": {
-        "src/**/*.ts": "npm run lint-prettier"
+        "src/**/*.js": "npm run lint-prettier"
     },
     "keywords": [],
     "author": "",
