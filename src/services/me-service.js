@@ -1,4 +1,5 @@
 const ApiError = require('../error/ApiError');
+const bcrypt = require('bcrypt');
 const User = require('../model/userModel');
 
 exports.getMe = async userId => {
@@ -18,4 +19,24 @@ exports.updateProfile = async (userId, updatedData) => {
     } else if (!updatedData) {
         throw new ApiError(400, 'Data is required');
     }
+
+    if (updatedData?.password) {
+        const hashedPassword = await bcrypt.hash(
+            updatedData.password,
+            10
+        );
+        updatedData.password = hashedPassword;
+    }
+
+    const result = await User.findByIdAndUpdate(
+        userId,
+        updatedData,
+        {
+            new: true
+        }
+    );
+
+    console.log(result);
+
+    return result;
 };

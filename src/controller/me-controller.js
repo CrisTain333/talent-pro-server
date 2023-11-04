@@ -12,4 +12,20 @@ const getMe = catchAsync(async (req, res) => {
     });
 });
 
-module.exports = { getMe };
+const updateUser = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...userData } = req.body;
+    const result = await meService.updateProfile(
+        _id,
+        userData
+    );
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message:
+            'Profile Updated Successfully Successfully',
+        data: result
+    });
+});
+
+module.exports = { getMe, updateUser };
