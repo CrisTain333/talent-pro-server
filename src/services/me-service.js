@@ -46,3 +46,7 @@ exports.updateProfile = async (userId, updatedData) => {
 
     return result;
 };
+
+exports.updateProfilePicture = async file => {
+    console.log(file);
+};

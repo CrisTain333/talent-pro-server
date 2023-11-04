@@ -8,8 +8,15 @@ const {
 } = require('../../middleware/validateRequest');
 const userValidation = require('./validation');
 const { User_Role } = require('../../constant/user-roles');
+const uploader = require('../../middleware/uploader');
 
 router.get('/', auth(), meController.getMe);
+router.patch(
+    '/update-profile-picture',
+    uploader.single('profile-picture'),
+    auth(),
+    meController.updateProfilePicture
+);
 router.patch(
     '/',
     validateRequest(userValidation.userUpdateValidation),
