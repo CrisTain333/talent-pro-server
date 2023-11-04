@@ -23,7 +23,8 @@ exports.handleRegister = async userData => {
     const result = await User.create(userData);
 
     const payload = {
-        _id: result._id
+        _id: result._id,
+        role: result.role
     };
 
     const token = jwt.sign(
@@ -62,10 +63,11 @@ exports.handleToken = async payload => {
     if (!isPasswordMatched) {
         throw new ApiError(401, 'Invalid credentials');
     }
-    const { _id } = isUserExist;
+    const { _id, role } = isUserExist;
 
     const token_data = {
-        _id
+        _id,
+        role
     };
 
     const token = jwt.sign(

@@ -5,8 +5,9 @@ const auth =
     (...requiredRoles) =>
     async (req, res, next) => {
         try {
-            //get authorization token
-            const token = req.headers.authorization;
+            //Get authorization token
+            const bearer_token = req.headers.authorization;
+            const token = bearer_token.split(' ')[1];
             console.log(token);
             if (!token) {
                 throw new ApiError(
@@ -14,24 +15,16 @@ const auth =
                     'You are not authorized'
                 );
             }
-            // verify token
             let verifiedUser = null;
 
-            // verifiedUser = jwtHelpers.verifyToken(
-            //     token,
-            //     process.env.JWT_SECRET
-            // );
-
+            // verify token
             verifiedUser = jwt.verify(
                 token,
                 process.env.JWT_SECRET
             );
-
             req.user = verifiedUser;
-            console.log(`${verifiedUser}`.bgMagenta);
 
-            // role diye guard korar jnno
-
+            // Guard By ROLE
             if (
                 requiredRoles.length &&
                 !requiredRoles.includes(verifiedUser.role)
