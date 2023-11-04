@@ -8,7 +8,7 @@ exports.getMe = async userId => {
     }
 
     const user = await User.findById(userId).select(
-        '-password -createdAt -updatedAt'
+        '-password -createdAt -updatedAt -__v'
     );
     return user;
 };
@@ -37,7 +37,8 @@ exports.updateProfile = async (userId, updatedData) => {
         userId,
         updatedData,
         {
-            new: true
+            new: true,
+            select: '-password -createdAt -updatedAt -__v'
         }
     );
 
