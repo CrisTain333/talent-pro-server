@@ -11,3 +11,11 @@ exports.getMe = async userId => {
     );
     return user;
 };
+
+exports.updateProfile = async (userId, updatedData) => {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    } else if (!updatedData) {
+        throw new ApiError(400, 'Data is required');
+    }
+};

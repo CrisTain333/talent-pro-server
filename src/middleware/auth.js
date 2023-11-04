@@ -30,7 +30,7 @@ const auth =
                 !requiredRoles.includes(verifiedUser.role)
             ) {
                 throw new ApiError(
-                    401,
+                    403,
                     `You Don't have permission to access this.`
                 );
             }
