@@ -20,6 +20,11 @@ exports.updateProfile = async (userId, updatedData) => {
         throw new ApiError(400, 'Data is required');
     }
 
+    if (updatedData?.email) {
+        // Remove the email field from updatedData to prevent email updates
+        delete updatedData.email;
+    }
+
     if (updatedData?.password) {
         const hashedPassword = await bcrypt.hash(
             updatedData.password,
