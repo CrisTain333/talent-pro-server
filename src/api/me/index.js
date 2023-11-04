@@ -13,7 +13,7 @@ router.get('/', auth(), meController.getMe);
 router.patch(
     '/',
     validateRequest(userValidation.userUpdateValidation),
-    auth(User_Role.CANDIDATE),
+    auth(),
     meController.updateUser
 );
 

@@ -8,7 +8,6 @@ const auth =
             //Get authorization token
             const bearer_token = req.headers.authorization;
             const token = bearer_token.split(' ')[1];
-            console.log(token);
             if (!token) {
                 throw new ApiError(
                     401,
