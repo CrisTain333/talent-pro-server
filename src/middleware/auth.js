@@ -7,13 +7,13 @@ const auth =
         try {
             //Get authorization token
             const bearer_token = req.headers.authorization;
-            const token = bearer_token.split(' ')[1];
-            if (!token) {
+            if (!bearer_token) {
                 throw new ApiError(
                     401,
-                    'You are not authorized'
+                    'Token is required for authorization'
                 );
             }
+            const token = bearer_token.split(' ')[1];
             let verifiedUser = null;
 
             // verify token

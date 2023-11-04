@@ -7,34 +7,34 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 });
 
-async function uploadFiles(files) {
-    console.log(files);
+async function uploadFiles(file) {
+    console.log(file);
 
     try {
         const uploadResults = [];
 
         // Loop through the files and upload each one
-        for (const file of files) {
-            if (file?.fieldname === 'profile-picture') {
-                const uploadResult =
-                    await cloudinary.uploader.upload(
-                        file.path,
-                        {
-                            folder: 'Talent-Pro/profile-pictures'
-                        }
-                    );
-                uploadResults.push(uploadResult.secure_url);
-            } else if (file?.fieldname === 'resume') {
-                const uploadResult =
-                    await cloudinary.uploader.upload(
-                        file.path,
-                        {
-                            folder: 'Talent-Pro/documents'
-                        }
-                    );
-                uploadResults.push(uploadResult.secure_url);
-            }
+        // for (const file of files) {
+        if (file?.fieldname === 'profile-picture') {
+            const uploadResult =
+                await cloudinary.uploader.upload(
+                    file.path,
+                    {
+                        folder: 'Talent-Pro/profile-pictures'
+                    }
+                );
+            uploadResults.push(uploadResult.secure_url);
+        } else if (file?.fieldname === 'resume') {
+            const uploadResult =
+                await cloudinary.uploader.upload(
+                    file.path,
+                    {
+                        folder: 'Talent-Pro/documents'
+                    }
+                );
+            uploadResults.push(uploadResult.secure_url);
         }
+        // }
 
         return uploadResults;
     } catch (error) {

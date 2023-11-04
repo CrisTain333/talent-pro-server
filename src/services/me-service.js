@@ -1,6 +1,7 @@
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt');
 const User = require('../model/userModel');
+const { uploadFiles } = require('../shared/uploadFile');
 
 exports.getMe = async userId => {
     if (!userId) {
@@ -49,4 +50,7 @@ exports.updateProfile = async (userId, updatedData) => {
 
 exports.updateProfilePicture = async file => {
     console.log(file);
+
+    const imageUrl = await uploadFiles(file);
+    console.log(imageUrl);
 };
