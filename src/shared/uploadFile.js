@@ -1,40 +1,46 @@
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import multer from 'multer';
+const cloudinary = require('cloudinary').v2;
 
-// const storage = multer.diskStorage({
-//     destination: (req: any, file: any, cb: any) => {
-//         cb(null, './src/uploads/');
-//     },
-//     filename: (req: any, file: any, cb: any) => {
-//         const fileName = Date.now() + '_' + file.originalname;
-//         file.originalname = fileName;
-//         cb(null, fileName);
-//     }
-// });
+// Configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
 
-// export const uploadSystem = multer({
-//     storage: storage,
-//     limits: {
-//         fileSize: 1024 * 1024 * 5 // 5 MB
-//     },
-//     fileFilter: (req: any, file: any, cb: any) => {
-//         if (
-//             file.fieldname === 'images' ||
-//             file.fieldname === 'banner' ||
-//             file.fieldname === 'shopProfile' ||
-//             file.fieldname === 'profilePicture'
-//         ) {
-//             if (
-//                 file.mimetype === 'image/jpg' ||
-//                 file.mimetype === 'image/jpeg' ||
-//                 file.mimetype === 'image/png'
-//             ) {
-//                 cb(null, true);
-//             } else {
-//                 cb(new Error('only .jpg .jpeg .png  are allowed'));
-//             }
-//         }
-//     }
-// });
+async function uploadFiles(files) {
+    console.log(files);
 
-// // module.exports = newUploadSystem;
+    try {
+        const uploadResults = [];
+
+        // Loop through the files and upload each one
+        for (const file of files) {
+            if (file?.fieldname === 'profile-picture') {
+                const uploadResult =
+                    await cloudinary.uploader.upload(
+                        file.path,
+                        {
+                            folder: 'Talent-Pro/profile-pictures'
+                        }
+                    );
+                uploadResults.push(uploadResult.secure_url);
+            } else if (file?.fieldname === 'resume') {
+                const uploadResult =
+                    await cloudinary.uploader.upload(
+                        file.path,
+                        {
+                            folder: 'Talent-Pro/documents'
+                        }
+                    );
+                uploadResults.push(uploadResult.secure_url);
+            }
+        }
+
+        return uploadResults;
+    } catch (error) {
+        console.error('Error uploading files:', error);
+        throw error;
+    }
+}
+
+module.exports = { uploadFiles };
