@@ -42,10 +42,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             default:
                 'https://i.ibb.co/WDySPnz/profile-picture.jpg'
-        },
-        candidate: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Candidates' // Reference to the User model
         }
     },
     {
@@ -59,3 +55,14 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
+// ! Don't Delete this commits
+// ,
+//         candidate: {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: 'Candidate' // Reference to the User model
+//         },
+//         recruiter : {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: 'recruiter' // Reference to the User model
+//         }
