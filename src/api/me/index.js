@@ -38,9 +38,9 @@ router.patch(
     '/profile',
     auth(User_Role.CANDIDATE),
     validateRequest(
-        candidateValidation.candidateProfileSchema
+        candidateValidation.updateCandidateProfileSchema
     ),
-    candidateController.createCandidate
+    candidateController.updateCandidateProfile
 );
 
 router.patch(

@@ -24,17 +24,30 @@ exports.updateCandidateProfile = async (
     userId,
     candidateUpdatedData
 ) => {
+    console.log(userId);
+    console.log(candidateUpdatedData);
+
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     } else if (!candidateUpdatedData) {
         throw new ApiError(400, 'Data is required');
     }
 
-    const result = await Candidate.findByIdAndUpdate(
-        userId,
+    await Candidate.updateOne(
+        {
+            user: userId
+        },
         candidateUpdatedData,
-        { new: true }
+        {
+            new: true
+        }
     );
+
+    const result = await Candidate.findOne({
+        user: userId
+    });
+
+    console.log(result);
 
     return result;
 };
