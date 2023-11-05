@@ -33,9 +33,18 @@ exports.globalErrorHandler = (error, req, res, next) => {
               ]
             : [];
     } else if (error?.name === 'TokenExpiredError') {
-        console.log('im jwt error');
         statusCode = 401;
         message = 'Token has expired please login again !';
+        errorMessages = [
+            {
+                path: '',
+                message: error.message
+            }
+        ];
+    } else if (error?.name === 'JsonWebTokenError') {
+        statusCode = 401;
+        message =
+            'Invalid token . please provide a valid token';
         errorMessages = [
             {
                 path: '',
