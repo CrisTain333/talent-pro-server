@@ -45,10 +45,24 @@ const userSchema = new mongoose.Schema(
         }
     },
     {
-        timestamps: true
+        timestamps: true,
+        toJSON: {
+            virtuals: true
+        }
     }
 );
 
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
+// ! Don't Delete this commits
+// ,
+//         candidate: {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: 'Candidate' // Reference to the User model
+//         },
+//         recruiter : {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: 'recruiter' // Reference to the User model
+//         }
