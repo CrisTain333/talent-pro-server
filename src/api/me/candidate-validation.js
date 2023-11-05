@@ -24,7 +24,7 @@ const desiredSalarySchema = z.object({
 
 const candidateProfileSchema = z.object({
     body: z.object({
-        userId: z.string({
+        user: z.string({
             required_error: 'user Id is required'
         }),
         industry: industrySchema,

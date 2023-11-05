@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const candidateProfileSchema = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users', // Reference to the User model
+        ref: 'User', // Reference to the User model
         required: true
     },
     industry: {
@@ -50,7 +50,7 @@ const candidateProfileSchema = new mongoose.Schema({
 });
 
 const Candidate = mongoose.model(
-    'Candidates',
+    'Candidate',
     candidateProfileSchema
 );
 
