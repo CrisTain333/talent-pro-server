@@ -30,4 +30,27 @@ const getCandidateProfile = catchAsync(async (req, res) => {
     });
 });
 
-module.exports = { createCandidate, getCandidateProfile };
+const updateCandidateProfile = catchAsync(
+    async (req, res) => {
+        const { _id } = req.user;
+        const { ...updatedData } = req.body;
+        const result =
+            await candidateService.updateCandidateProfile(
+                _id,
+                updatedData
+            );
+        sendResponse(res, {
+            statusCode: 201,
+            success: true,
+            message:
+                'Candidate profile updated successfully',
+            data: result
+        });
+    }
+);
+
+module.exports = {
+    createCandidate,
+    getCandidateProfile,
+    updateCandidateProfile
+};

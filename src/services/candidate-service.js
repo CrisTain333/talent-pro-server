@@ -1,35 +1,40 @@
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
-const User = require('../model/userModel');
 
 exports.createCandidate = async candidateData => {
     const candidate = await Candidate.create(candidateData);
-
-    if (candidate) {
-        await User.findByIdAndUpdate(candidate?.user, {
-            candidate: candidate?._id
-        });
-    } else {
-        throw new ApiError(
-            400,
-            'Failed to create candidate'
-        );
-    }
-
     return candidate;
 };
 
 exports.getCandidateProfile = async userId => {
-    try {
-        const result = await Candidate.findOne({
-            user: userId
-        }).populate('user');
-        return result;
-    } catch (error) {
-        console.error(error);
+    const result = await Candidate.findOne({
+        user: userId
+    }).populate('user');
+
+    if (!result || result === null) {
         throw new ApiError(
             400,
             'Error fetching candidate profile'
         );
     }
+    return result;
+};
+
+exports.updateCandidateProfile = async (
+    userId,
+    candidateUpdatedData
+) => {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    } else if (!candidateUpdatedData) {
+        throw new ApiError(400, 'Data is required');
+    }
+
+    const result = await Candidate.findByIdAndUpdate(
+        userId,
+        candidateUpdatedData,
+        { new: true }
+    );
+
+    return result;
 };
