@@ -6,7 +6,9 @@ exports.createCandidate = async candidateData => {
     const candidate = await Candidate.create(candidateData);
 
     if (candidate) {
-        await User.findByIdAndUpdate(candidate?._id);
+        await User.findByIdAndUpdate(candidate?.user, {
+            candidate: candidate?._id
+        });
     } else {
         throw new ApiError(
             400,
