@@ -6,13 +6,8 @@ cloudinary.config({
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET
 });
-console.log(process.env.CLOUD_NAME);
-console.log(process.env.CLOUD_API_KEY);
-console.log(process.env.CLOUD_API_SECRET);
 
 async function uploadFiles(file) {
-    console.log(file);
-
     try {
         const uploadResults = [];
 

@@ -51,8 +51,6 @@ exports.updateProfile = async (userId, updatedData) => {
         }
     );
 
-    console.log(result);
-
     return result;
 };
 

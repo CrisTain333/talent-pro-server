@@ -24,9 +24,6 @@ exports.updateCandidateProfile = async (
     userId,
     candidateUpdatedData
 ) => {
-    console.log(userId);
-    console.log(candidateUpdatedData);
-
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     } else if (!candidateUpdatedData) {
@@ -46,8 +43,6 @@ exports.updateCandidateProfile = async (
     const result = await Candidate.findOne({
         user: userId
     });
-
-    console.log(result);
 
     return result;
 };

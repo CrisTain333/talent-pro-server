@@ -5,7 +5,6 @@ const sendResponse = require('../shared/sendResponse');
 
 const createCandidate = catchAsync(async (req, res) => {
     const { ...candidateData } = req.body;
-    console.log(candidateData);
     const result =
         await candidateService.createCandidate(
             candidateData

@@ -97,7 +97,6 @@ exports.globalErrorHandler = (error, req, res, next) => {
     //         ]
     //       : [];
     //   }
-    console.log(error.name);
 
     res.status(statusCode).json({
         success: false,
