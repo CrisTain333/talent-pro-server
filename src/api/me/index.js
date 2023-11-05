@@ -28,6 +28,11 @@ router.post(
     ),
     candidateController.createCandidate
 );
+router.get(
+    '/profile',
+    auth(User_Role.CANDIDATE),
+    candidateController.getCandidateProfile
+);
 
 router.patch(
     '/',

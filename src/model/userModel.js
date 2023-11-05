@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             default:
                 'https://i.ibb.co/WDySPnz/profile-picture.jpg'
+        },
+        candidate: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Candidates' // Reference to the User model
         }
     },
     {
