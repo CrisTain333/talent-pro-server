@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const meController = require('../../controller/me-controller');
+const candidateController = require('../../controller/candidate-controller');
 const auth = require('../../middleware/auth');
 const {
     validateRequest
@@ -17,6 +18,13 @@ router.patch(
     auth(),
     meController.updateProfilePicture
 );
+
+router.post(
+    '/profile',
+    auth(),
+    candidateController.createCandidate
+);
+
 router.patch(
     '/',
     validateRequest(userValidation.userUpdateValidation),
