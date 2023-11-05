@@ -48,9 +48,17 @@ exports.updateProfile = async (userId, updatedData) => {
     return result;
 };
 
-exports.updateProfilePicture = async file => {
-    console.log(file);
-
+exports.updateProfilePicture = async (userId, file) => {
     const imageUrl = await uploadFiles(file);
-    console.log(imageUrl);
+
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { image_url: imageUrl[0] },
+        {
+            new: true,
+            select: '-password -createdAt -updatedAt -__v'
+        }
+    );
+
+    return updatedUser;
 };

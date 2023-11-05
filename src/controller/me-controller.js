@@ -15,9 +15,12 @@ const getMe = catchAsync(async (req, res) => {
 
 const updateProfilePicture = catchAsync(
     async (req, res) => {
+        const { _id } = req.user;
         const file = req.file;
-        const result =
-            await meService.updateProfilePicture(file);
+        const result = await meService.updateProfilePicture(
+            _id,
+            file
+        );
         sendResponse(res, {
             statusCode: 201,
             success: true,
