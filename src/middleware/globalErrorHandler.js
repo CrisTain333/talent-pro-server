@@ -6,9 +6,6 @@
 // import { ZodError } from "zod";
 const { ZodError } = require('zod');
 const ApiError = require('../error/ApiError');
-// import handleZodError from "../error/zodErrorHandler";
-// import { errorLogger } from '../shared/logger';
-// import handleCastError from "../error/handleCastError";
 
 const {
     handleZodError
@@ -35,6 +32,16 @@ exports.globalErrorHandler = (error, req, res, next) => {
                   }
               ]
             : [];
+    } else if (error?.name === 'TokenExpiredError') {
+        console.log('im jwt error');
+        statusCode = 401;
+        message = 'Token has expired please login again !';
+        errorMessages = [
+            {
+                path: '',
+                message: error.message
+            }
+        ];
     }
 
     //   if (error?.name === "ValidationError") {
@@ -81,6 +88,7 @@ exports.globalErrorHandler = (error, req, res, next) => {
     //         ]
     //       : [];
     //   }
+    console.log(error.name);
 
     res.status(statusCode).json({
         success: false,

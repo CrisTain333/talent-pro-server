@@ -8,6 +8,7 @@ const {
     validateRequest
 } = require('../../middleware/validateRequest');
 const userValidation = require('./validation');
+const candidateValidation = require('./candidate-validation');
 const { User_Role } = require('../../constant/user-roles');
 const uploader = require('../../middleware/uploader');
 
@@ -21,7 +22,10 @@ router.patch(
 
 router.post(
     '/profile',
-    auth(),
+    auth(User_Role.CANDIDATE),
+    validateRequest(
+        candidateValidation.candidateProfileSchema
+    ),
     candidateController.createCandidate
 );
 
