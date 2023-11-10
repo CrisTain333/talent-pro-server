@@ -1,6 +1,7 @@
 const ApiError = require('../error/ApiError');
 const jwt = require('jsonwebtoken');
 const color = require('colors');
+const config = require('../config/config');
 const auth =
     (...requiredRoles) =>
     async (req, res, next) => {
@@ -19,7 +20,7 @@ const auth =
             // verify token
             verifiedUser = jwt.verify(
                 token,
-                process.env.JWT_SECRET
+                config.JWT.secret
             );
             req.user = verifiedUser;
 

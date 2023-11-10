@@ -10,6 +10,7 @@ const ApiError = require('../error/ApiError');
 const {
     handleZodError
 } = require('../error/zodErrorHandler');
+const config = require('../config/config');
 
 exports.globalErrorHandler = (error, req, res, next) => {
     let statusCode = 500;
@@ -103,7 +104,7 @@ exports.globalErrorHandler = (error, req, res, next) => {
         message,
         errorMessages,
         stack:
-            process.env.NODE_ENV !== 'production'
+            config.env !== 'production'
                 ? error?.stack
                 : undefined
     });

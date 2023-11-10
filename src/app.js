@@ -7,6 +7,7 @@ const router = require('./routes/routes');
 const {
     globalErrorHandler
 } = require('./middleware/globalErrorHandler');
+const config = require('./config/config');
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Morgan setup
-if (process.env.NODE_ENV === 'development') {
+if (config.env === 'development') {
     app.use(morgan('dev'));
 }
 

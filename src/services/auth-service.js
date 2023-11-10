@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 const ApiError = require('../error/ApiError');
+const config = require('../config/config');
 
 exports.handleRegister = async userData => {
     // Check if the user already exists
@@ -27,13 +28,10 @@ exports.handleRegister = async userData => {
         role: result.role
     };
 
-    const token = jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_EXPIRES_IN
-        }
-    );
+    const expires = config.JWT.expires_in;
+    const token = jwt.sign(payload, config.JWT.secret, {
+        expiresIn: expires
+    });
 
     // send success message
     return {
@@ -70,11 +68,13 @@ exports.handleToken = async payload => {
         role
     };
 
+    const expires = config.JWT.expires_in;
+
     const token = jwt.sign(
         token_data,
-        process.env.JWT_SECRET,
+        config.JWT.expires_in,
         {
-            expiresIn: process.env.JWT_EXPIRES_IN
+            expiresIn: expires
         }
     );
 
