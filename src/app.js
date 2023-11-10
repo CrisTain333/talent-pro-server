@@ -7,6 +7,7 @@ const router = require('./routes/routes');
 const {
     globalErrorHandler
 } = require('./middleware/globalErrorHandler');
+const config = require('./config/config');
 
 const app = express();
 
