@@ -6,7 +6,7 @@ module.exports = {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
     database_url: process.env.DATABASE_URI,
-    jwt: {
+    JWT: {
         secret: process.env.JWT_SECRET,
         expires_in: process.env.JWT_EXPIRES_IN
     },
