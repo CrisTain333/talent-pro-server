@@ -6,7 +6,7 @@ const getMe = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const result = await meService.getMe(_id);
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
         message: 'Profile Retrieved Successfully',
         data: result
@@ -22,7 +22,7 @@ const updateProfilePicture = catchAsync(
             file
         );
         sendResponse(res, {
-            statusCode: 201,
+            statusCode: 202,
             success: true,
             message: 'Profile picture updated successfully',
             data: result
@@ -38,7 +38,7 @@ const updateUser = catchAsync(async (req, res) => {
         userData
     );
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 202,
         success: true,
         message:
             'Profile Updated Successfully Successfully',
