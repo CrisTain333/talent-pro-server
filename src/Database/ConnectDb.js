@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 const colors = require('colors');
+const config = require('../config/config');
 const connectToDatabase = async () => {
     try {
-        await mongoose.connect(process.env.DATABASE_URI);
-        console.log('🛢 Connected To Database'.yellow);
+        await mongoose.connect(config.database_url);
+        console.log('🛢 Connected To Database'.green);
     } catch (error) {
         console.log('❌ Failed to  Connect Database'.red);
         console.error(error.message);

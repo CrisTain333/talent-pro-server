@@ -6,13 +6,11 @@
 // import { ZodError } from "zod";
 const { ZodError } = require('zod');
 const ApiError = require('../error/ApiError');
-// import handleZodError from "../error/zodErrorHandler";
-// import { errorLogger } from '../shared/logger';
-// import handleCastError from "../error/handleCastError";
 
 const {
     handleZodError
 } = require('../error/zodErrorHandler');
+const config = require('../config/config');
 
 exports.globalErrorHandler = (error, req, res, next) => {
     let statusCode = 500;
@@ -35,6 +33,25 @@ exports.globalErrorHandler = (error, req, res, next) => {
                   }
               ]
             : [];
+    } else if (error?.name === 'TokenExpiredError') {
+        statusCode = 401;
+        message = 'Token has expired please login again !';
+        errorMessages = [
+            {
+                path: '',
+                message: error.message
+            }
+        ];
+    } else if (error?.name === 'JsonWebTokenError') {
+        statusCode = 401;
+        message =
+            'Invalid token . please provide a valid token';
+        errorMessages = [
+            {
+                path: '',
+                message: error.message
+            }
+        ];
     }
 
     //   if (error?.name === "ValidationError") {
@@ -87,7 +104,7 @@ exports.globalErrorHandler = (error, req, res, next) => {
         message,
         errorMessages,
         stack:
-            process.env.NODE_ENV !== 'production'
+            config.env !== 'production'
                 ? error?.stack
                 : undefined
     });

@@ -11,6 +11,14 @@ exports.getMe = async userId => {
     const user = await User.findById(userId).select(
         '-password -createdAt -updatedAt -__v'
     );
+
+    if (user?.account_status === 'suspended') {
+        throw new ApiError(
+            403,
+            'User account has been suspended .'
+        );
+    }
+
     return user;
 };
 
@@ -42,8 +50,6 @@ exports.updateProfile = async (userId, updatedData) => {
             select: '-password -createdAt -updatedAt -__v'
         }
     );
-
-    console.log(result);
 
     return result;
 };

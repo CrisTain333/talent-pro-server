@@ -45,6 +45,7 @@
         "zod": "^3.22.4"
     },
     "devDependencies": {
+        "@babel/eslint-parser": "^7.23.3",
         "husky": "^8.0.3"
     }
 }
