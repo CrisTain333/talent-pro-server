@@ -70,13 +70,9 @@ exports.handleToken = async payload => {
 
     const expires = config.JWT.expires_in;
 
-    const token = jwt.sign(
-        token_data,
-        config.JWT.expires_in,
-        {
-            expiresIn: expires
-        }
-    );
+    const token = jwt.sign(token_data, config.JWT.secret, {
+        expiresIn: expires
+    });
 
     // send success message
     return {
