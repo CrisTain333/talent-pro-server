@@ -22,9 +22,16 @@ const register = catchAsync(async (req, res) => {
 const token = catchAsync(async (req, res) => {
     const { ...tokenData } = req.body;
     const result = await authService.handleToken(tokenData);
-    res.status(200).json({
-        access: result?.token
+    sendResponse(res, {
+        statusCode: 200,
+        message: 'Logged in successfully',
+        data: {
+            access: result?.token
+        }
     });
+    // res.status(200).json({
+    //     access: result?.token
+    // });
 });
 
 module.exports = {
