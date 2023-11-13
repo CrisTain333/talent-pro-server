@@ -9,7 +9,7 @@ exports.createCandidate = async candidateData => {
 exports.getCandidateProfile = async userId => {
     const result = await Candidate.findOne({
         user: userId
-    }).populate('user');
+    }).populate('user', '-__v -password');
 
     if (!result || result === null) {
         throw new ApiError(

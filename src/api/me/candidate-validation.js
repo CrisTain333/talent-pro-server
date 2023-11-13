@@ -43,6 +43,12 @@ const candidateProfileSchema = z.object({
         }),
         work_remotely: z.boolean(),
         desired_salary: desiredSalarySchema,
+        phone: z.string({
+            required_error: 'phone is required'
+        }),
+        portfolio: z.string({
+            required_error: 'portfolio is required'
+        }),
         resume: z.string().optional()
     })
 });
