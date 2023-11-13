@@ -44,6 +44,14 @@ const candidateProfileSchema = new mongoose.Schema({
             required: true
         }
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    portfolio: {
+        type: String,
+        required: true
+    },
     resume: {
         type: String
     }
