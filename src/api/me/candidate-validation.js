@@ -29,14 +29,14 @@ const candidateProfileSchema = z.object({
         }),
         industry: industrySchema,
         job_status: z.enum([
-            'Employed',
-            'Not Employed',
-            'Student'
+            'EMPLOYED',
+            'NOT_EMPLOYED',
+            'STUDENT'
         ]),
         employment_type: z.enum([
-            'Full time',
-            'Part-time',
-            'Intern'
+            'FULL_TIME',
+            'PART_TIME',
+            'INTERN'
         ]),
         work_location: z.string({
             required_error: 'work location is required'
@@ -52,10 +52,10 @@ const updateCandidateProfileSchema = z.object({
         user: z.string().optional(), // User ID is optional for updates
         industry: industrySchema.optional(),
         job_status: z
-            .enum(['Employed', 'Not Employed', 'Student'])
+            .enum(['EMPLOYED', 'NOT_EMPLOYED', 'STUDENT'])
             .optional(),
         employment_type: z
-            .enum(['Full time', 'Part-time', 'Intern'])
+            .enum(['FULL_TIME', 'PART_TIME', 'INTERN'])
             .optional(),
         work_location: z.string().optional(),
         work_remotely: z.boolean().optional(),
