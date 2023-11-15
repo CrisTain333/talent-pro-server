@@ -22,7 +22,7 @@ const getCandidateProfile = catchAsync(async (req, res) => {
     const result =
         await candidateService.getCandidateProfile(_id);
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
         message: 'Candidate fetched successfully',
         data: result
@@ -39,7 +39,7 @@ const updateCandidateProfile = catchAsync(
                 updatedData
             );
         sendResponse(res, {
-            statusCode: 201,
+            statusCode: 200,
             success: true,
             message:
                 'Candidate profile updated successfully',

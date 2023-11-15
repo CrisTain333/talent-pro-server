@@ -18,12 +18,12 @@ const candidateProfileSchema = new mongoose.Schema({
     },
     job_status: {
         type: String,
-        enum: ['Employed', 'Not Employed', 'Student'],
+        enum: ['EMPLOYED', 'NOT_EMPLOYED', 'STUDENT'],
         required: true
     },
     employment_type: {
         type: String,
-        enum: ['Full time', 'Part-time', 'Intern'],
+        enum: ['FULL_TIME', 'PART_TIME', 'INTERN'],
         required: true
     },
     work_location: {
@@ -43,6 +43,14 @@ const candidateProfileSchema = new mongoose.Schema({
             type: Number,
             required: true
         }
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    portfolio: {
+        type: String,
+        required: true
     },
     resume: {
         type: String
