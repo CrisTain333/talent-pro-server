@@ -8,6 +8,7 @@ const {
     globalErrorHandler
 } = require('./middleware/globalErrorHandler');
 const config = require('./config/config');
+const limiter = require('./middleware/rateLimit');
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use(cors());
 if (config.env === 'development') {
     app.use(morgan('dev'));
 }
+
+// app.use(limiter);/
 
 app.use('/api/v1', router);
 
