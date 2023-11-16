@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const {
+    EmployStatus,
+    EmploymentType,
+    IndustryOptions
+} = require('../constant/keyChain');
 
 const candidateProfileSchema = new mongoose.Schema({
     user: {
@@ -6,46 +11,78 @@ const candidateProfileSchema = new mongoose.Schema({
         ref: 'User', // Reference to the User model
         required: true
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
     industry: {
-        label: {
-            type: String,
-            required: true
-        },
-        value: {
-            type: String,
-            required: true
-        }
+        type: String,
+        enum: IndustryOptions,
+        required: true
     },
     job_status: {
         type: String,
-        enum: ['EMPLOYED', 'NOT_EMPLOYED', 'STUDENT'],
+        enum: EmployStatus,
         required: true
     },
-    employment_type: {
-        type: String,
-        enum: ['FULL_TIME', 'PART_TIME', 'INTERN'],
-        required: true
-    },
-    work_location: {
-        type: String,
-        required: true
-    },
-    work_remotely: {
-        type: Boolean,
-        required: true
-    },
-    desired_salary: {
-        minimum: {
-            type: Number,
+    experience: [
+        {
+            company_name: {
+                type: String
+            },
+            designation: {
+                type: String
+            },
+            job_type: {
+                type: String
+            },
+            start_date: {
+                type: String
+            },
+            end_date: {
+                type: String
+            },
+            work_currently: {
+                type: Boolean
+            }
+        }
+    ],
+    education: {
+        institute_name: {
+            type: String,
             required: true
         },
-        maximum: {
-            type: Number,
+        degree: {
+            type: String,
+            required: true
+        },
+        major: {
+            type: String,
+            required: true
+        },
+        location: {
+            type: String,
+            required: true
+        },
+        start_date: {
+            type: String,
+            required: true
+        },
+        end_date: {
+            type: String,
+            required: true
+        },
+        study_currently: {
+            type: Boolean,
             required: true
         }
     },
-    phone: {
-        type: String,
+    skills: {
+        type: [String],
         required: true
     },
     portfolio: {
@@ -53,7 +90,23 @@ const candidateProfileSchema = new mongoose.Schema({
         required: true
     },
     resume: {
-        type: String
+        type: String,
+        required: true
+    },
+    desired_salary: {
+        min: {
+            type: Number,
+            required: true
+        },
+        max: {
+            type: Number,
+            required: true
+        }
+    },
+
+    open_to_work_remotely: {
+        type: Boolean,
+        required: true
     }
 });
 
