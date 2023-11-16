@@ -1,9 +1,11 @@
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
 
-exports.createCandidate = async candidateData => {
-    const candidate = await Candidate.create(candidateData);
-    return candidate;
+exports.createCandidate = async (candidateData, file) => {
+    console.log(`Candidate-Data: ${candidateData}`);
+    console.log(`Candidate-file: ${file}`);
+    // const candidate = await Candidate.create(candidateData);
+    // return candidate;
 };
 
 exports.getCandidateProfile = async userId => {

@@ -22,6 +22,7 @@ router.patch(
 
 router.post(
     '/profile',
+    uploader.single('resume'),
     auth(User_Role.CANDIDATE),
     validateRequest(
         candidateValidation.candidateProfileSchema
