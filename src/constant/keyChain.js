@@ -38,5 +38,6 @@ const EmployStatus = [
 const EmploymentType = ['FULL_TIME', 'PART_TIME', 'INTERN'];
 module.exports = {
     EmployStatus,
-    EmploymentType
+    EmploymentType,
+    IndustryOptions
 };
