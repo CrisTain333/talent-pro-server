@@ -53,32 +53,25 @@ const candidateProfileSchema = new mongoose.Schema({
     ],
     education: {
         institute_name: {
-            type: String,
-            required: true
+            type: String
         },
         degree: {
-            type: String,
-            required: true
+            type: String
         },
         major: {
-            type: String,
-            required: true
+            type: String
         },
         location: {
-            type: String,
-            required: true
+            type: String
         },
         start_date: {
-            type: String,
-            required: true
+            type: String
         },
         end_date: {
-            type: String,
-            required: true
+            type: String
         },
         study_currently: {
-            type: Boolean,
-            required: true
+            type: Boolean
         }
     },
     skills: {

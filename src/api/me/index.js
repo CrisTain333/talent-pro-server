@@ -24,9 +24,9 @@ router.post(
     '/profile',
     uploader.single('resume'),
     auth(User_Role.CANDIDATE),
-    validateRequest(
-        candidateValidation.candidateProfileSchema
-    ),
+    // validateRequest(
+    //     candidateValidation.candidateProfileSchema
+    // ),
     candidateController.createCandidate
 );
 router.get(
