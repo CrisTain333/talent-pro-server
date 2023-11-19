@@ -5,10 +5,11 @@ const sendResponse = require('../shared/sendResponse');
 
 const createCandidate = catchAsync(async (req, res) => {
     const { ...candidateData } = req.body;
-    const result =
-        await candidateService.createCandidate(
-            candidateData
-        );
+    const resume = req.file;
+    const result = await candidateService.createCandidate(
+        candidateData,
+        resume
+    );
     sendResponse(res, {
         statusCode: 201,
         success: true,

@@ -10,6 +10,7 @@ const authValidation = require('./validation');
 const {
     validateRequest
 } = require('../../middleware/validateRequest');
+const limiter = require('../../middleware/rateLimit');
 
 router.use(
     '/register',
@@ -19,6 +20,7 @@ router.use(
 
 router.use(
     '/token',
+    limiter,
     validateRequest(authValidation.LoginValidation),
     token
 );

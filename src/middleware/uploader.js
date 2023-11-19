@@ -1,5 +1,6 @@
 // import multer from 'multer';
 const multer = require('multer');
+const ApiError = require('../error/ApiError');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -19,21 +20,30 @@ const uploader = multer({
         fileSize: 1024 * 1024 * 10 // 10 MB max
     },
     fileFilter: (req, file, cb) => {
-        if (
-            file.fieldname === 'profile-picture' ||
-            file.fieldname === 'resume'
-        ) {
+        if (file.fieldname === 'resume') {
+            if (file.mimetype === 'application/pdf') {
+                cb(null, true);
+            } else {
+                cb(
+                    new ApiError(
+                        400,
+                        'only .pdf formate are allowed'
+                    )
+                );
+            }
+        }
+        if (file.fieldname === 'profile-picture') {
             if (
                 file.mimetype === 'image/jpg' ||
                 file.mimetype === 'image/jpeg' ||
-                file.mimetype === 'image/png' ||
-                file.mimetype === 'application/pdf'
+                file.mimetype === 'image/png'
             ) {
                 cb(null, true);
             } else {
                 cb(
-                    new Error(
-                        'only .jpg .jpeg .png .pdf  are allowed'
+                    new ApiError(
+                        400,
+                        'only .jpg .jpeg .png formate  are allowed'
                     )
                 );
             }
