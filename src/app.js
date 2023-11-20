@@ -26,8 +26,6 @@ if (config.env === 'development') {
     app.use(morgan('dev'));
 }
 
-// app.use(limiter);/
-
 app.use('/api/v1', router);
 
 app.use(globalErrorHandler);

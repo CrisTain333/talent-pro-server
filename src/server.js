@@ -5,8 +5,22 @@ const connectToDatabase = require('./Database/ConnectDb');
 const config = require('./config/config');
 const cluster = require('node:cluster');
 const os = require('node:os');
+const http = require('http');
+// const https = require('http')
 
 const totalCpus = os.cpus().length;
+
+const keepAliveUrl =
+    'http://talent-pro-server.onrender.com';
+
+setInterval(
+    () => {
+        http.get(keepAliveUrl, res => {
+            console.log('Keep alive log :' + res);
+        });
+    },
+    1 * 60 * 1000
+);
 
 if (cluster.isPrimary) {
     console.log(`Total Cpu is : ${totalCpus}`);
