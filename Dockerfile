@@ -7,6 +7,9 @@ WORKDIR /usr/app
 # Copy the application files to the working directory
 COPY . .
 
+# Install musl-utils to provide /bin/sh
+RUN apk --no-cache add musl-utils
+
 # Install app dependencies
 RUN npm install
 
