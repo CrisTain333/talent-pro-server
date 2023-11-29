@@ -8,7 +8,7 @@
     "main": "src/server.js",
     "scripts": {
         "dev": "nodemon src/server.js",
-        "start": "NODE_ENV=production  dist/server.js",
+        "start": "node src/server.js",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
