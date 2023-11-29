@@ -14,7 +14,7 @@ RUN apk --no-cache add musl-utils
 RUN npm install
 
 # Run the build script
-RUN npm run build
+# RUN npm run build
 
 # Expose the port on which the application will run
 EXPOSE 3000
