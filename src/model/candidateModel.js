@@ -6,51 +6,21 @@ const {
 } = require('../constant/keyChain');
 
 const candidateProfileSchema = new mongoose.Schema({
-    user: {
+    candidate_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to the User model
         required: true
     },
-    phone: {
-        type: String,
-        required: true
-    },
-    location: {
-        type: String,
-        required: true
-    },
-    industry: {
-        type: String,
-        enum: IndustryOptions,
-        required: true
-    },
-    job_status: {
-        type: String,
-        enum: EmployStatus,
-        required: true
-    },
-    experience: [
-        {
-            company_name: {
-                type: String
-            },
-            designation: {
-                type: String
-            },
-            job_type: {
-                type: String
-            },
-            start_date: {
-                type: String
-            },
-            end_date: {
-                type: String
-            },
-            work_currently: {
-                type: Boolean
-            }
+    desired_salary: {
+        min: {
+            type: Number,
+            required: true
+        },
+        max: {
+            type: Number,
+            required: true
         }
-    ],
+    },
     education: {
         institute_name: {
             type: String
@@ -74,6 +44,47 @@ const candidateProfileSchema = new mongoose.Schema({
             type: Boolean
         }
     },
+    experience: [
+        {
+            company_name: {
+                type: String
+            },
+            designation: {
+                type: String
+            },
+            job_type: {
+                type: String
+            },
+            start_date: {
+                type: String
+            },
+            end_date: {
+                type: String
+            },
+            work_currently: {
+                type: Boolean
+            }
+        }
+    ],
+    industry: {
+        type: String,
+        enum: IndustryOptions,
+        required: true
+    },
+    job_status: {
+        type: String,
+        enum: EmployStatus,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+
     skills: {
         type: [String],
         required: true
@@ -85,16 +96,6 @@ const candidateProfileSchema = new mongoose.Schema({
     resume: {
         type: String,
         required: true
-    },
-    desired_salary: {
-        min: {
-            type: Number,
-            required: true
-        },
-        max: {
-            type: Number,
-            required: true
-        }
     },
 
     open_to_work_remotely: {
