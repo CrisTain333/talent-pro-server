@@ -1,13 +1,33 @@
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
+const User = require('../model/userModel');
+const { uploadFiles } = require('../shared/uploadFile');
 
 exports.createCandidate = async (candidateData, file) => {
-    console.log(`Candidate-Data: ${candidateData}`);
+    const uploadedResume = await uploadFiles(file);
+    if (!uploadedResume) {
+        throw ApiError(400, 'Failed to update resume');
+    }
+    candidateData.resume = uploadedResume[0];
+    candidateData.resume_preview = uploadedResume[0];
+    const result = await Candidate.create(candidateData);
+    if (!result) {
+        throw ApiError(
+            400,
+            'Failed to setup candidate profile'
+        );
+    }
+    await User.findByIdAndUpdate(
+        result?.candidate_id,
+        {
+            isOnboardComplete: true
+        },
+        {
+            new: true
+        }
+    );
 
-    // console.log(`Candidate-file: ${JSON.stringify(file)}`);
-    return candidateData;
-    // const candidate = await Candidate.create(candidateData);
-    // return candidate;
+    return result;
 };
 
 exports.getCandidateProfile = async userId => {

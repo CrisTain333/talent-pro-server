@@ -71,11 +71,6 @@ const candidateProfileSchema = new mongoose.Schema({
         enum: IndustryOptions,
         required: true
     },
-    job_status: {
-        type: String,
-        enum: EmployStatus,
-        required: true
-    },
     phone: {
         type: String,
         required: true
@@ -85,8 +80,24 @@ const candidateProfileSchema = new mongoose.Schema({
         required: true
     },
 
+    job_status: {
+        type: String,
+        enum: EmployStatus,
+        required: true
+    },
+
     skills: {
-        type: [String],
+        type: [
+            {
+                label: {
+                    type: String
+                },
+
+                value: {
+                    type: String
+                }
+            }
+        ],
         required: true
     },
     portfolio: {
