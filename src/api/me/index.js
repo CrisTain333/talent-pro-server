@@ -62,5 +62,12 @@ router.get(
     auth(),
     candidateController.getExperience
 );
+// ** ---------------------- Candidate education Routes ----------------------
+
+router.get(
+    '/education',
+    auth(),
+    candidateController.getEducation
+);
 
 module.exports = router;

@@ -87,7 +87,7 @@ exports.updateCandidateProfile = async (
     return result;
 };
 
-// ** --------------------------- Candidate Info Crud ----------------------
+// ** --------------------------- Candidate Info section ----------------------
 
 exports.getInfo = async userId => {
     const candidate = await Candidate.findOne({
@@ -106,16 +106,27 @@ exports.getInfo = async userId => {
     return customizedData;
 };
 
-// ** --------------------------- Candidate experience Crud ----------------------
+// ** --------------------------- Candidate experience section ----------------------
 
 exports.getExperience = async userId => {
     const candidate = await Candidate.findOne({
         candidate_id: userId
     });
-    // company_name, designation, job_type, start_date, end_date, work_currently,
     const customizedData = {
         experience: candidate?.experience
     };
 
+    return customizedData;
+};
+
+// ** --------------------------- Candidate education section ----------------------
+
+exports.getEducation = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+    const customizedData = {
+        education: candidate?.education
+    };
     return customizedData;
 };
