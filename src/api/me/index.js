@@ -14,7 +14,7 @@ const uploader = require('../../middleware/uploader');
 
 router.get('/', auth(), meController.getMe);
 router.patch(
-    '/update-profile-picture',
+    '/image',
     uploader.single('profile-picture'),
     auth(),
     meController.updateProfilePicture
