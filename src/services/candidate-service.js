@@ -86,3 +86,66 @@ exports.updateCandidateProfile = async (
 
     return result;
 };
+
+// ** --------------------------- Candidate Info section ----------------------
+
+exports.getInfo = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+
+    console.log(candidate);
+
+    const customizedData = {
+        phone: candidate?.phone,
+        location: candidate?.location,
+        industry: candidate?.industry,
+        job_status: candidate?.job_status
+    };
+
+    return customizedData;
+};
+
+// ** --------------------------- Candidate experience section ----------------------
+
+exports.getExperience = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+    const customizedData = {
+        experience: candidate?.experience
+    };
+
+    return customizedData;
+};
+
+// ** --------------------------- Candidate education section ----------------------
+
+exports.getEducation = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+    const customizedData = {
+        education: candidate?.education
+    };
+    return customizedData;
+};
+
+// ** --------------------------- Candidate skill section ----------------------
+
+exports.get_skills_expertise = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+
+    const customizedData = {
+        skills: candidate?.skills,
+        portfolio: candidate?.portfolio,
+        resume: candidate?.resume,
+        desired_salary: candidate?.desired_salary,
+        open_to_work_remotely:
+            candidate?.open_to_work_remotely
+    };
+
+    return customizedData;
+};
