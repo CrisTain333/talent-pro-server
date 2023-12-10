@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
         image_url: {
             type: String,
             default:
-                'https://i.ibb.co/WDySPnz/profile-picture.jpg'
+                'https://res.cloudinary.com/talent-pro/image/upload/v1702142294/Talent-Pro/profile-pictures/q657wpho4vpfamlqhs09.jpg'
         }
     },
     {
