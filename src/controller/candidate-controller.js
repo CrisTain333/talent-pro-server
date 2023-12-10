@@ -49,8 +49,21 @@ const updateCandidateProfile = catchAsync(
     }
 );
 
+// ** --------------------------- Candidate Info section ----------------------
+const getInfo = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result = await candidateService.getInfo(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate info retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     createCandidate,
     getCandidateProfile,
-    updateCandidateProfile
+    updateCandidateProfile,
+    getInfo
 };

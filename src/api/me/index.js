@@ -51,4 +51,8 @@ router.patch(
     meController.updateUser
 );
 
+// ** ---------------------- Candidate Info Routes ----------------------
+
+router.get('/info', auth(), candidateController.getInfo);
+
 module.exports = router;
