@@ -14,7 +14,7 @@ const uploader = require('../../middleware/uploader');
 
 router.get('/', auth(), meController.getMe);
 router.patch(
-    '/update-profile-picture',
+    '/image',
     uploader.single('profile-picture'),
     auth(),
     meController.updateProfilePicture
@@ -49,6 +49,33 @@ router.patch(
     validateRequest(userValidation.userUpdateValidation),
     auth(),
     meController.updateUser
+);
+
+// ** ---------------------- Candidate Info Routes ----------------------
+
+router.get('/info', auth(), candidateController.getInfo);
+
+// ** ---------------------- Candidate experience Routes ----------------------
+
+router.get(
+    '/experience',
+    auth(),
+    candidateController.getExperience
+);
+// ** ---------------------- Candidate education Routes ----------------------
+
+router.get(
+    '/education',
+    auth(),
+    candidateController.getEducation
+);
+
+// ** ---------------------- Candidate skills Routes ----------------------
+
+router.get(
+    '/skills-expertise',
+    auth(),
+    candidateController.getSkills
 );
 
 module.exports = router;

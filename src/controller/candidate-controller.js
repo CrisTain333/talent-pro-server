@@ -49,8 +49,65 @@ const updateCandidateProfile = catchAsync(
     }
 );
 
+// ** --------------------------- Candidate Info section ----------------------
+const getInfo = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result = await candidateService.getInfo(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate info retrieved successfully',
+        data: result
+    });
+});
+
+// ** --------------------------- Candidate Experience section ----------------------
+
+const getExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result =
+        await candidateService.getExperience(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message:
+            'Candidate Experience retrieved successfully',
+        data: result
+    });
+});
+// ** --------------------------- Candidate Education section ----------------------
+
+const getEducation = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result = await candidateService.getEducation(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message:
+            'Candidate Education retrieved successfully',
+        data: result
+    });
+});
+// ** --------------------------- Candidate skill section ----------------------
+
+const getSkills = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result =
+        await candidateService.get_skills_expertise(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate skills  retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     createCandidate,
     getCandidateProfile,
-    updateCandidateProfile
+    updateCandidateProfile,
+    getInfo,
+    getExperience,
+    getEducation,
+    getSkills
 };
