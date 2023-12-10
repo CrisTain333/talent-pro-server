@@ -88,6 +88,19 @@ const getEducation = catchAsync(async (req, res) => {
         data: result
     });
 });
+// ** --------------------------- Candidate skill section ----------------------
+
+const getSkills = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result =
+        await candidateService.get_skills_expertise(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate skills  retrieved successfully',
+        data: result
+    });
+});
 
 module.exports = {
     createCandidate,
@@ -95,5 +108,6 @@ module.exports = {
     updateCandidateProfile,
     getInfo,
     getExperience,
-    getEducation
+    getEducation,
+    getSkills
 };

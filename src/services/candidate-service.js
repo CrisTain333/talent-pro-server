@@ -130,3 +130,22 @@ exports.getEducation = async userId => {
     };
     return customizedData;
 };
+
+// ** --------------------------- Candidate skill section ----------------------
+
+exports.get_skills_expertise = async userId => {
+    const candidate = await Candidate.findOne({
+        candidate_id: userId
+    });
+
+    const customizedData = {
+        skills: candidate?.skills,
+        portfolio: candidate?.portfolio,
+        resume: candidate?.resume,
+        desired_salary: candidate?.desired_salary,
+        open_to_work_remotely:
+            candidate?.open_to_work_remotely
+    };
+
+    return customizedData;
+};

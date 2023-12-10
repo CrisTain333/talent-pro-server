@@ -70,4 +70,12 @@ router.get(
     candidateController.getEducation
 );
 
+// ** ---------------------- Candidate skills Routes ----------------------
+
+router.get(
+    '/skills-expertise',
+    auth(),
+    candidateController.getSkills
+);
+
 module.exports = router;
