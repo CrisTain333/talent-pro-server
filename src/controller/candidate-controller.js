@@ -61,9 +61,25 @@ const getInfo = catchAsync(async (req, res) => {
     });
 });
 
+// ** --------------------------- Candidate Experience section ----------------------
+
+const getExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result =
+        await candidateService.getExperience(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message:
+            'Candidate Experience retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     createCandidate,
     getCandidateProfile,
     updateCandidateProfile,
-    getInfo
+    getInfo,
+    getExperience
 };

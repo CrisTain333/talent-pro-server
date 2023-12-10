@@ -55,4 +55,12 @@ router.patch(
 
 router.get('/info', auth(), candidateController.getInfo);
 
+// ** ---------------------- Candidate experience Routes ----------------------
+
+router.get(
+    '/experience',
+    auth(),
+    candidateController.getExperience
+);
+
 module.exports = router;

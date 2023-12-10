@@ -112,14 +112,9 @@ exports.getExperience = async userId => {
     const candidate = await Candidate.findOne({
         candidate_id: userId
     });
-
-    console.log(candidate);
-
+    // company_name, designation, job_type, start_date, end_date, work_currently,
     const customizedData = {
-        phone: candidate?.phone,
-        location: candidate?.location,
-        industry: candidate?.industry,
-        job_status: candidate?.job_status
+        experience: candidate?.experience
     };
 
     return customizedData;
