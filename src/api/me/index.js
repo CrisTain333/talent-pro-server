@@ -36,15 +36,6 @@ router.get(
 );
 
 router.patch(
-    '/profile',
-    auth(User_Role.CANDIDATE),
-    validateRequest(
-        candidateValidation.updateCandidateProfileSchema
-    ),
-    candidateController.updateCandidateProfile
-);
-
-router.patch(
     '/',
     validateRequest(userValidation.userUpdateValidation),
     auth(),
@@ -54,6 +45,14 @@ router.patch(
 // ** ---------------------- Candidate Info Routes ----------------------
 
 router.get('/info', auth(), candidateController.getInfo);
+router.patch(
+    '/info',
+    validateRequest(
+        candidateValidation.candidateInfoUpdateProfileSchema
+    ),
+    auth(User_Role.CANDIDATE, User_Role.SUPER_ADMIN),
+    candidateController.updateInfo
+);
 
 // ** ---------------------- Candidate experience Routes ----------------------
 

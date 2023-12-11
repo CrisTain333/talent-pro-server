@@ -53,24 +53,24 @@ const candidateProfileSchema = z.object({
     })
 });
 
-const updateCandidateProfileSchema = z.object({
+const candidateInfoUpdateProfileSchema = z.object({
     body: z.object({
-        user: z.string().optional(), // User ID is optional for updates
-        industry: industrySchema.optional(),
-        job_status: z
-            .enum(['EMPLOYED', 'NOT_EMPLOYED', 'STUDENT'])
-            .optional(),
-        employment_type: z
-            .enum(['FULL_TIME', 'PART_TIME', 'INTERN'])
-            .optional(),
-        work_location: z.string().optional(),
-        work_remotely: z.boolean().optional(),
-        desired_salary: desiredSalarySchema.optional(),
-        resume: z.string().optional()
+        phone: z.string({
+            required_error: 'phone is required'
+        }),
+        location: z.string({
+            required_error: 'location is required'
+        }),
+        industry: z.string({
+            required_error: 'industry is required'
+        }),
+        job_status: z.string({
+            required_error: 'job status is required'
+        })
     })
 });
 
 module.exports = {
     candidateProfileSchema,
-    updateCandidateProfileSchema
+    candidateInfoUpdateProfileSchema
 };

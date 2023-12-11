@@ -61,6 +61,22 @@ const getInfo = catchAsync(async (req, res) => {
     });
 });
 
+const updateInfo = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...userUpdatedData } = req.body;
+    const result =
+        await candidateService.updateCandidateInfo(
+            _id,
+            userUpdatedData
+        );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate info updated successfully',
+        data: result
+    });
+});
+
 // ** --------------------------- Candidate Experience section ----------------------
 
 const getExperience = catchAsync(async (req, res) => {
@@ -109,5 +125,6 @@ module.exports = {
     getInfo,
     getExperience,
     getEducation,
-    getSkills
+    getSkills,
+    updateInfo
 };
