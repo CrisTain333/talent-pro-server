@@ -91,6 +91,49 @@ const getExperience = catchAsync(async (req, res) => {
         data: result
     });
 });
+
+const createExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...experienceData } = req.body;
+    const result = await candidateService.createExperience(
+        _id,
+        experienceData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'experience added  successfully',
+        data: result
+    });
+});
+const updateExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...experienceData } = req.body;
+    const result = await candidateService.updateExperience(
+        _id,
+        experienceData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'experience updated  successfully',
+        data: result
+    });
+});
+const removeExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...experienceData } = req.body;
+    const result = await candidateService.removeExperience(
+        _id,
+        experienceData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'experience removed  successfully',
+        data: result
+    });
+});
 // ** --------------------------- Candidate Education section ----------------------
 
 const getEducation = catchAsync(async (req, res) => {
@@ -126,5 +169,8 @@ module.exports = {
     getExperience,
     getEducation,
     getSkills,
-    updateInfo
+    updateInfo,
+    createExperience,
+    updateExperience,
+    removeExperience
 };

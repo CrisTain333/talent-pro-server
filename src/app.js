@@ -45,3 +45,14 @@ app.use((req, res, next) => {
 });
 
 module.exports = app;
+
+// deploy:
+//         runs-on: ip-172-31-38-150
+
+//         steps:
+//             - name: Pull image from docker hub
+//               run: docker pull ${{ secrets.DOCKER_USERNAME }}/talent-pro-backend:latest
+//             - name: Delete old container
+//               run: docker rm -f talent-pro-server
+//             - name: Run docker container
+//               run: docker run -d -p 5000:5000 --name talent-pro-server ${{ secrets.DOCKER_USERNAME }}/talent-pro-backend

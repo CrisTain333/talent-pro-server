@@ -134,6 +134,72 @@ exports.getExperience = async userId => {
     return customizedData;
 };
 
+exports.createExperience = async (
+    userId,
+    new_experience_data
+) => {
+    const data = await Candidate.findOneAndUpdate(
+        { candidate_id: userId },
+        {
+            $push: {
+                experience: new_experience_data
+            }
+        },
+        { new: true }
+    ).select('experience -_id');
+
+    if (!data)
+        throw new ApiError(400, 'failed to add experience');
+
+    return data;
+};
+
+exports.updateExperience = async (userId, experience) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId,
+            'experience._id': experience?._id
+        },
+        {
+            $set: {
+                'experience.$': experience
+            }
+        },
+        { new: true }
+    ).select('experience -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to update experience'
+        );
+    }
+
+    return data;
+};
+exports.removeExperience = async (userId, experience) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId
+        },
+        {
+            $pull: {
+                experience: { _id: experience?._id } // Replace objectIdToRemove with the actual ObjectID
+            }
+        },
+        { new: true }
+    ).select('experience -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to remove experience'
+        );
+    }
+
+    return data;
+};
+
 // ** --------------------------- Candidate education section ----------------------
 
 exports.getEducation = async userId => {
