@@ -17,7 +17,7 @@ RUN npm install
 # RUN npm run build
 
 # Expose the port on which the application will run
-EXPOSE 3000
+EXPOSE 5000
 
 # Specify the command to run the application
 CMD ["npm", "start"]
