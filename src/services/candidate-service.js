@@ -92,18 +92,31 @@ exports.updateCandidateProfile = async (
 exports.getInfo = async userId => {
     const candidate = await Candidate.findOne({
         candidate_id: userId
-    });
+    }).select('phone location -_id industry job_status');
 
-    console.log(candidate);
+    // const customizedData = {
+    //     phone: candidate?.phone,
+    //     location: candidate?.location,
+    //     industry: candidate?.industry,
+    //     job_status: candidate?.job_status
+    // };
 
-    const customizedData = {
-        phone: candidate?.phone,
-        location: candidate?.location,
-        industry: candidate?.industry,
-        job_status: candidate?.job_status
-    };
+    return candidate;
+};
 
-    return customizedData;
+exports.updateInfo = async (userID, candidateInfo) => {
+    const { phone, location, industry, job_status } =
+        candidateInfo;
+    await Candidate.findOneAndUpdate(
+        { candidate_id: userID },
+        {
+            phone,
+            location,
+            industry,
+            job_status
+        },
+        { new: true }
+    );
 };
 
 // ** --------------------------- Candidate experience section ----------------------
