@@ -36,15 +36,6 @@ router.get(
 );
 
 router.patch(
-    '/profile',
-    auth(User_Role.CANDIDATE),
-    validateRequest(
-        candidateValidation.updateCandidateProfileSchema
-    ),
-    candidateController.updateCandidateProfile
-);
-
-router.patch(
     '/',
     validateRequest(userValidation.userUpdateValidation),
     auth(),
