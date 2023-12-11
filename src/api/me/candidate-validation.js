@@ -70,7 +70,25 @@ const updateCandidateProfileSchema = z.object({
     })
 });
 
+const candidateInfoUpdateProfileSchema = z.object({
+    body: z.object({
+        phone: z.string({
+            required_error: 'phone is required'
+        }),
+        location: z.string({
+            required_error: 'location is required'
+        }),
+        industry: z.string({
+            required_error: 'industry is required'
+        }),
+        job_status: z.string({
+            required_error: 'job status is required'
+        })
+    })
+});
+
 module.exports = {
     candidateProfileSchema,
-    updateCandidateProfileSchema
+    updateCandidateProfileSchema,
+    candidateInfoUpdateProfileSchema
 };

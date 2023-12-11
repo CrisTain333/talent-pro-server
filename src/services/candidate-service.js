@@ -94,17 +94,13 @@ exports.getInfo = async userId => {
         candidate_id: userId
     }).select('phone location -_id industry job_status');
 
-    // const customizedData = {
-    //     phone: candidate?.phone,
-    //     location: candidate?.location,
-    //     industry: candidate?.industry,
-    //     job_status: candidate?.job_status
-    // };
-
     return candidate;
 };
 
-exports.updateInfo = async (userID, candidateInfo) => {
+exports.updateCandidateInfo = async (
+    userID,
+    candidateInfo
+) => {
     const { phone, location, industry, job_status } =
         candidateInfo;
     await Candidate.findOneAndUpdate(
@@ -117,6 +113,12 @@ exports.updateInfo = async (userID, candidateInfo) => {
         },
         { new: true }
     );
+
+    const candidate = await Candidate.findOne({
+        candidate_id: userID
+    }).select('phone location -_id industry job_status');
+
+    return candidate;
 };
 
 // ** --------------------------- Candidate experience section ----------------------
