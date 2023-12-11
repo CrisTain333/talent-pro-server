@@ -102,8 +102,21 @@ const createExperience = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message:
-            'Candidate Experience retrieved successfully',
+        message: 'experience added  successfully',
+        data: result
+    });
+});
+const updateExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...experienceData } = req.body;
+    const result = await candidateService.updateExperience(
+        _id,
+        experienceData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'experience updated  successfully',
         data: result
     });
 });
@@ -143,5 +156,6 @@ module.exports = {
     getEducation,
     getSkills,
     updateInfo,
-    createExperience
+    createExperience,
+    updateExperience
 };

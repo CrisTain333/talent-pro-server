@@ -67,6 +67,12 @@ router.post(
     auth(),
     candidateController.createExperience
 );
+
+router.patch(
+    '/experience/update',
+    auth(),
+    candidateController.updateExperience
+);
 // ** ---------------------- Candidate education Routes ----------------------
 
 router.get(

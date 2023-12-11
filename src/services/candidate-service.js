@@ -138,10 +138,6 @@ exports.createExperience = async (
     userId,
     new_experience_data
 ) => {
-    // i have a new experience as a object now i want to add it to the experience array
-
-    console.log(new_experience_data);
-
     const data = await Candidate.findOneAndUpdate(
         { candidate_id: userId },
         {
@@ -150,10 +146,34 @@ exports.createExperience = async (
             }
         },
         { new: true }
-    );
+    ).select('experience -_id');
 
     if (!data)
         throw new ApiError(400, 'failed to add experience');
+
+    return data;
+};
+
+exports.updateExperience = async (userId, experience) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId,
+            'experience._id': experience?._id
+        },
+        {
+            $set: {
+                'experience.$': experience
+            }
+        },
+        { new: true }
+    ).select('experience -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to update experience'
+        );
+    }
 
     return data;
 };
