@@ -61,6 +61,25 @@ router.get(
     auth(),
     candidateController.getExperience
 );
+
+router.post(
+    '/experience/add',
+    auth(),
+    candidateController.createExperience
+);
+
+router.patch(
+    '/experience/update',
+    auth(),
+    candidateController.updateExperience
+);
+
+router.delete(
+    '/experience/remove',
+    auth(),
+    candidateController.removeExperience
+);
+
 // ** ---------------------- Candidate education Routes ----------------------
 
 router.get(
