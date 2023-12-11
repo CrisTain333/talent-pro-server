@@ -120,6 +120,20 @@ const updateExperience = catchAsync(async (req, res) => {
         data: result
     });
 });
+const removeExperience = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...experienceData } = req.body;
+    const result = await candidateService.removeExperience(
+        _id,
+        experienceData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'experience removed  successfully',
+        data: result
+    });
+});
 // ** --------------------------- Candidate Education section ----------------------
 
 const getEducation = catchAsync(async (req, res) => {
@@ -157,5 +171,6 @@ module.exports = {
     getSkills,
     updateInfo,
     createExperience,
-    updateExperience
+    updateExperience,
+    removeExperience
 };

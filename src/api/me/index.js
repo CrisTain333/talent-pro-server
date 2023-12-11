@@ -73,6 +73,13 @@ router.patch(
     auth(),
     candidateController.updateExperience
 );
+
+router.delete(
+    '/experience/remove',
+    auth(),
+    candidateController.removeExperience
+);
+
 // ** ---------------------- Candidate education Routes ----------------------
 
 router.get(
