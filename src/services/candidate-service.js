@@ -134,6 +134,30 @@ exports.getExperience = async userId => {
     return customizedData;
 };
 
+exports.createExperience = async (
+    userId,
+    new_experience_data
+) => {
+    // i have a new experience as a object now i want to add it to the experience array
+
+    console.log(new_experience_data);
+
+    const data = await Candidate.findOneAndUpdate(
+        { candidate_id: userId },
+        {
+            $push: {
+                experience: new_experience_data
+            }
+        },
+        { new: true }
+    );
+
+    if (!data)
+        throw new ApiError(400, 'failed to add experience');
+
+    return data;
+};
+
 // ** --------------------------- Candidate education section ----------------------
 
 exports.getEducation = async userId => {

@@ -61,6 +61,12 @@ router.get(
     auth(),
     candidateController.getExperience
 );
+
+router.post(
+    '/experience/add',
+    auth(),
+    candidateController.createExperience
+);
 // ** ---------------------- Candidate education Routes ----------------------
 
 router.get(
