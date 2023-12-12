@@ -63,7 +63,7 @@ router.get(
 );
 
 router.post(
-    '/experience/add',
+    '/experience',
     auth(),
     candidateController.createExperience
 );
