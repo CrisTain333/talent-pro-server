@@ -98,6 +98,11 @@ router.patch(
     auth(),
     candidateController.updateEducation
 );
+router.delete(
+    '/education/remove',
+    auth(),
+    candidateController.removeEducation
+);
 
 // ** ---------------------- Candidate skills Routes ----------------------
 

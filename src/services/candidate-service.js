@@ -184,7 +184,7 @@ exports.removeExperience = async (userId, experience) => {
         },
         {
             $pull: {
-                experience: { _id: experience?._id } // Replace objectIdToRemove with the actual ObjectID
+                experience: { _id: experience?._id }
             }
         },
         { new: true }
@@ -247,6 +247,29 @@ exports.updateEducation = async (userId, education) => {
         throw new ApiError(
             400,
             'Failed to update education'
+        );
+    }
+
+    return data;
+};
+
+exports.removeEducation = async (userId, education) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId
+        },
+        {
+            $pull: {
+                education: { _id: education?._id }
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to remove education'
         );
     }
 

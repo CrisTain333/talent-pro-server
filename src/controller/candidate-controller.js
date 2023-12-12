@@ -176,6 +176,20 @@ const updateEducation = catchAsync(async (req, res) => {
         data: result
     });
 });
+const removeEducation = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...educationData } = req.body;
+    const result = await candidateService.removeEducation(
+        _id,
+        educationData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Education removed successfully',
+        data: result
+    });
+});
 
 // ** --------------------------- Candidate skill section ----------------------
 
@@ -204,5 +218,6 @@ module.exports = {
     updateExperience,
     removeExperience,
     addEducation,
-    updateEducation
+    updateEducation,
+    removeEducation
 };
