@@ -122,10 +122,10 @@ const updateExperience = catchAsync(async (req, res) => {
 });
 const removeExperience = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    const { ...experienceData } = req.body;
+    const { id } = req.params;
     const result = await candidateService.removeExperience(
         _id,
-        experienceData
+        id
     );
     sendResponse(res, {
         statusCode: 200,

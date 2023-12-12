@@ -177,14 +177,14 @@ exports.updateExperience = async (userId, experience) => {
 
     return data;
 };
-exports.removeExperience = async (userId, experience) => {
+exports.removeExperience = async (userId, experienceId) => {
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId
         },
         {
             $pull: {
-                experience: { _id: experience?._id }
+                experience: { _id: experienceId }
             }
         },
         { new: true }

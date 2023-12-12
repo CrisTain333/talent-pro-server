@@ -75,7 +75,7 @@ router.patch(
 );
 
 router.delete(
-    '/experience/remove',
+    '/experience/:id',
     auth(),
     candidateController.removeExperience
 );
