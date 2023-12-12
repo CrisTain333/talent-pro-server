@@ -229,6 +229,30 @@ exports.createEducation = async (
     return data;
 };
 
+exports.updateEducation = async (userId, education) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId,
+            'education._id': education?._id
+        },
+        {
+            $set: {
+                'education.$': education
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to update education'
+        );
+    }
+
+    return data;
+};
+
 // ** --------------------------- Candidate skill section ----------------------
 
 exports.get_skills_expertise = async userId => {

@@ -142,8 +142,7 @@ const getEducation = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message:
-            'Candidate Education retrieved successfully',
+        message: 'Education retrieved successfully',
         data: result
     });
 });
@@ -158,7 +157,22 @@ const addEducation = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: 'Candidate Education added successfully',
+        message: 'Education added successfully',
+        data: result
+    });
+});
+
+const updateEducation = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...educationData } = req.body;
+    const result = await candidateService.updateEducation(
+        _id,
+        educationData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Education updated successfully',
         data: result
     });
 });
@@ -189,5 +203,6 @@ module.exports = {
     createExperience,
     updateExperience,
     removeExperience,
-    addEducation
+    addEducation,
+    updateEducation
 };

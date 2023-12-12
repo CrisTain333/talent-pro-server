@@ -93,6 +93,12 @@ router.post(
     candidateController.addEducation
 );
 
+router.patch(
+    '/education/update',
+    auth(),
+    candidateController.updateEducation
+);
+
 // ** ---------------------- Candidate skills Routes ----------------------
 
 router.get(
