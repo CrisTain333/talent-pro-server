@@ -162,7 +162,7 @@ exports.updateExperience = async (userId, experienceId, experience) => {
         },
         {
             $set: {
-                experience
+                'experience.$': updateFields
             }
         },
         { new: true }
