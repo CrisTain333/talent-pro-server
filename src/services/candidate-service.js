@@ -162,10 +162,10 @@ exports.updateExperience = async (userId, experienceId, experience) => {
         },
         {
             $set: {
-                'experience.$[exp]': experience
+                'experience.$': experience
             }
         },
-        { new: true, arrayFilters: [{ 'exp._id': experienceId }] }
+        { new: true}
     ).select('experience -_id');
 
     if (!data) {
