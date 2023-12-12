@@ -184,7 +184,7 @@ exports.removeExperience = async (userId, experience) => {
         },
         {
             $pull: {
-                experience: { _id: experience?._id } // Replace objectIdToRemove with the actual ObjectID
+                experience: { _id: experience?._id }
             }
         },
         { new: true }
@@ -205,11 +205,75 @@ exports.removeExperience = async (userId, experience) => {
 exports.getEducation = async userId => {
     const candidate = await Candidate.findOne({
         candidate_id: userId
-    });
-    const customizedData = {
-        education: candidate?.education
-    };
-    return customizedData;
+    }).select('-_id education');
+    return candidate;
+};
+
+exports.createEducation = async (
+    userId,
+    new_education_data
+) => {
+    const data = await Candidate.findOneAndUpdate(
+        { candidate_id: userId },
+        {
+            $push: {
+                education: new_education_data
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data)
+        throw new ApiError(400, 'failed to add education');
+
+    return data;
+};
+
+exports.updateEducation = async (userId, education) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId,
+            'education._id': education?._id
+        },
+        {
+            $set: {
+                'education.$': education
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to update education'
+        );
+    }
+
+    return data;
+};
+
+exports.removeEducation = async (userId, education) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            candidate_id: userId
+        },
+        {
+            $pull: {
+                education: { _id: education?._id }
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to remove education'
+        );
+    }
+
+    return data;
 };
 
 // ** --------------------------- Candidate skill section ----------------------
