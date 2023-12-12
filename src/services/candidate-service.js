@@ -205,11 +205,28 @@ exports.removeExperience = async (userId, experience) => {
 exports.getEducation = async userId => {
     const candidate = await Candidate.findOne({
         candidate_id: userId
-    });
-    const customizedData = {
-        education: candidate?.education
-    };
-    return customizedData;
+    }).select('-_id education');
+    return candidate;
+};
+
+exports.createEducation = async (
+    userId,
+    new_education_data
+) => {
+    const data = await Candidate.findOneAndUpdate(
+        { candidate_id: userId },
+        {
+            $push: {
+                education: new_education_data
+            }
+        },
+        { new: true }
+    ).select('education -_id');
+
+    if (!data)
+        throw new ApiError(400, 'failed to add education');
+
+    return data;
 };
 
 // ** --------------------------- Candidate skill section ----------------------

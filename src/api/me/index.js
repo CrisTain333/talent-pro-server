@@ -87,6 +87,11 @@ router.get(
     auth(),
     candidateController.getEducation
 );
+router.post(
+    '/education/add',
+    auth(),
+    candidateController.addEducation
+);
 
 // ** ---------------------- Candidate skills Routes ----------------------
 
