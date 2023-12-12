@@ -229,6 +229,8 @@ exports.createEducation = async (
     return data;
 };
 
+// ! Need  to fix Updated api;
+
 exports.updateEducation = async (userId, education) => {
     const data = await Candidate.findOneAndUpdate(
         {
