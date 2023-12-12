@@ -154,11 +154,11 @@ exports.createExperience = async (
     return data;
 };
 
-exports.updateExperience = async (userId, experience) => {
+exports.updateExperience = async (userId, experienceId, experience) => {
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId,
-            'experience._id': experience?._id
+            'experience._id': experienceId
         },
         {
             $set: {

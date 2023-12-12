@@ -69,7 +69,7 @@ router.post(
 );
 
 router.patch(
-    '/experience/update',
+    '/experience/:id',
     auth(),
     candidateController.updateExperience
 );

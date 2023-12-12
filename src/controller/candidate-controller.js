@@ -108,9 +108,11 @@ const createExperience = catchAsync(async (req, res) => {
 });
 const updateExperience = catchAsync(async (req, res) => {
     const { _id } = req.user;
+    const { id } = req.params;
     const { ...experienceData } = req.body;
     const result = await candidateService.updateExperience(
         _id,
+        id,
         experienceData
     );
     sendResponse(res, {
