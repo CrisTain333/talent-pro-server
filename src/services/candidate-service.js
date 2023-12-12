@@ -232,6 +232,7 @@ exports.createEducation = async (
 // ! Need  to fix Updated api;
 
 exports.updateEducation = async (userId, education) => {
+    const {company_name, designation, job_type, start_date, end_date, work_currently} = education;
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId,
@@ -239,7 +240,7 @@ exports.updateEducation = async (userId, education) => {
         },
         {
             $set: {
-                'education.$': education
+                'education.$': {company_name, designation, job_type, start_date, end_date, work_currently}
             }
         },
         { new: true }
