@@ -70,7 +70,40 @@ const candidateInfoUpdateProfileSchema = z.object({
     })
 });
 
+const experienceUpdateSchema = z.object({
+    body: z.object({
+        company_name: z.string({
+            required_error: 'company name is required'
+        }),
+        designation: z.string({
+            required_error: 'designation is required'
+        }),
+        job_type: z.string({
+            required_error: 'job type is required'
+        }),
+        start_date: z.string({
+            required_error: 'start date is required'
+        }),
+        end_date: z
+            .string({
+                required_error: 'end date is required'
+            })
+            .optional(),
+        work_currently: z.boolean({
+            required_error: 'work currently is required'
+        })
+    })
+});
+
+// company_name: values.company_name,
+//         designation: values.designation,
+//         job_type: values.job_type,
+//         start_date: values.start_date,
+//         end_date: values.end_date,
+//         work_currently: values.work_currently,
+
 module.exports = {
     candidateProfileSchema,
-    candidateInfoUpdateProfileSchema
+    candidateInfoUpdateProfileSchema,
+    experienceUpdateSchema
 };

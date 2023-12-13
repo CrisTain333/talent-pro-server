@@ -1,5 +1,6 @@
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
+const Experience = require('../model/experienceModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 
@@ -11,18 +12,46 @@ exports.createCandidate = async (candidateData, file) => {
         if (!uploadedResume) {
             throw ApiError(400, 'Failed to update resume');
         }
+
+        // ** upload the resume and set to the object
         candidateData.resume = uploadedResume[0];
         candidateData.resume_preview = uploadedResume[0];
-        const result =
+
+        // ** Create experience first;
+        const {
+            company_name,
+            designation,
+            job_type,
+            start_date,
+            end_date,
+            work_currently
+        } = candidateData.experience;
+
+        const experienceData = {
+            user_id: candidateData?.candidate_id,
+            company_name,
+            designation,
+            job_type,
+            start_date,
+            end_date,
+            work_currently
+        };
+
+        await Experience.create(experienceData);
+        const experience = await Experience.find({
+            user_id: candidateData?.candidate_id
+        });
+
+        let resultData =
             await Candidate.create(candidateData);
-        if (!result) {
+        if (!resultData) {
             throw ApiError(
                 400,
                 'Failed to setup candidate profile'
             );
         }
         await User.findByIdAndUpdate(
-            result?.candidate_id,
+            resultData?.candidate_id,
             {
                 isOnboardComplete: true
             },
@@ -31,6 +60,10 @@ exports.createCandidate = async (candidateData, file) => {
             }
         );
 
+        const result = {
+            experience,
+            ...resultData
+        };
         return result;
     } catch (error) {
         console.log(error);
@@ -124,11 +157,11 @@ exports.updateCandidateInfo = async (
 // ** --------------------------- Candidate experience section ----------------------
 
 exports.getExperience = async userId => {
-    const candidate = await Candidate.findOne({
-        candidate_id: userId
+    const experience = await Experience.find({
+        user_id: userId
     });
     const customizedData = {
-        experience: candidate?.experience
+        experience
     };
 
     return customizedData;
@@ -138,15 +171,26 @@ exports.createExperience = async (
     userId,
     new_experience_data
 ) => {
-    const data = await Candidate.findOneAndUpdate(
-        { candidate_id: userId },
-        {
-            $push: {
-                experience: new_experience_data
-            }
-        },
-        { new: true }
-    ).select('experience -_id');
+    const {
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    } = new_experience_data;
+
+    const experienceData = {
+        user_id: userId,
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    };
+
+    const data = await Experience.create(experienceData);
 
     if (!data)
         throw new ApiError(400, 'failed to add experience');
@@ -154,41 +198,31 @@ exports.createExperience = async (
     return data;
 };
 
-exports.updateExperience = async (userId, experienceId, experience) => {
-    const data = await Candidate.findOneAndUpdate(
+exports.updateExperience = async (
+    userId,
+    experienceId,
+    updatedExperience
+) => {
+    const result = await Experience.updateOne(
         {
-            candidate_id: userId,
-            'experience._id': experienceId
+            _id: experienceId
         },
-        {
-            $set: {
-                'experience.$': experience
-            }
-        },
-        { new: true}
-    ).select('experience -_id');
+        updatedExperience,
+        { new: true }
+    );
 
-    if (!data) {
+    if (!result) {
         throw new ApiError(
             400,
             'Failed to update experience'
         );
     }
 
-    return data;
+    return updatedExperience;
 };
 exports.removeExperience = async (userId, experienceId) => {
-    const data = await Candidate.findOneAndUpdate(
-        {
-            candidate_id: userId
-        },
-        {
-            $pull: {
-                experience: { _id: experienceId }
-            }
-        },
-        { new: true }
-    ).select('experience -_id');
+    const data =
+        await Experience.findByIdAndDelete(experienceId);
 
     if (!data) {
         throw new ApiError(
@@ -232,7 +266,14 @@ exports.createEducation = async (
 // ! Need  to fix Updated api;
 
 exports.updateEducation = async (userId, education) => {
-    const {company_name, designation, job_type, start_date, end_date, work_currently} = education;
+    const {
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    } = education;
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId,
@@ -240,7 +281,14 @@ exports.updateEducation = async (userId, education) => {
         },
         {
             $set: {
-                'education.$': {company_name, designation, job_type, start_date, end_date, work_currently}
+                'education.$': {
+                    company_name,
+                    designation,
+                    job_type,
+                    start_date,
+                    end_date,
+                    work_currently
+                }
             }
         },
         { new: true }

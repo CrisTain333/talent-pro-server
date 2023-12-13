@@ -21,53 +21,6 @@ const candidateProfileSchema = new mongoose.Schema({
             required: true
         }
     },
-    education: [
-        {
-            institute_name: {
-                type: String
-            },
-            degree: {
-                type: String
-            },
-            major: {
-                type: String
-            },
-            location: {
-                type: String
-            },
-            start_date: {
-                type: String
-            },
-            end_date: {
-                type: String
-            },
-            study_currently: {
-                type: Boolean
-            }
-        }
-    ],
-    experience: [
-        {
-            company_name: {
-                type: String
-            },
-            designation: {
-                type: String
-            },
-            job_type: {
-                type: String
-            },
-            start_date: {
-                type: String
-            },
-            end_date: {
-                type: String
-            },
-            work_currently: {
-                type: Boolean
-            }
-        }
-    ],
     industry: {
         type: String,
         enum: IndustryOptions,

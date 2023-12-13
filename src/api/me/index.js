@@ -70,6 +70,9 @@ router.post(
 
 router.patch(
     '/experience/:id',
+    validateRequest(
+        candidateValidation.experienceUpdateSchema
+    ),
     auth(),
     candidateController.updateExperience
 );
