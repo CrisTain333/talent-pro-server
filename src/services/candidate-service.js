@@ -1,5 +1,6 @@
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
+const Experience = require('../model/experienceModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 
@@ -11,18 +12,46 @@ exports.createCandidate = async (candidateData, file) => {
         if (!uploadedResume) {
             throw ApiError(400, 'Failed to update resume');
         }
+
+        // ** upload the resume and set to the object
         candidateData.resume = uploadedResume[0];
         candidateData.resume_preview = uploadedResume[0];
-        const result =
+
+        // ** Create experience first;
+        const {
+            company_name,
+            designation,
+            job_type,
+            start_date,
+            end_date,
+            work_currently
+        } = candidateData.experience;
+
+        const experienceData = {
+            user_id: candidateData?.candidate_id,
+            company_name,
+            designation,
+            job_type,
+            start_date,
+            end_date,
+            work_currently
+        };
+
+        await Experience.create(experienceData);
+        const experience = await Experience.find({
+            user_id: candidateData?.candidate_id
+        });
+
+        let resultData =
             await Candidate.create(candidateData);
-        if (!result) {
+        if (!resultData) {
             throw ApiError(
                 400,
                 'Failed to setup candidate profile'
             );
         }
         await User.findByIdAndUpdate(
-            result?.candidate_id,
+            resultData?.candidate_id,
             {
                 isOnboardComplete: true
             },
@@ -31,6 +60,10 @@ exports.createCandidate = async (candidateData, file) => {
             }
         );
 
+        const result = {
+            experience,
+            ...resultData
+        };
         return result;
     } catch (error) {
         console.log(error);
