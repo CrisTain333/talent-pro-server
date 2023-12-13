@@ -63,19 +63,22 @@ router.get(
 );
 
 router.post(
-    '/experience/add',
+    '/experience',
     auth(),
     candidateController.createExperience
 );
 
 router.patch(
-    '/experience/update',
+    '/experience/:id',
+    validateRequest(
+        candidateValidation.experienceUpdateSchema
+    ),
     auth(),
     candidateController.updateExperience
 );
 
 router.delete(
-    '/experience/remove',
+    '/experience/:id',
     auth(),
     candidateController.removeExperience
 );
