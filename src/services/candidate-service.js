@@ -203,19 +203,15 @@ exports.updateExperience = async (
     experienceId,
     updatedExperience
 ) => {
-    const result = await Candidate.updateOne(
+    const result = await Experience.updateOne(
         {
-            candidate_id: userId,
-            'experience._id': experienceId
+            _id: experienceId
         },
-        {
-            $set: {
-                'experience.$': updatedExperience
-            }
-        }
+        updatedExperience,
+        { new: true }
     );
 
-    if (result.nModified === 0) {
+    if (!result) {
         throw new ApiError(
             400,
             'Failed to update experience'
