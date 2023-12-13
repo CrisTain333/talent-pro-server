@@ -157,11 +157,11 @@ exports.updateCandidateInfo = async (
 // ** --------------------------- Candidate experience section ----------------------
 
 exports.getExperience = async userId => {
-    const candidate = await Candidate.findOne({
-        candidate_id: userId
+    const experience = await Experience.find({
+        user_id: userId
     });
     const customizedData = {
-        experience: candidate?.experience
+        experience
     };
 
     return customizedData;
@@ -171,15 +171,26 @@ exports.createExperience = async (
     userId,
     new_experience_data
 ) => {
-    const data = await Candidate.findOneAndUpdate(
-        { candidate_id: userId },
-        {
-            $push: {
-                experience: new_experience_data
-            }
-        },
-        { new: true }
-    ).select('experience -_id');
+    const {
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    } = new_experience_data;
+
+    const experienceData = {
+        user_id: userId,
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    };
+
+    const data = await Experience.create(experienceData);
 
     if (!data)
         throw new ApiError(400, 'failed to add experience');
