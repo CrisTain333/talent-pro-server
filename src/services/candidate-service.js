@@ -28,7 +28,7 @@ exports.createCandidate = async (candidateData, file) => {
         } = candidateData.experience;
 
         const experienceData = {
-            user_id: candidateData?.candidate_id,
+            user_id: candidateData?.user_id,
             company_name,
             designation,
             job_type,
@@ -39,7 +39,7 @@ exports.createCandidate = async (candidateData, file) => {
 
         await Experience.create(experienceData);
         const experience = await Experience.find({
-            user_id: candidateData?.candidate_id
+            user_id: candidateData?.user_id
         });
 
         let resultData =
@@ -51,7 +51,7 @@ exports.createCandidate = async (candidateData, file) => {
             );
         }
         await User.findByIdAndUpdate(
-            resultData?.candidate_id,
+            resultData?.user_id,
             {
                 isOnboardComplete: true
             },
@@ -124,7 +124,7 @@ exports.updateCandidateProfile = async (
 
 exports.getInfo = async userId => {
     const candidate = await Candidate.findOne({
-        candidate_id: userId
+        user_id: userId
     }).select('phone location -_id industry job_status');
 
     return candidate;
@@ -137,7 +137,7 @@ exports.updateCandidateInfo = async (
     const { phone, location, industry, job_status } =
         candidateInfo;
     await Candidate.findOneAndUpdate(
-        { candidate_id: userID },
+        { user_id: userID },
         {
             phone,
             location,
@@ -148,7 +148,7 @@ exports.updateCandidateInfo = async (
     );
 
     const candidate = await Candidate.findOne({
-        candidate_id: userID
+        user_id: userID
     }).select('phone location -_id industry job_status');
 
     return candidate;
@@ -238,7 +238,7 @@ exports.removeExperience = async (userId, experienceId) => {
 
 exports.getEducation = async userId => {
     const candidate = await Candidate.findOne({
-        candidate_id: userId
+        user_id: userId
     }).select('-_id education');
     return candidate;
 };
@@ -248,7 +248,7 @@ exports.createEducation = async (
     new_education_data
 ) => {
     const data = await Candidate.findOneAndUpdate(
-        { candidate_id: userId },
+        { user_id: userId },
         {
             $push: {
                 education: new_education_data
@@ -276,7 +276,7 @@ exports.updateEducation = async (userId, education) => {
     } = education;
     const data = await Candidate.findOneAndUpdate(
         {
-            candidate_id: userId,
+            user_id: userId,
             'education._id': education?._id
         },
         {
@@ -307,7 +307,7 @@ exports.updateEducation = async (userId, education) => {
 exports.removeEducation = async (userId, education) => {
     const data = await Candidate.findOneAndUpdate(
         {
-            candidate_id: userId
+            user_id: userId
         },
         {
             $pull: {
@@ -331,7 +331,7 @@ exports.removeEducation = async (userId, education) => {
 
 exports.get_skills_expertise = async userId => {
     const candidate = await Candidate.findOne({
-        candidate_id: userId
+        user_id: userId
     });
 
     const customizedData = {
