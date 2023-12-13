@@ -221,17 +221,8 @@ exports.updateExperience = async (
     return updatedExperience;
 };
 exports.removeExperience = async (userId, experienceId) => {
-    const data = await Candidate.findOneAndUpdate(
-        {
-            candidate_id: userId
-        },
-        {
-            $pull: {
-                experience: { _id: experienceId }
-            }
-        },
-        { new: true }
-    ).select('experience -_id');
+    const data =
+        await Experience.findByIdAndDelete(experienceId);
 
     if (!data) {
         throw new ApiError(
