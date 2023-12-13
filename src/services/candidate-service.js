@@ -154,7 +154,16 @@ exports.createExperience = async (
     return data;
 };
 
-exports.updateExperience = async (userId, experienceId, experience) => {
+exports.updateExperience = async (
+    userId,
+    experienceId,
+    experience
+) => {
+    console.log(experience);
+
+    const singleExperience = Array.isArray(experience)
+        ? experience[0]
+        : experience;
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId,
@@ -162,10 +171,10 @@ exports.updateExperience = async (userId, experienceId, experience) => {
         },
         {
             $set: {
-                'experience.$': experience
+                'experience.$': singleExperience
             }
         },
-        { new: true}
+        { new: true }
     ).select('experience -_id');
 
     if (!data) {
@@ -232,7 +241,14 @@ exports.createEducation = async (
 // ! Need  to fix Updated api;
 
 exports.updateEducation = async (userId, education) => {
-    const {company_name, designation, job_type, start_date, end_date, work_currently} = education;
+    const {
+        company_name,
+        designation,
+        job_type,
+        start_date,
+        end_date,
+        work_currently
+    } = education;
     const data = await Candidate.findOneAndUpdate(
         {
             candidate_id: userId,
@@ -240,7 +256,14 @@ exports.updateEducation = async (userId, education) => {
         },
         {
             $set: {
-                'education.$': {company_name, designation, job_type, start_date, end_date, work_currently}
+                'education.$': {
+                    company_name,
+                    designation,
+                    job_type,
+                    start_date,
+                    end_date,
+                    work_currently
+                }
             }
         },
         { new: true }
