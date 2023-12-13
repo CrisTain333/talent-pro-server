@@ -46,28 +46,6 @@ const candidateProfileSchema = new mongoose.Schema({
             }
         }
     ],
-    experience: [
-        {
-            company_name: {
-                type: String
-            },
-            designation: {
-                type: String
-            },
-            job_type: {
-                type: String
-            },
-            start_date: {
-                type: String
-            },
-            end_date: {
-                type: String
-            },
-            work_currently: {
-                type: Boolean
-            }
-        }
-    ],
     industry: {
         type: String,
         enum: IndustryOptions,
