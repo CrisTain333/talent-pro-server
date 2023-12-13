@@ -157,34 +157,28 @@ exports.createExperience = async (
 exports.updateExperience = async (
     userId,
     experienceId,
-    experience
+    updatedExperience
 ) => {
-    console.log(experience);
-
-    const singleExperience = Array.isArray(experience)
-        ? experience[0]
-        : experience;
-    const data = await Candidate.findOneAndUpdate(
+    const result = await Candidate.updateOne(
         {
             candidate_id: userId,
             'experience._id': experienceId
         },
         {
             $set: {
-                'experience.$': singleExperience
+                'experience.$': updatedExperience
             }
-        },
-        { new: true }
-    ).select('experience -_id');
+        }
+    );
 
-    if (!data) {
+    if (result.nModified === 0) {
         throw new ApiError(
             400,
             'Failed to update experience'
         );
     }
 
-    return data;
+    return updatedExperience;
 };
 exports.removeExperience = async (userId, experienceId) => {
     const data = await Candidate.findOneAndUpdate(
