@@ -279,62 +279,38 @@ exports.removeExperience = async (userId, experienceId) => {
 // ** --------------------------- Candidate education section ----------------------
 
 exports.getEducation = async userId => {
-    const candidate = await Candidate.findOne({
+    const education = await Education.find({
         user_id: userId
-    }).select('-_id education');
-    return candidate;
+    });
+    const educationData = {
+        education
+    };
+
+    return educationData;
 };
 
-exports.createEducation = async (
-    userId,
-    new_education_data
-) => {
-    const data = await Candidate.findOneAndUpdate(
-        { user_id: userId },
-        {
-            $push: {
-                education: new_education_data
-            }
-        },
-        { new: true }
-    ).select('education -_id');
+exports.createEducation = async new_education_data => {
+    const data = await Education.create(new_education_data);
 
     if (!data)
         throw new ApiError(400, 'failed to add education');
-
     return data;
 };
 
-// ! Need  to fix Updated api;
-
-exports.updateEducation = async (userId, education) => {
-    const {
-        company_name,
-        designation,
-        job_type,
-        start_date,
-        end_date,
-        work_currently
-    } = education;
-    const data = await Candidate.findOneAndUpdate(
+exports.updateEducation = async (
+    userId,
+    education,
+    educationId
+) => {
+    const data = await Education.findByIdAndUpdate(
         {
-            user_id: userId,
-            'education._id': education?._id
+            _id: educationId
         },
+        education,
         {
-            $set: {
-                'education.$': {
-                    company_name,
-                    designation,
-                    job_type,
-                    start_date,
-                    end_date,
-                    work_currently
-                }
-            }
-        },
-        { new: true }
-    ).select('education -_id');
+            new: true
+        }
+    );
 
     if (!data) {
         throw new ApiError(
@@ -346,18 +322,10 @@ exports.updateEducation = async (userId, education) => {
     return data;
 };
 
-exports.removeEducation = async (userId, education) => {
-    const data = await Candidate.findOneAndUpdate(
-        {
-            user_id: userId
-        },
-        {
-            $pull: {
-                education: { _id: education?._id }
-            }
-        },
-        { new: true }
-    ).select('education -_id');
+exports.removeEducation = async educationID => {
+    const data = await Education.findByIdAndDelete({
+        _id: educationID
+    });
 
     if (!data) {
         throw new ApiError(

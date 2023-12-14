@@ -91,18 +91,18 @@ router.get(
     candidateController.getEducation
 );
 router.post(
-    '/education/add',
+    '/education',
     auth(),
     candidateController.addEducation
 );
 
 router.patch(
-    '/education/update',
+    '/education/:id',
     auth(),
     candidateController.updateEducation
 );
 router.delete(
-    '/education/remove',
+    '/education/:id',
     auth(),
     candidateController.removeEducation
 );
