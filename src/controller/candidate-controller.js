@@ -180,12 +180,9 @@ const updateEducation = catchAsync(async (req, res) => {
     });
 });
 const removeEducation = catchAsync(async (req, res) => {
-    const { _id } = req.user;
-    const { ...educationData } = req.body;
-    const result = await candidateService.removeEducation(
-        _id,
-        educationData
-    );
+    const { id } = req.params;
+    const result =
+        await candidateService.removeEducation(id);
     sendResponse(res, {
         statusCode: 200,
         success: true,

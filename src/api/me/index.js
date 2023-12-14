@@ -102,7 +102,7 @@ router.patch(
     candidateController.updateEducation
 );
 router.delete(
-    '/education/remove',
+    '/education/:id',
     auth(),
     candidateController.removeEducation
 );

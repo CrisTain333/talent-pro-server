@@ -322,18 +322,10 @@ exports.updateEducation = async (
     return data;
 };
 
-exports.removeEducation = async (userId, education) => {
-    const data = await Candidate.findOneAndUpdate(
-        {
-            user_id: userId
-        },
-        {
-            $pull: {
-                education: { _id: education?._id }
-            }
-        },
-        { new: true }
-    ).select('education -_id');
+exports.removeEducation = async educationID => {
+    const data = await Education.findByIdAndDelete({
+        _id: educationID
+    });
 
     if (!data) {
         throw new ApiError(
