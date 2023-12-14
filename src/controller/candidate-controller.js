@@ -152,10 +152,10 @@ const getEducation = catchAsync(async (req, res) => {
 const addEducation = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const { ...educationData } = req.body;
-    const result = await candidateService.createEducation(
-        _id,
-        educationData
-    );
+    const result =
+        await candidateService.createEducation(
+            educationData
+        );
     sendResponse(res, {
         statusCode: 200,
         success: true,
