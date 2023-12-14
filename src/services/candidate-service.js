@@ -297,34 +297,20 @@ exports.createEducation = async new_education_data => {
     return data;
 };
 
-exports.updateEducation = async (userId, education) => {
-    const {
-        company_name,
-        designation,
-        job_type,
-        start_date,
-        end_date,
-        work_currently
-    } = education;
-    const data = await Candidate.findOneAndUpdate(
+exports.updateEducation = async (
+    userId,
+    education,
+    educationId
+) => {
+    const data = await Education.findByIdAndUpdate(
         {
-            user_id: userId,
-            'education._id': education?._id
+            _id: educationId
         },
+        education,
         {
-            $set: {
-                'education.$': {
-                    company_name,
-                    designation,
-                    job_type,
-                    start_date,
-                    end_date,
-                    work_currently
-                }
-            }
-        },
-        { new: true }
-    ).select('education -_id');
+            new: true
+        }
+    );
 
     if (!data) {
         throw new ApiError(
