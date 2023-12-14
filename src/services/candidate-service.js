@@ -66,8 +66,9 @@ exports.createCandidate = async (candidateData, file) => {
             [candidateData],
             { session }
         );
+
         await User.findByIdAndUpdate(
-            resultData?.user_id,
+            resultData[0]?.user_id,
             {
                 isOnboardComplete: true
             },
@@ -88,7 +89,7 @@ exports.createCandidate = async (candidateData, file) => {
         const result = {
             experience,
             education,
-            ...resultData
+            ...resultData[0]
         };
         await session.commitTransaction();
         await session.endSession();
