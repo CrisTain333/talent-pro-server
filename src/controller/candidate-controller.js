@@ -150,12 +150,11 @@ const getEducation = catchAsync(async (req, res) => {
 });
 
 const addEducation = catchAsync(async (req, res) => {
-    const { _id } = req.user;
     const { ...educationData } = req.body;
-    const result = await candidateService.createEducation(
-        _id,
-        educationData
-    );
+    const result =
+        await candidateService.createEducation(
+            educationData
+        );
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -167,9 +166,11 @@ const addEducation = catchAsync(async (req, res) => {
 const updateEducation = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const { ...educationData } = req.body;
+    const { id } = req.params;
     const result = await candidateService.updateEducation(
         _id,
-        educationData
+        educationData,
+        id
     );
     sendResponse(res, {
         statusCode: 200,
@@ -179,12 +180,9 @@ const updateEducation = catchAsync(async (req, res) => {
     });
 });
 const removeEducation = catchAsync(async (req, res) => {
-    const { _id } = req.user;
-    const { ...educationData } = req.body;
-    const result = await candidateService.removeEducation(
-        _id,
-        educationData
-    );
+    const { id } = req.params;
+    const result =
+        await candidateService.removeEducation(id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
