@@ -90,6 +90,8 @@ exports.createCandidate = async (candidateData, file) => {
             education,
             ...resultData
         };
+        await session.commitTransaction();
+        await session.endSession();
         return result;
     } catch (error) {
         await session.abortTransaction();
