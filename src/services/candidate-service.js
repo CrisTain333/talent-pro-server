@@ -1,77 +1,119 @@
+const { default: mongoose } = require('mongoose');
 const ApiError = require('../error/ApiError');
 const Candidate = require('../model/candidateModel');
 const Experience = require('../model/experienceModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
+const Education = require('../model/educationModel');
 
 exports.createCandidate = async (candidateData, file) => {
-    console.log(`Candidate-Data : ${candidateData}`);
-    console.log(`Candidate-Resume : ${file}`);
+    let newData;
+    const uploadedResume = await uploadFiles(file);
+    if (!uploadedResume) {
+        throw ApiError(400, 'Failed to update resume');
+    }
+
+    // ** upload the resume and set to the object
+    candidateData.resume = uploadedResume[0];
+    candidateData.resume_preview = uploadedResume[0];
+
+    const session = await mongoose.startSession();
+
     try {
-        const uploadedResume = await uploadFiles(file);
-        if (!uploadedResume) {
-            throw ApiError(400, 'Failed to update resume');
+        session.startTransaction();
+
+        if (
+            Array.isArray(candidateData?.experience) &&
+            candidateData?.experience?.length > 0
+        ) {
+            console.log('inside experience');
+            const experienceDataArray =
+                candidateData.experience.map(exp => ({
+                    user_id: candidateData?.user_id,
+                    company_name: exp.company_name,
+                    designation: exp.designation,
+                    job_type: exp.job_type,
+                    start_date: exp.start_date,
+                    end_date: exp.end_date,
+                    work_currently: exp.work_currently
+                }));
+
+            await Experience.create(experienceDataArray, {
+                session
+            });
         }
 
-        // ** upload the resume and set to the object
-        candidateData.resume = uploadedResume[0];
-        candidateData.resume_preview = uploadedResume[0];
+        if (
+            Array.isArray(candidateData?.education) &&
+            candidateData?.education?.length > 0
+        ) {
+            console.log('education');
+            const educationDataArray =
+                candidateData.education.map(edu => ({
+                    user_id: candidateData?.user_id,
+                    institute_name: edu.institute_name,
+                    degree: edu.degree,
+                    major: edu.major,
+                    location: edu.location,
+                    start_date: edu.start_date,
+                    end_date: edu.end_date,
+                    study_currently: edu.study_currently
+                }));
 
-        // ** Create experience first;
-        const {
-            company_name,
-            designation,
-            job_type,
-            start_date,
-            end_date,
-            work_currently
-        } = candidateData.experience;
-
-        const experienceData = {
-            user_id: candidateData?.user_id,
-            company_name,
-            designation,
-            job_type,
-            start_date,
-            end_date,
-            work_currently
-        };
-
-        await Experience.create(experienceData);
-        const experience = await Experience.find({
-            user_id: candidateData?.user_id
-        });
-
-        let resultData =
-            await Candidate.create(candidateData);
-        if (!resultData) {
-            throw ApiError(
-                400,
-                'Failed to setup candidate profile'
-            );
+            await Education.create(educationDataArray, {
+                session
+            });
         }
+
+        let resultData = await Candidate.create(
+            [candidateData],
+            { session }
+        );
+
+        if (resultData) {
+            newData = resultData;
+        }
+
         await User.findByIdAndUpdate(
-            resultData?.user_id,
+            resultData[0]?.user_id,
             {
                 isOnboardComplete: true
             },
             {
-                new: true
+                new: true,
+                session
             }
         );
 
-        const result = {
-            experience,
-            ...resultData
-        };
-        return result;
+        await session.commitTransaction();
+        await session.endSession();
     } catch (error) {
         console.log(error);
-        throw new ApiError(
-            400,
-            error?.message || 'Failed to create candidate'
-        );
+        await session.abortTransaction();
+        await session.endSession();
+        throw error;
+    } finally {
+        await session.endSession();
     }
+
+    // const education =  await Ed
+
+    const experience = await Experience.find({
+        user_id: candidateData?.user_id
+    });
+
+    const education = await Education.find({
+        user_id: candidateData?.user_id
+    });
+    const result = {
+        experience,
+        education,
+        candidate: newData[0]
+    };
+
+    return result;
+
+    // return candidateData;
 };
 
 exports.getCandidateProfile = async userId => {
