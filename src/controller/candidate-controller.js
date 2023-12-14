@@ -107,11 +107,9 @@ const createExperience = catchAsync(async (req, res) => {
     });
 });
 const updateExperience = catchAsync(async (req, res) => {
-    const { _id } = req.user;
     const { id } = req.params;
     const { ...experienceData } = req.body;
     const result = await candidateService.updateExperience(
-        _id,
         id,
         experienceData
     );
@@ -123,12 +121,9 @@ const updateExperience = catchAsync(async (req, res) => {
     });
 });
 const removeExperience = catchAsync(async (req, res) => {
-    const { _id } = req.user;
     const { id } = req.params;
-    const result = await candidateService.removeExperience(
-        _id,
-        id
-    );
+    const result =
+        await candidateService.removeExperience(id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -150,11 +145,12 @@ const getEducation = catchAsync(async (req, res) => {
 });
 
 const addEducation = catchAsync(async (req, res) => {
+    const { _id } = req.user;
     const { ...educationData } = req.body;
-    const result =
-        await candidateService.createEducation(
-            educationData
-        );
+    const result = await candidateService.createEducation(
+        _id,
+        educationData
+    );
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -164,13 +160,11 @@ const addEducation = catchAsync(async (req, res) => {
 });
 
 const updateEducation = catchAsync(async (req, res) => {
-    const { _id } = req.user;
-    const { ...educationData } = req.body;
     const { id } = req.params;
+    const { ...educationData } = req.body;
     const result = await candidateService.updateEducation(
-        _id,
-        educationData,
-        id
+        id,
+        educationData
     );
     sendResponse(res, {
         statusCode: 200,
