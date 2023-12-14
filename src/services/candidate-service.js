@@ -7,6 +7,7 @@ const { uploadFiles } = require('../shared/uploadFile');
 const Education = require('../model/educationModel');
 
 exports.createCandidate = async (candidateData, file) => {
+    let newData;
     const uploadedResume = await uploadFiles(file);
     if (!uploadedResume) {
         throw ApiError(400, 'Failed to update resume');
@@ -22,9 +23,10 @@ exports.createCandidate = async (candidateData, file) => {
         session.startTransaction();
 
         if (
-            Array.isArray(candidateData.experience) &&
-            candidateData.experience.length > 0
+            Array.isArray(candidateData?.experience) &&
+            candidateData?.experience?.length > 0
         ) {
+            console.log('inside experience');
             const experienceDataArray =
                 candidateData.experience.map(exp => ({
                     user_id: candidateData?.user_id,
@@ -42,9 +44,10 @@ exports.createCandidate = async (candidateData, file) => {
         }
 
         if (
-            Array.isArray(candidateData.education) &&
-            candidateData.education.length > 0
+            Array.isArray(candidateData?.education) &&
+            candidateData?.education?.length > 0
         ) {
+            console.log('education');
             const educationDataArray =
                 candidateData.education.map(edu => ({
                     user_id: candidateData?.user_id,
@@ -67,6 +70,10 @@ exports.createCandidate = async (candidateData, file) => {
             { session }
         );
 
+        if (resultData) {
+            newData = resultData;
+        }
+
         await User.findByIdAndUpdate(
             resultData[0]?.user_id,
             {
@@ -78,29 +85,35 @@ exports.createCandidate = async (candidateData, file) => {
             }
         );
 
-        const experience = await Experience.find({
-            user_id: candidateData?.user_id
-        });
-
-        const education = await Education.find({
-            user_id: candidateData?.user_id
-        });
-
-        const result = {
-            experience,
-            education,
-            ...resultData[0]
-        };
         await session.commitTransaction();
         await session.endSession();
-        return result;
     } catch (error) {
+        console.log(error);
         await session.abortTransaction();
         await session.endSession();
         throw error;
     } finally {
         await session.endSession();
     }
+
+    // const education =  await Ed
+
+    const experience = await Experience.find({
+        user_id: candidateData?.user_id
+    });
+
+    const education = await Education.find({
+        user_id: candidateData?.user_id
+    });
+    const result = {
+        experience,
+        education,
+        candidate: newData[0]
+    };
+
+    return result;
+
+    // return candidateData;
 };
 
 exports.getCandidateProfile = async userId => {
