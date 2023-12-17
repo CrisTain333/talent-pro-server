@@ -202,11 +202,11 @@ exports.getExperience = async userId => {
     const experience = await Experience.find({
         user_id: userId
     });
-    const customizedData = {
+    const experienceData = {
         experience
     };
 
-    return customizedData;
+    return experienceData;
 };
 
 exports.createExperience = async (
@@ -241,7 +241,6 @@ exports.createExperience = async (
 };
 
 exports.updateExperience = async (
-    userId,
     experienceId,
     updatedExperience
 ) => {
@@ -260,9 +259,9 @@ exports.updateExperience = async (
         );
     }
 
-    return updatedExperience;
+    return result;
 };
-exports.removeExperience = async (userId, experienceId) => {
+exports.removeExperience = async experienceId => {
     const data =
         await Experience.findByIdAndDelete(experienceId);
 
@@ -289,8 +288,32 @@ exports.getEducation = async userId => {
     return educationData;
 };
 
-exports.createEducation = async new_education_data => {
-    const data = await Education.create(new_education_data);
+exports.createEducation = async (
+    userId,
+    new_education_data
+) => {
+    const {
+        institute_name,
+        degree,
+        major,
+        location,
+        start_date,
+        end_date,
+        study_currently
+    } = new_education_data;
+
+    const educationData = {
+        user_id: userId,
+        institute_name,
+        degree,
+        major,
+        location,
+        start_date,
+        end_date,
+        study_currently
+    };
+
+    const data = await Education.create(educationData);
 
     if (!data)
         throw new ApiError(400, 'failed to add education');
@@ -298,9 +321,8 @@ exports.createEducation = async new_education_data => {
 };
 
 exports.updateEducation = async (
-    userId,
-    education,
-    educationId
+    educationId,
+    education
 ) => {
     const data = await Education.findByIdAndUpdate(
         {
@@ -342,16 +364,14 @@ exports.removeEducation = async educationID => {
 exports.get_skills_expertise = async userId => {
     const candidate = await Candidate.findOne({
         user_id: userId
-    });
+    }).select(
+        '-_id skills resume desired_salary open_to_work_remotely'
+    );
 
-    const customizedData = {
-        skills: candidate?.skills,
-        portfolio: candidate?.portfolio,
-        resume: candidate?.resume,
-        desired_salary: candidate?.desired_salary,
-        open_to_work_remotely:
-            candidate?.open_to_work_remotely
-    };
-
-    return customizedData;
+    return candidate;
 };
+
+exports.skills_expertise = async (
+    userId,
+    updatedData
+) => {};
