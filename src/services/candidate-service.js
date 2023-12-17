@@ -370,3 +370,8 @@ exports.get_skills_expertise = async userId => {
 
     return candidate;
 };
+
+exports.skills_expertise = async (
+    userId,
+    updatedData
+) => {};
