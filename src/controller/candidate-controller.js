@@ -199,6 +199,23 @@ const getSkills = catchAsync(async (req, res) => {
     });
 });
 
+const updateCandidateResume = catchAsync(
+    async (req, res) => {
+        const { _id } = req.user;
+        const resume = req.file;
+        const result = await candidateService.updateResume(
+            _id,
+            resume
+        );
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: 'Resume update successfully',
+            data: result
+        });
+    }
+);
+
 module.exports = {
     createCandidate,
     getCandidateProfile,
@@ -213,5 +230,6 @@ module.exports = {
     removeExperience,
     addEducation,
     updateEducation,
-    removeEducation
+    removeEducation,
+    updateCandidateResume
 };

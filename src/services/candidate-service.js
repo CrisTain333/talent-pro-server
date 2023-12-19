@@ -371,7 +371,28 @@ exports.get_skills_expertise = async userId => {
     return candidate;
 };
 
-exports.skills_expertise = async (
-    userId,
-    updatedData
-) => {};
+exports.updateResume = async (userId, resume) => {
+    const uploadedResume = await uploadFiles(resume);
+    if (!uploadedResume) {
+        throw ApiError(400, 'Failed to update resume');
+    }
+
+    const data = await Candidate.findOneAndUpdate(
+        {
+            user_id: userId
+        },
+        {
+            resume: uploadedResume[0],
+            resume_preview: uploadedResume[0]
+        },
+        {
+            new: true
+        }
+    );
+
+    if (!data) {
+        throw new ApiError(400, 'Failed to update resume');
+    }
+
+    return data;
+};

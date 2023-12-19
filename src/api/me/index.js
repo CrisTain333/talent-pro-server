@@ -115,4 +115,11 @@ router.get(
     candidateController.getSkills
 );
 
+router.patch(
+    '/resume',
+    uploader.single('resume'),
+    auth(),
+    candidateController.updateCandidateResume
+);
+
 module.exports = router;
