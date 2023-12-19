@@ -203,6 +203,7 @@ const updateCandidateResume = catchAsync(
     async (req, res) => {
         const { _id } = req.user;
         const resume = req.file;
+
         const result = await candidateService.updateResume(
             _id,
             resume
