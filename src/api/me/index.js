@@ -116,6 +116,12 @@ router.get(
 );
 
 router.patch(
+    '/skills-expertise',
+    auth(),
+    candidateController.updateSkillExpertise
+);
+
+router.patch(
     '/resume',
     uploader.single('resume'),
     auth(),
