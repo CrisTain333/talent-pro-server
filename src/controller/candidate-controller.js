@@ -199,6 +199,25 @@ const getSkills = catchAsync(async (req, res) => {
     });
 });
 
+const updateSkillExpertise = catchAsync(
+    async (req, res) => {
+        const { _id } = req.user;
+        const { ...updatedData } = req.body;
+        const result =
+            await candidateService.update_skills_expertise(
+                _id,
+                updatedData
+            );
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message:
+                'Skill and expertise update successfully',
+            data: result
+        });
+    }
+);
+
 const updateCandidateResume = catchAsync(
     async (req, res) => {
         const { _id } = req.user;
@@ -232,5 +251,6 @@ module.exports = {
     addEducation,
     updateEducation,
     removeEducation,
-    updateCandidateResume
+    updateCandidateResume,
+    updateSkillExpertise
 };
