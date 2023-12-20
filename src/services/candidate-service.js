@@ -365,7 +365,7 @@ exports.get_skills_expertise = async userId => {
     const candidate = await Candidate.findOne({
         user_id: userId
     }).select(
-        '-_id skills resume desired_salary open_to_work_remotely'
+        '-_id skills portfolio resume desired_salary open_to_work_remotely'
     );
 
     return candidate;
