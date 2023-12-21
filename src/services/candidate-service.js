@@ -380,7 +380,14 @@ exports.update_skills_expertise = async (
             user_id: userId
         },
         {
-            updatedData
+            skills: updatedData?.skills,
+            portfolio: updatedData?.portfolio,
+            desired_salary: {
+                min: updatedData?.desired_salary?.min,
+                max: updatedData?.desired_salary?.max
+            },
+            open_to_work_remotely:
+                updatedData?.open_to_work_remotely
         },
         {
             new: true
