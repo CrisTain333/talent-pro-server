@@ -365,10 +365,43 @@ exports.get_skills_expertise = async userId => {
     const candidate = await Candidate.findOne({
         user_id: userId
     }).select(
-        '-_id skills resume desired_salary open_to_work_remotely'
+        '-_id skills portfolio resume desired_salary open_to_work_remotely'
     );
 
     return candidate;
+};
+
+exports.update_skills_expertise = async (
+    userId,
+    updatedData
+) => {
+    const data = await Candidate.findOneAndUpdate(
+        {
+            user_id: userId
+        },
+        {
+            skills: updatedData?.skills,
+            portfolio: updatedData?.portfolio,
+            desired_salary: {
+                min: updatedData?.desired_salary?.min,
+                max: updatedData?.desired_salary?.max
+            },
+            open_to_work_remotely:
+                updatedData?.open_to_work_remotely
+        },
+        {
+            new: true
+        }
+    );
+
+    if (!data) {
+        throw new ApiError(
+            400,
+            'Failed to update skill and expertise'
+        );
+    }
+
+    return data;
 };
 
 exports.updateResume = async (userId, resume) => {
