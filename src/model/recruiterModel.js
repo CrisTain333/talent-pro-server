@@ -4,7 +4,7 @@ const { IndustryOptions } = require('../constant/keyChain');
 const recruiterSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        ref: 'User',
         required: true
     },
     company_name: {
@@ -50,14 +50,3 @@ const Recruiter = mongoose.model(
 );
 
 module.exports = Recruiter;
-
-// user_Id: string reference [User Id],
-// Company_name: string,
-// Industry: {label: string, value: string},
-// company_size: string,
-// comapny_location: string,
-// company_logo: string,
-// website:string,
-// Linkidin_link:string
-// slogan:string,
-// About_us:string,
