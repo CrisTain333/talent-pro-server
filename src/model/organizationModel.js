@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { IndustryOptions } = require('../constant/keyChain');
 
-const recruiterSchema = new mongoose.Schema({
+const organizationSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -44,9 +44,9 @@ const recruiterSchema = new mongoose.Schema({
     }
 });
 
-const Recruiter = mongoose.model(
-    'recruiter',
-    recruiterSchema
+const Organization = mongoose.model(
+    'organization',
+    organizationSchema
 );
 
-module.exports = Recruiter;
+module.exports = Organization;
