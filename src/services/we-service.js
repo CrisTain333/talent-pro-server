@@ -31,9 +31,18 @@ exports.createOrganization = async (
 exports.getOrganization = async userId => {
     if (!userId) throw new Error('user id is required');
 
+    const user = await User.findById(userId);
+
     const org = await Organization.findOne({
         user_id: userId
     });
+
+    if (!org)
+        throw new ApiError(
+            400,
+            'No such organization found for user ' +
+                user?.name?.first_name
+        );
 
     return org;
 };

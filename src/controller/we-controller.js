@@ -25,7 +25,9 @@ const createOrganization = catchAsync(async (req, res) => {
 const getOrganization = catchAsync(async (req, res) => {
     const user = req.user;
 
-    const result = await weService.getOrganization(user);
+    const result = await weService.getOrganization(
+        user?._id
+    );
 
     sendResponse(res, {
         statusCode: 201,
