@@ -13,7 +13,7 @@ router.get(
 );
 router.post(
     '/profile',
-    uploader.single('company-logo'),
+    uploader.single('company_logo'),
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
     weController.createOrganization
 );

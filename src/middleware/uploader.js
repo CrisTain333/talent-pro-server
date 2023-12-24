@@ -34,7 +34,7 @@ const uploader = multer({
         }
         if (
             file.fieldname === 'profile-picture' ||
-            file.fieldname === 'company-logo'
+            file.fieldname === 'company_logo'
         ) {
             if (
                 file.mimetype === 'image/jpg' ||
