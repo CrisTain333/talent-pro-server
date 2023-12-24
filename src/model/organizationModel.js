@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { IndustryOptions } = require('../constant/keyChain');
 
-const recruiterSchema = new mongoose.Schema({
+const organizationSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -25,7 +25,9 @@ const recruiterSchema = new mongoose.Schema({
         required: true
     },
     company_logo: {
-        type: String
+        type: String,
+        default:
+            'https://res.cloudinary.com/talent-pro/image/upload/v1703379624/organization_placeholder.png'
     },
     website: {
         type: String,
@@ -44,9 +46,9 @@ const recruiterSchema = new mongoose.Schema({
     }
 });
 
-const Recruiter = mongoose.model(
-    'recruiter',
-    recruiterSchema
+const Organization = mongoose.model(
+    'organization',
+    organizationSchema
 );
 
-module.exports = Recruiter;
+module.exports = Organization;

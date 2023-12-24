@@ -32,7 +32,10 @@ const uploader = multer({
                 );
             }
         }
-        if (file.fieldname === 'profile-picture') {
+        if (
+            file.fieldname === 'profile-picture' ||
+            file.fieldname === 'company-logo'
+        ) {
             if (
                 file.mimetype === 'image/jpg' ||
                 file.mimetype === 'image/jpeg' ||
