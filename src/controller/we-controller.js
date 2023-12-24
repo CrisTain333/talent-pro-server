@@ -22,6 +22,20 @@ const createOrganization = catchAsync(async (req, res) => {
     });
 });
 
+const getOrganization = catchAsync(async (req, res) => {
+    const user = req.user;
+
+    const result = await weService.getOrganization(user);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Organization retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
-    createOrganization
+    createOrganization,
+    getOrganization
 };

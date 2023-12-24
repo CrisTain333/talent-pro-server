@@ -27,3 +27,13 @@ exports.createOrganization = async (
 
     return result;
 };
+
+exports.getOrganization = async userId => {
+    if (!userId) throw new Error('user id is required');
+
+    const org = await Organization.findOne({
+        user_id: userId
+    });
+
+    return org;
+};
