@@ -25,7 +25,9 @@ const organizationSchema = new mongoose.Schema({
         required: true
     },
     company_logo: {
-        type: String
+        type: String,
+        default:
+            'https://res.cloudinary.com/talent-pro/image/upload/v1703379624/organization_placeholder.png'
     },
     website: {
         type: String,
