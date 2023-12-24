@@ -7,6 +7,11 @@ const organizationSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    company_logo: {
+        type: String,
+        default:
+            'https://res.cloudinary.com/talent-pro/image/upload/v1703379624/organization_placeholder.png'
+    },
     company_name: {
         type: String,
         required: true
@@ -16,18 +21,13 @@ const organizationSchema = new mongoose.Schema({
         enum: IndustryOptions,
         required: true
     },
-    company_size: {
-        type: String,
-        required: true
-    },
     company_location: {
         type: String,
         required: true
     },
-    company_logo: {
+    company_size: {
         type: String,
-        default:
-            'https://res.cloudinary.com/talent-pro/image/upload/v1703379624/organization_placeholder.png'
+        required: true
     },
     website: {
         type: String,
