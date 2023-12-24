@@ -49,7 +49,6 @@ describe('Auth', () => {
                 .set('Accept', 'application/json');
 
             expect(statusCode).toBe(201);
-            console.log(body);
             expect(body?.result?.access).toBeDefined();
         });
     });
@@ -81,9 +80,22 @@ describe('Auth', () => {
                 .set('Authorization', `Bearer ${TOKEN}`)
                 .expect(200);
 
-            console.log(body);
             expect(statusCode).toBe(200);
             expect(body?.result).toBeTruthy();
+        });
+
+        it('should return 401 without token', async () => {
+            const { statusCode, body } = await supertest(
+                app
+            )
+                .get(`/api/v1/me`)
+                .expect(401);
+
+            expect(statusCode).toBe(401);
+            expect(body?.success).toBeFalsy();
+            expect(body?.message).toBe(
+                'Token is required for authorization'
+            );
         });
     });
 });
