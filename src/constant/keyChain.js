@@ -48,6 +48,12 @@ const WeekDay = [
 ];
 
 const jobSearchableFields = ['job_title', 'job_description'];
+const jobFilterableFields = [
+    'searchTerm',
+    'job_type',
+    'location_type',
+    'experience_level'
+];
 
 const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
 module.exports = {
@@ -58,5 +64,6 @@ module.exports = {
     ExperienceLevel,
     WeekDay,
     jobSearchableFields,
+    jobFilterableFields,
     JobStatus
 };

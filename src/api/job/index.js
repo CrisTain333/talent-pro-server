@@ -11,6 +11,8 @@ router.post(
     jobController.postJob
 );
 
+router.get('/', jobController.getAllJobs);
+
 // TODO
 /* 
 Create get all job and single;

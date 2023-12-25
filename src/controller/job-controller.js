@@ -2,6 +2,9 @@ const catchAsync = require('../shared/catchAsync');
 const sendResponse = require('../shared/sendResponse');
 
 const jobService = require('../services/job-service');
+const pick = require('../shared/pick');
+const { jobFilterableFields } = require('../constant/keyChain');
+const { paginationFields } = require('../constant/pagination');
 
 const postJob = catchAsync(async (req, res) => {
     const { ...jobData } = req.body;
@@ -16,6 +19,22 @@ const postJob = catchAsync(async (req, res) => {
     });
 });
 
+const getAllJobs = catchAsync(async (req, res) => {
+    const filters = pick(req.query, jobFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+
+    const result = await jobService.getAllJobs(filters, paginationOptions);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: `Job's retrieved successfully`,
+        data: result.data,
+        meta: result.meta
+    });
+});
+
 module.exports = {
-    postJob
+    postJob,
+    getAllJobs
 };
