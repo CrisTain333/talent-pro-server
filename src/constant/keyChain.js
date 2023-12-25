@@ -36,8 +36,26 @@ const EmployStatus = [
     'UNEMPLOYED'
 ];
 const EmploymentType = ['FULL_TIME', 'PART_TIME', 'INTERN'];
+
+const LocationType = ['ONSITE', 'HYBRID', 'REMOTE'];
+
+const ExperienceLevel = ['ENTRY', 'MID', 'SENIOR'];
+
+const WeekDay = [
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY'
+];
+
 module.exports = {
     EmployStatus,
     EmploymentType,
-    IndustryOptions
+    IndustryOptions,
+    LocationType,
+    ExperienceLevel,
+    WeekDay
 };
