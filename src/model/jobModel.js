@@ -3,7 +3,8 @@ const {
     EmployStatus,
     ExperienceLevel,
     LocationType,
-    WeekDay
+    WeekDay,
+    EmploymentType
 } = require('../constant/keyChain');
 
 const jobSchema = new mongoose.Schema(
@@ -28,7 +29,7 @@ const jobSchema = new mongoose.Schema(
         },
         job_type: {
             type: String,
-            enum: EmployStatus,
+            enum: EmploymentType,
             required: true
         },
         experience_level: {
