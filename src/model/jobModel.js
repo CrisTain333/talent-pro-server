@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const {
-    EmployStatus,
     ExperienceLevel,
     LocationType,
     WeekDay,
-    EmploymentType
+    EmploymentType,
+    IndustryOptions
 } = require('../constant/keyChain');
 
 const jobSchema = new mongoose.Schema(
@@ -102,6 +102,11 @@ const jobSchema = new mongoose.Schema(
         },
         is_negotiable: {
             type: Boolean,
+            required: true
+        },
+        industry: {
+            type: String,
+            enum: IndustryOptions,
             required: true
         }
     },
