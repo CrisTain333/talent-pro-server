@@ -9,19 +9,13 @@ const auth =
             //Get authorization token
             const bearer_token = req.headers.authorization;
             if (!bearer_token) {
-                throw new ApiError(
-                    401,
-                    'Token is required for authorization'
-                );
+                throw new ApiError(401, 'Token is required for authorization');
             }
             const token = bearer_token.split(' ')[1];
             let verifiedUser = null;
 
             // verify token
-            verifiedUser = jwt.verify(
-                token,
-                config.JWT.secret
-            );
+            verifiedUser = jwt.verify(token, config.JWT.secret);
             req.user = verifiedUser;
 
             // Guard By ROLE

@@ -7,8 +7,6 @@ const sendResponse = (res, data) => {
         result: data ? data.data || null : null
     };
 
-    res.status(data ? data.statusCode : undefined).json(
-        responseData
-    );
+    res.status(data ? data.statusCode : undefined).json(responseData);
 };
 module.exports = sendResponse;

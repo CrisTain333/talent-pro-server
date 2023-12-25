@@ -45,8 +45,7 @@ const LoginValidation = z.object({
                 required_error: 'Password is require'
             })
             .min(8, {
-                message:
-                    'password must contain at least 8 character(s)'
+                message: 'password must contain at least 8 character(s)'
             })
     })
 });

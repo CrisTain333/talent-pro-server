@@ -27,16 +27,15 @@ exports.createCandidate = async (candidateData, file) => {
             candidateData?.experience?.length > 0
         ) {
             console.log('inside experience');
-            const experienceDataArray =
-                candidateData.experience.map(exp => ({
-                    user_id: candidateData?.user_id,
-                    company_name: exp.company_name,
-                    designation: exp.designation,
-                    job_type: exp.job_type,
-                    start_date: exp.start_date,
-                    end_date: exp.end_date,
-                    work_currently: exp.work_currently
-                }));
+            const experienceDataArray = candidateData.experience.map(exp => ({
+                user_id: candidateData?.user_id,
+                company_name: exp.company_name,
+                designation: exp.designation,
+                job_type: exp.job_type,
+                start_date: exp.start_date,
+                end_date: exp.end_date,
+                work_currently: exp.work_currently
+            }));
 
             await Experience.create(experienceDataArray, {
                 session
@@ -48,27 +47,23 @@ exports.createCandidate = async (candidateData, file) => {
             candidateData?.education?.length > 0
         ) {
             console.log('education');
-            const educationDataArray =
-                candidateData.education.map(edu => ({
-                    user_id: candidateData?.user_id,
-                    institute_name: edu.institute_name,
-                    degree: edu.degree,
-                    major: edu.major,
-                    location: edu.location,
-                    start_date: edu.start_date,
-                    end_date: edu.end_date,
-                    study_currently: edu.study_currently
-                }));
+            const educationDataArray = candidateData.education.map(edu => ({
+                user_id: candidateData?.user_id,
+                institute_name: edu.institute_name,
+                degree: edu.degree,
+                major: edu.major,
+                location: edu.location,
+                start_date: edu.start_date,
+                end_date: edu.end_date,
+                study_currently: edu.study_currently
+            }));
 
             await Education.create(educationDataArray, {
                 session
             });
         }
 
-        let resultData = await Candidate.create(
-            [candidateData],
-            { session }
-        );
+        let resultData = await Candidate.create([candidateData], { session });
 
         if (resultData) {
             newData = resultData;
@@ -127,18 +122,12 @@ exports.getCandidateProfile = async userId => {
     console.log(result);
 
     if (!result || result === null) {
-        throw new ApiError(
-            400,
-            'Error fetching candidate profile'
-        );
+        throw new ApiError(400, 'Error fetching candidate profile');
     }
     return result;
 };
 
-exports.updateCandidateProfile = async (
-    userId,
-    candidateUpdatedData
-) => {
+exports.updateCandidateProfile = async (userId, candidateUpdatedData) => {
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     } else if (!candidateUpdatedData) {
@@ -172,12 +161,8 @@ exports.getInfo = async userId => {
     return candidate;
 };
 
-exports.updateCandidateInfo = async (
-    userID,
-    candidateInfo
-) => {
-    const { phone, location, industry, job_status } =
-        candidateInfo;
+exports.updateCandidateInfo = async (userID, candidateInfo) => {
+    const { phone, location, industry, job_status } = candidateInfo;
     await Candidate.findOneAndUpdate(
         { user_id: userID },
         {
@@ -209,10 +194,7 @@ exports.getExperience = async userId => {
     return experienceData;
 };
 
-exports.createExperience = async (
-    userId,
-    new_experience_data
-) => {
+exports.createExperience = async (userId, new_experience_data) => {
     const {
         company_name,
         designation,
@@ -234,16 +216,12 @@ exports.createExperience = async (
 
     const data = await Experience.create(experienceData);
 
-    if (!data)
-        throw new ApiError(400, 'failed to add experience');
+    if (!data) throw new ApiError(400, 'failed to add experience');
 
     return data;
 };
 
-exports.updateExperience = async (
-    experienceId,
-    updatedExperience
-) => {
+exports.updateExperience = async (experienceId, updatedExperience) => {
     const result = await Experience.updateOne(
         {
             _id: experienceId
@@ -253,23 +231,16 @@ exports.updateExperience = async (
     );
 
     if (!result) {
-        throw new ApiError(
-            400,
-            'Failed to update experience'
-        );
+        throw new ApiError(400, 'Failed to update experience');
     }
 
     return result;
 };
 exports.removeExperience = async experienceId => {
-    const data =
-        await Experience.findByIdAndDelete(experienceId);
+    const data = await Experience.findByIdAndDelete(experienceId);
 
     if (!data) {
-        throw new ApiError(
-            400,
-            'Failed to remove experience'
-        );
+        throw new ApiError(400, 'Failed to remove experience');
     }
 
     return data;
@@ -288,10 +259,7 @@ exports.getEducation = async userId => {
     return educationData;
 };
 
-exports.createEducation = async (
-    userId,
-    new_education_data
-) => {
+exports.createEducation = async (userId, new_education_data) => {
     const {
         institute_name,
         degree,
@@ -315,15 +283,11 @@ exports.createEducation = async (
 
     const data = await Education.create(educationData);
 
-    if (!data)
-        throw new ApiError(400, 'failed to add education');
+    if (!data) throw new ApiError(400, 'failed to add education');
     return data;
 };
 
-exports.updateEducation = async (
-    educationId,
-    education
-) => {
+exports.updateEducation = async (educationId, education) => {
     const data = await Education.findByIdAndUpdate(
         {
             _id: educationId
@@ -335,10 +299,7 @@ exports.updateEducation = async (
     );
 
     if (!data) {
-        throw new ApiError(
-            400,
-            'Failed to update education'
-        );
+        throw new ApiError(400, 'Failed to update education');
     }
 
     return data;
@@ -350,10 +311,7 @@ exports.removeEducation = async educationID => {
     });
 
     if (!data) {
-        throw new ApiError(
-            400,
-            'Failed to remove education'
-        );
+        throw new ApiError(400, 'Failed to remove education');
     }
 
     return data;
@@ -371,10 +329,7 @@ exports.get_skills_expertise = async userId => {
     return candidate;
 };
 
-exports.update_skills_expertise = async (
-    userId,
-    updatedData
-) => {
+exports.update_skills_expertise = async (userId, updatedData) => {
     const data = await Candidate.findOneAndUpdate(
         {
             user_id: userId
@@ -386,8 +341,7 @@ exports.update_skills_expertise = async (
                 min: updatedData?.desired_salary?.min,
                 max: updatedData?.desired_salary?.max
             },
-            open_to_work_remotely:
-                updatedData?.open_to_work_remotely
+            open_to_work_remotely: updatedData?.open_to_work_remotely
         },
         {
             new: true
@@ -395,10 +349,7 @@ exports.update_skills_expertise = async (
     );
 
     if (!data) {
-        throw new ApiError(
-            400,
-            'Failed to update skill and expertise'
-        );
+        throw new ApiError(400, 'Failed to update skill and expertise');
     }
 
     return data;

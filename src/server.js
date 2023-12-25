@@ -10,8 +10,7 @@ const http = require('http');
 
 const totalCpus = os.cpus().length;
 
-const keepAliveUrl =
-    'http://talent-pro-server.onrender.com';
+const keepAliveUrl = 'http://talent-pro-server.onrender.com';
 
 setInterval(
     () => {
@@ -39,12 +38,9 @@ if (cluster.isPrimary) {
         .then(() => {
             // Start the Express app after successful database connection
             app.listen(config.port, () => {
+                console.log(`Worker ${process.pid} started`);
                 console.log(
-                    `Worker ${process.pid} started`
-                );
-                console.log(
-                    `Server running on http://localhost:${config.port}`
-                        .cyan
+                    `Server running on http://localhost:${config.port}`.cyan
                 );
             });
         })
