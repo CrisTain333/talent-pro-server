@@ -127,3 +127,10 @@ const jobSchema = new mongoose.Schema(
 const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;
+
+// TODO need changes
+/*
+1. CHANGE the name recruiter_id    to -> recruiter || createdBy;
+2. CHANGE the name organization_id to -> organization
+
+*/
