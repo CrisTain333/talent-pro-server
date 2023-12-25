@@ -55,7 +55,7 @@ const organizationSchema = new mongoose.Schema(
 );
 
 const Organization = mongoose.model(
-    'organization',
+    'Organization',
     organizationSchema
 );
 

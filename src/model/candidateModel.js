@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const {
     EmployStatus,
-    EmploymentType,
     IndustryOptions
 } = require('../constant/keyChain');
 
