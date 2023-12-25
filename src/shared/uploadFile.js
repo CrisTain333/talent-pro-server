@@ -24,6 +24,15 @@ async function uploadFiles(file) {
                     }
                 );
             uploadResults.push(uploadResult.secure_url);
+        } else if (file?.fieldname === 'company_logo') {
+            const uploadResult =
+                await cloudinary.uploader.upload(
+                    file.path,
+                    {
+                        folder: 'Talent-Pro/company_logo'
+                    }
+                );
+            uploadResults.push(uploadResult.secure_url);
         } else if (file?.fieldname === 'resume') {
             const uploadResult =
                 await cloudinary.uploader.upload(
