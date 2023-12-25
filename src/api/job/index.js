@@ -11,4 +11,17 @@ router.post(
     jobController.postJob
 );
 
+// TODO
+/* 
+Create get all job and single;
+GET - ALL Jobs
+Search by job title
+sort by createdAt
+Filter With Job_Type,Location_Type -> ,experience_level,
+
+
+
+
+ */
+
 module.exports = router;
