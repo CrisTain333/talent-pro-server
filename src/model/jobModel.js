@@ -112,9 +112,8 @@ const jobSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ExperienceLevel,
-            default: 'PUBLISHED',
-            required: true
+            enum: JobStatus,
+            default: 'PUBLISHED'
         }
     },
     {
