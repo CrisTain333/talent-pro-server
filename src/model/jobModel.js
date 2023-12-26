@@ -10,12 +10,12 @@ const {
 
 const jobSchema = new mongoose.Schema(
     {
-        recruiter_id: {
+        createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User', // Reference to the User model
             required: true
         },
-        organization_id: {
+        organization: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Organization', // Reference to the Organization model
             required: true
