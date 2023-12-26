@@ -7,8 +7,7 @@ const storage = multer.diskStorage({
         cb(null, './src/uploads/');
     },
     filename: (req, file, cb) => {
-        const fileName =
-            Date.now() + '_' + file.originalname;
+        const fileName = Date.now() + '_' + file.originalname;
         file.originalname = fileName;
         cb(null, fileName);
     }
@@ -24,12 +23,7 @@ const uploader = multer({
             if (file.mimetype === 'application/pdf') {
                 cb(null, true);
             } else {
-                cb(
-                    new ApiError(
-                        400,
-                        'only .pdf formate are allowed'
-                    )
-                );
+                cb(new ApiError(400, 'only .pdf formate are allowed'));
             }
         }
         if (

@@ -11,4 +11,7 @@ router.post(
     jobController.postJob
 );
 
+router.get('/:id', jobController.getSingleJobs);
+router.get('/', jobController.getAllJobs);
+
 module.exports = router;

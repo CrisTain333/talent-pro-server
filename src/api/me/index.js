@@ -4,9 +4,7 @@ const router = express.Router();
 const meController = require('../../controller/me-controller');
 const candidateController = require('../../controller/candidate-controller');
 const auth = require('../../middleware/auth');
-const {
-    validateRequest
-} = require('../../middleware/validateRequest');
+const { validateRequest } = require('../../middleware/validateRequest');
 const userValidation = require('./validation');
 const candidateValidation = require('./candidate-validation');
 const { User_Role } = require('../../constant/user-roles');
@@ -47,73 +45,37 @@ router.patch(
 router.get('/info', auth(), candidateController.getInfo);
 router.patch(
     '/info',
-    validateRequest(
-        candidateValidation.candidateInfoUpdateProfileSchema
-    ),
+    validateRequest(candidateValidation.candidateInfoUpdateProfileSchema),
     auth(User_Role.CANDIDATE, User_Role.SUPER_ADMIN),
     candidateController.updateInfo
 );
 
 // ** ---------------------- Candidate experience Routes ----------------------
 
-router.get(
-    '/experience',
-    auth(),
-    candidateController.getExperience
-);
+router.get('/experience', auth(), candidateController.getExperience);
 
-router.post(
-    '/experience',
-    auth(),
-    candidateController.createExperience
-);
+router.post('/experience', auth(), candidateController.createExperience);
 
 router.patch(
     '/experience/:id',
-    validateRequest(
-        candidateValidation.experienceUpdateSchema
-    ),
+    validateRequest(candidateValidation.experienceUpdateSchema),
     auth(),
     candidateController.updateExperience
 );
 
-router.delete(
-    '/experience/:id',
-    auth(),
-    candidateController.removeExperience
-);
+router.delete('/experience/:id', auth(), candidateController.removeExperience);
 
 // ** ---------------------- Candidate education Routes ----------------------
 
-router.get(
-    '/education',
-    auth(),
-    candidateController.getEducation
-);
-router.post(
-    '/education',
-    auth(),
-    candidateController.addEducation
-);
+router.get('/education', auth(), candidateController.getEducation);
+router.post('/education', auth(), candidateController.addEducation);
 
-router.patch(
-    '/education/:id',
-    auth(),
-    candidateController.updateEducation
-);
-router.delete(
-    '/education/:id',
-    auth(),
-    candidateController.removeEducation
-);
+router.patch('/education/:id', auth(), candidateController.updateEducation);
+router.delete('/education/:id', auth(), candidateController.removeEducation);
 
 // ** ---------------------- Candidate skills Routes ----------------------
 
-router.get(
-    '/skills-expertise',
-    auth(),
-    candidateController.getSkills
-);
+router.get('/skills-expertise', auth(), candidateController.getSkills);
 
 router.patch(
     '/skills-expertise',

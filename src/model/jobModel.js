@@ -1,20 +1,21 @@
 const mongoose = require('mongoose');
 const {
-    EmployStatus,
     ExperienceLevel,
     LocationType,
     WeekDay,
-    EmploymentType
+    EmploymentType,
+    IndustryOptions,
+    JobStatus
 } = require('../constant/keyChain');
 
 const jobSchema = new mongoose.Schema(
     {
-        recruiter_id: {
+        createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User', // Reference to the User model
             required: true
         },
-        organization_id: {
+        organization: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Organization', // Reference to the Organization model
             required: true
@@ -103,6 +104,16 @@ const jobSchema = new mongoose.Schema(
         is_negotiable: {
             type: Boolean,
             required: true
+        },
+        industry: {
+            type: String,
+            enum: IndustryOptions,
+            required: true
+        },
+        status: {
+            type: String,
+            enum: JobStatus,
+            default: 'PUBLISHED'
         }
     },
     {
@@ -116,3 +127,10 @@ const jobSchema = new mongoose.Schema(
 const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;
+
+// TODO need changes
+/*
+1. CHANGE the name recruiter_id    to -> recruiter || createdBy;
+2. CHANGE the name organization_id to -> organization
+
+*/

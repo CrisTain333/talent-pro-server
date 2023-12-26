@@ -7,9 +7,7 @@
 const { ZodError } = require('zod');
 const ApiError = require('../error/ApiError');
 
-const {
-    handleZodError
-} = require('../error/zodErrorHandler');
+const { handleZodError } = require('../error/zodErrorHandler');
 const config = require('../config/config');
 
 exports.globalErrorHandler = (error, req, res, next) => {
@@ -44,8 +42,7 @@ exports.globalErrorHandler = (error, req, res, next) => {
         ];
     } else if (error?.name === 'JsonWebTokenError') {
         statusCode = 401;
-        message =
-            'Invalid token . please provide a valid token';
+        message = 'Invalid token . please provide a valid token';
         errorMessages = [
             {
                 path: '',
@@ -103,10 +100,7 @@ exports.globalErrorHandler = (error, req, res, next) => {
         success: false,
         message,
         errorMessages,
-        stack:
-            config.env !== 'production'
-                ? error?.stack
-                : undefined
+        stack: config.env !== 'production' ? error?.stack : undefined
     });
 };
 // module globalErrorHandler;

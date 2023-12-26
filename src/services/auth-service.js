@@ -14,10 +14,7 @@ exports.handleRegister = async userData => {
         throw new ApiError(400, 'Email already in use');
     }
     // Hash the plain password
-    const hashedPassword = await bcrypt.hash(
-        userData.password,
-        10
-    );
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
 
     userData.password = hashedPassword;
 
@@ -48,10 +45,7 @@ exports.handleToken = async payload => {
 
     // check the email exist
     if (!isUserExist) {
-        throw new ApiError(
-            404,
-            'No user found with this email'
-        );
+        throw new ApiError(404, 'No user found with this email');
     }
 
     // check the password
@@ -62,10 +56,7 @@ exports.handleToken = async payload => {
 
     // if not matched throw error;
     if (!isPasswordMatched) {
-        throw new ApiError(
-            401,
-            'Invalid email or password'
-        );
+        throw new ApiError(401, 'Invalid email or password');
     }
     const { _id, role } = isUserExist;
 

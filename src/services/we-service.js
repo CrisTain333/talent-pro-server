@@ -3,19 +3,13 @@ const Organization = require('../model/organizationModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 
-exports.createOrganization = async (
-    user,
-    organizationData,
-    logo
-) => {
+exports.createOrganization = async (user, organizationData, logo) => {
     if (logo) {
         const uploadedLogoUrl = await uploadFiles(logo);
         organizationData.company_logo = uploadedLogoUrl[0];
     }
 
-    const result = await Organization.create(
-        organizationData
-    );
+    const result = await Organization.create(organizationData);
 
     await User.findByIdAndUpdate(
         user?._id,
@@ -40,8 +34,7 @@ exports.getOrganization = async userId => {
     if (!org)
         throw new ApiError(
             400,
-            'No such organization found for user ' +
-                user?.name?.first_name
+            'No such organization found for user ' + user?.name?.first_name
         );
 
     return org;
