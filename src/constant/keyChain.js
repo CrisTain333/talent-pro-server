@@ -47,15 +47,21 @@ const WeekDay = [
     'SATURDAY'
 ];
 
-const jobSearchableFields = ['job_title', 'job_description'];
+const jobSearchableFields = [
+    'job_title',
+    'address',
+    'organization.company_name'
+];
+
 const jobFilterableFields = [
-    'searchTerm',
+    'search',
     'job_type',
     'location_type',
     'experience_level'
 ];
 
 const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
+
 module.exports = {
     EmployStatus,
     EmploymentType,
