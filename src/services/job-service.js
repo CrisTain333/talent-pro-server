@@ -45,8 +45,8 @@ exports.getAllJobs = async (filters, paginationOptions) => {
         andConditions.length > 0 ? { $and: andConditions } : {};
 
     const result = await Job.find(whereConditions)
-        .populate('recruiter_id')
-        .populate('organization_id')
+        .populate('createdBy')
+        .populate('organization')
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
