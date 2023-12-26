@@ -1,4 +1,5 @@
 const { jobSearchableFields } = require('../constant/keyChain');
+const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
 
@@ -61,4 +62,13 @@ exports.getAllJobs = async (filters, paginationOptions) => {
         },
         data: result
     };
+};
+
+exports.getSingleJob = async jobID => {
+    const result = await Job.findOne({ _id: jobID })
+        .populate('createdBy')
+        .populate('organization');
+
+    if (!result) throw new ApiError(400, 'Invalid job ID');
+    return result;
 };

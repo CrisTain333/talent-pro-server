@@ -11,19 +11,7 @@ router.post(
     jobController.postJob
 );
 
+router.get('/:id', jobController.getSingleJobs);
 router.get('/', jobController.getAllJobs);
-
-// TODO
-/* 
-Create get all job and single;
-GET - ALL Jobs
-Search by job title
-sort by createdAt
-Filter With Job_Type,Location_Type -> ,experience_level,
-
-
-
-
- */
 
 module.exports = router;
