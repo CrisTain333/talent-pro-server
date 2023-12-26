@@ -13,10 +13,7 @@ exports.getMe = async userId => {
     );
 
     if (user?.account_status === 'suspended') {
-        throw new ApiError(
-            403,
-            'User account has been suspended .'
-        );
+        throw new ApiError(403, 'User account has been suspended .');
     }
 
     return user;
@@ -35,21 +32,14 @@ exports.updateProfile = async (userId, updatedData) => {
     }
 
     if (updatedData?.password) {
-        const hashedPassword = await bcrypt.hash(
-            updatedData.password,
-            10
-        );
+        const hashedPassword = await bcrypt.hash(updatedData.password, 10);
         updatedData.password = hashedPassword;
     }
 
-    const result = await User.findByIdAndUpdate(
-        userId,
-        updatedData,
-        {
-            new: true,
-            select: '-password -createdAt -updatedAt -__v'
-        }
-    );
+    const result = await User.findByIdAndUpdate(userId, updatedData, {
+        new: true,
+        select: '-password -createdAt -updatedAt -__v'
+    });
 
     return result;
 };

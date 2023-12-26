@@ -16,31 +16,19 @@ async function uploadFiles(file) {
         // Loop through the files and upload each one
         // for (const file of files) {
         if (file?.fieldname === 'profile-picture') {
-            const uploadResult =
-                await cloudinary.uploader.upload(
-                    file.path,
-                    {
-                        folder: 'Talent-Pro/profile-pictures'
-                    }
-                );
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+                folder: 'Talent-Pro/profile-pictures'
+            });
             uploadResults.push(uploadResult.secure_url);
         } else if (file?.fieldname === 'company_logo') {
-            const uploadResult =
-                await cloudinary.uploader.upload(
-                    file.path,
-                    {
-                        folder: 'Talent-Pro/company_logo'
-                    }
-                );
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+                folder: 'Talent-Pro/company_logo'
+            });
             uploadResults.push(uploadResult.secure_url);
         } else if (file?.fieldname === 'resume') {
-            const uploadResult =
-                await cloudinary.uploader.upload(
-                    file.path,
-                    {
-                        folder: 'Talent-Pro/documents'
-                    }
-                );
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+                folder: 'Talent-Pro/documents'
+            });
             uploadResults.push(uploadResult.secure_url);
         }
         // }

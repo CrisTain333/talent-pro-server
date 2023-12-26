@@ -4,8 +4,7 @@ const sendResponse = require('../shared/sendResponse');
 
 const register = catchAsync(async (req, res) => {
     const { ...registerData } = req.body;
-    const result =
-        await authService.handleRegister(registerData);
+    const result = await authService.handleRegister(registerData);
 
     sendResponse(res, {
         statusCode: 201,

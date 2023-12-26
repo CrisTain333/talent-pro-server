@@ -6,11 +6,7 @@ const uploader = require('../../middleware/uploader');
 const auth = require('../../middleware/auth');
 const { User_Role } = require('../../constant/user-roles');
 
-router.get(
-    '/',
-    auth(User_Role.RECRUITER),
-    weController.getOrganization
-);
+router.get('/', auth(User_Role.RECRUITER), weController.getOrganization);
 router.post(
     '/',
     uploader.single('company_logo'),

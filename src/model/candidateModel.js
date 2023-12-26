@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-const {
-    EmployStatus,
-    IndustryOptions
-} = require('../constant/keyChain');
+const { EmployStatus, IndustryOptions } = require('../constant/keyChain');
 
 const candidateProfileSchema = new mongoose.Schema(
     {
@@ -77,9 +74,6 @@ const candidateProfileSchema = new mongoose.Schema(
     }
 );
 
-const Candidate = mongoose.model(
-    'Candidate',
-    candidateProfileSchema
-);
+const Candidate = mongoose.model('Candidate', candidateProfileSchema);
 
 module.exports = Candidate;

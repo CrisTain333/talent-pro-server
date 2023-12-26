@@ -1,16 +1,8 @@
 /* eslint-disable node/no-extraneous-require */
 /* eslint-disable node/no-unpublished-require */
-const {
-    describe,
-    it,
-    expect,
-    beforeAll,
-    afterAll
-} = require('@jest/globals');
+const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals');
 const supertest = require('supertest');
-const {
-    MongoMemoryServer
-} = require('mongodb-memory-server');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const { default: mongoose } = require('mongoose');
 const app = require('../app');
 
@@ -41,9 +33,7 @@ describe('Auth', () => {
     });
     describe('register', () => {
         it('should return 201 and Access Token', async () => {
-            const { statusCode, body } = await supertest(
-                app
-            )
+            const { statusCode, body } = await supertest(app)
                 .post(`/api/v1/auth/register`)
                 .send(dummyUser)
                 .set('Accept', 'application/json');
@@ -59,9 +49,7 @@ describe('Auth', () => {
         };
 
         it('should return 200 and Access Token', async () => {
-            const { statusCode, body } = await supertest(
-                app
-            )
+            const { statusCode, body } = await supertest(app)
                 .post(`/api/v1/auth/token`)
                 .send(payload)
                 .set('Accept', 'application/json');
@@ -73,9 +61,7 @@ describe('Auth', () => {
     });
     describe('Get own profile', () => {
         it('should return user', async () => {
-            const { statusCode, body } = await supertest(
-                app
-            )
+            const { statusCode, body } = await supertest(app)
                 .get(`/api/v1/me`)
                 .set('Authorization', `Bearer ${TOKEN}`)
                 .expect(200);
@@ -85,17 +71,13 @@ describe('Auth', () => {
         });
 
         it('should return 401 without token', async () => {
-            const { statusCode, body } = await supertest(
-                app
-            )
+            const { statusCode, body } = await supertest(app)
                 .get(`/api/v1/me`)
                 .expect(401);
 
             expect(statusCode).toBe(401);
             expect(body?.success).toBeFalsy();
-            expect(body?.message).toBe(
-                'Token is required for authorization'
-            );
+            expect(body?.message).toBe('Token is required for authorization');
         });
     });
 });

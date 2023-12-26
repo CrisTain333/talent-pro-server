@@ -20,8 +20,7 @@ const createCandidate = catchAsync(async (req, res) => {
 
 const getCandidateProfile = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    const result =
-        await candidateService.getCandidateProfile(_id);
+    const result = await candidateService.getCandidateProfile(_id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -30,24 +29,20 @@ const getCandidateProfile = catchAsync(async (req, res) => {
     });
 });
 
-const updateCandidateProfile = catchAsync(
-    async (req, res) => {
-        const { _id } = req.user;
-        const { ...updatedData } = req.body;
-        const result =
-            await candidateService.updateCandidateProfile(
-                _id,
-                updatedData
-            );
-        sendResponse(res, {
-            statusCode: 200,
-            success: true,
-            message:
-                'Candidate profile updated successfully',
-            data: result
-        });
-    }
-);
+const updateCandidateProfile = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...updatedData } = req.body;
+    const result = await candidateService.updateCandidateProfile(
+        _id,
+        updatedData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate profile updated successfully',
+        data: result
+    });
+});
 
 // ** --------------------------- Candidate Info section ----------------------
 const getInfo = catchAsync(async (req, res) => {
@@ -64,11 +59,10 @@ const getInfo = catchAsync(async (req, res) => {
 const updateInfo = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const { ...userUpdatedData } = req.body;
-    const result =
-        await candidateService.updateCandidateInfo(
-            _id,
-            userUpdatedData
-        );
+    const result = await candidateService.updateCandidateInfo(
+        _id,
+        userUpdatedData
+    );
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -81,13 +75,11 @@ const updateInfo = catchAsync(async (req, res) => {
 
 const getExperience = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    const result =
-        await candidateService.getExperience(_id);
+    const result = await candidateService.getExperience(_id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message:
-            'Candidate Experience retrieved successfully',
+        message: 'Candidate Experience retrieved successfully',
         data: result
     });
 });
@@ -95,10 +87,7 @@ const getExperience = catchAsync(async (req, res) => {
 const createExperience = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const { ...experienceData } = req.body;
-    const result = await candidateService.createExperience(
-        _id,
-        experienceData
-    );
+    const result = await candidateService.createExperience(_id, experienceData);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -109,10 +98,7 @@ const createExperience = catchAsync(async (req, res) => {
 const updateExperience = catchAsync(async (req, res) => {
     const { id } = req.params;
     const { ...experienceData } = req.body;
-    const result = await candidateService.updateExperience(
-        id,
-        experienceData
-    );
+    const result = await candidateService.updateExperience(id, experienceData);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -122,8 +108,7 @@ const updateExperience = catchAsync(async (req, res) => {
 });
 const removeExperience = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result =
-        await candidateService.removeExperience(id);
+    const result = await candidateService.removeExperience(id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -147,10 +132,7 @@ const getEducation = catchAsync(async (req, res) => {
 const addEducation = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const { ...educationData } = req.body;
-    const result = await candidateService.createEducation(
-        _id,
-        educationData
-    );
+    const result = await candidateService.createEducation(_id, educationData);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -162,10 +144,7 @@ const addEducation = catchAsync(async (req, res) => {
 const updateEducation = catchAsync(async (req, res) => {
     const { id } = req.params;
     const { ...educationData } = req.body;
-    const result = await candidateService.updateEducation(
-        id,
-        educationData
-    );
+    const result = await candidateService.updateEducation(id, educationData);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -175,8 +154,7 @@ const updateEducation = catchAsync(async (req, res) => {
 });
 const removeEducation = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result =
-        await candidateService.removeEducation(id);
+    const result = await candidateService.removeEducation(id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -189,8 +167,7 @@ const removeEducation = catchAsync(async (req, res) => {
 
 const getSkills = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    const result =
-        await candidateService.get_skills_expertise(_id);
+    const result = await candidateService.get_skills_expertise(_id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -199,42 +176,33 @@ const getSkills = catchAsync(async (req, res) => {
     });
 });
 
-const updateSkillExpertise = catchAsync(
-    async (req, res) => {
-        const { _id } = req.user;
-        const { ...updatedData } = req.body;
-        const result =
-            await candidateService.update_skills_expertise(
-                _id,
-                updatedData
-            );
-        sendResponse(res, {
-            statusCode: 200,
-            success: true,
-            message:
-                'Skill and expertise update successfully',
-            data: result
-        });
-    }
-);
+const updateSkillExpertise = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const { ...updatedData } = req.body;
+    const result = await candidateService.update_skills_expertise(
+        _id,
+        updatedData
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Skill and expertise update successfully',
+        data: result
+    });
+});
 
-const updateCandidateResume = catchAsync(
-    async (req, res) => {
-        const { _id } = req.user;
-        const resume = req.file;
+const updateCandidateResume = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const resume = req.file;
 
-        const result = await candidateService.updateResume(
-            _id,
-            resume
-        );
-        sendResponse(res, {
-            statusCode: 200,
-            success: true,
-            message: 'Resume update successfully',
-            data: result
-        });
-    }
-);
+    const result = await candidateService.updateResume(_id, resume);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Resume update successfully',
+        data: result
+    });
+});
 
 module.exports = {
     createCandidate,

@@ -30,11 +30,7 @@ const IndustryOptions = [
     'TELECOMMUNICATIONS',
     'TRANSPORTATION_AND_LOGISTICS'
 ];
-const EmployStatus = [
-    'EMPLOYED',
-    'INTERNSHIP',
-    'UNEMPLOYED'
-];
+const EmployStatus = ['EMPLOYED', 'INTERNSHIP', 'UNEMPLOYED'];
 const EmploymentType = ['FULL_TIME', 'PART_TIME', 'INTERN'];
 
 const LocationType = ['ONSITE', 'HYBRID', 'REMOTE'];
@@ -51,11 +47,23 @@ const WeekDay = [
     'SATURDAY'
 ];
 
+const jobSearchableFields = ['job_title', 'job_description'];
+const jobFilterableFields = [
+    'searchTerm',
+    'job_type',
+    'location_type',
+    'experience_level'
+];
+
+const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
 module.exports = {
     EmployStatus,
     EmploymentType,
     IndustryOptions,
     LocationType,
     ExperienceLevel,
-    WeekDay
+    WeekDay,
+    jobSearchableFields,
+    jobFilterableFields,
+    JobStatus
 };

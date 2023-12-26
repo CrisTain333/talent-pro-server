@@ -11,8 +11,7 @@ const industrySchema = z.object({
 const desiredSalarySchema = z.object({
     minimum: z
         .number({
-            required_error:
-                'minimum desired salary is required'
+            required_error: 'minimum desired salary is required'
         })
         .min(0),
     maximum: z
@@ -28,16 +27,8 @@ const candidateProfileSchema = z.object({
             required_error: 'user Id is required'
         }),
         industry: industrySchema,
-        job_status: z.enum([
-            'EMPLOYED',
-            'NOT_EMPLOYED',
-            'STUDENT'
-        ]),
-        employment_type: z.enum([
-            'FULL_TIME',
-            'PART_TIME',
-            'INTERN'
-        ]),
+        job_status: z.enum(['EMPLOYED', 'NOT_EMPLOYED', 'STUDENT']),
+        employment_type: z.enum(['FULL_TIME', 'PART_TIME', 'INTERN']),
         work_location: z.string({
             required_error: 'work location is required'
         }),
