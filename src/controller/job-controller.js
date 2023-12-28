@@ -26,7 +26,7 @@ const getAllJobs = catchAsync(async (req, res) => {
     const result = await jobService.getAllJobs(filters, paginationOptions);
 
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
         message: `Job's retrieved successfully`,
         data: result.data,
@@ -40,9 +40,23 @@ const getSingleJobs = catchAsync(async (req, res) => {
     const result = await jobService.getSingleJob(jobId);
 
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
         message: `Job retrieved successfully`,
+        data: result
+    });
+});
+
+const updateJob = catchAsync(async (req, res) => {
+    const user = req.user;
+    const jobId = req.params.id;
+    const updatedData = req.body;
+
+    const result = await jobService.updateJobById(jobId, updatedData, user);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Job updated successfully',
         data: result
     });
 });
@@ -50,5 +64,6 @@ const getSingleJobs = catchAsync(async (req, res) => {
 module.exports = {
     postJob,
     getAllJobs,
-    getSingleJobs
+    getSingleJobs,
+    updateJob
 };
