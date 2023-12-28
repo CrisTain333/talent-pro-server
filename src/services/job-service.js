@@ -79,17 +79,26 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 };
 
 exports.getSingleJob = async jobID => {
-    const result = await Job.findOne({ _id: jobID })
+    const job = await Job.findOne({ _id: jobID })
         .populate('createdBy')
         .populate('organization');
 
-    const startTime = result.start_time;
-    const endTime = result?.end_time;
+    if (!job) {
+        throw new ApiError(400, 'Invalid job ID');
+    }
+
+    const startTime = job.start_time;
+    const endTime = job.end_time;
 
     const totalWorkingHours = calculateWorkingHours(startTime, endTime);
     console.log('Total Working Hours:', totalWorkingHours);
 
-    if (!result) throw new ApiError(400, 'Invalid job ID');
+    // Convert the Mongoose document to a plain JavaScript object
+    const result = job.toObject();
+
+    // Add the calculated working_hours to the result object
+    result.working_hours = totalWorkingHours;
+
     return result;
 };
 
