@@ -87,7 +87,16 @@ exports.getSingleJob = async jobID => {
 };
 
 exports.updateJobById = async (jobID, updatedFields, user) => {
-    const checkAccess = await checkAccess(user, Job, { _id: jobID });
+    const job = await Job.findById(jobID)?.populate('createdBy');
+
+    if (!job || job === null) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    if (job.createdBy?._id.toString() !== user?._id.toString()) {
+        console.log('Ids not matching');
+        throw new ApiError(403, `you don't have permission to update`);
+    }
 
     const fieldsToUpdate = {};
 
