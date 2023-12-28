@@ -5,6 +5,7 @@ const {
 const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
+const calculateWorkingHours = require('../utils/calculateWorkingsHours');
 const checkAccess = require('../utils/checkAccess');
 
 exports.postJob = async jobData => {
@@ -81,6 +82,12 @@ exports.getSingleJob = async jobID => {
     const result = await Job.findOne({ _id: jobID })
         .populate('createdBy')
         .populate('organization');
+
+    const startTime = result.start_time;
+    const endTime = result?.end_time;
+
+    const totalWorkingHours = calculateWorkingHours(startTime, endTime);
+    console.log('Total Working Hours:', totalWorkingHours);
 
     if (!result) throw new ApiError(400, 'Invalid job ID');
     return result;
