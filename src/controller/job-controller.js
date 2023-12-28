@@ -47,8 +47,22 @@ const getSingleJobs = catchAsync(async (req, res) => {
     });
 });
 
+const updateJob = catchAsync(async (req, res) => {
+    const jobId = req.params.id;
+    const updatedData = req.body;
+
+    const result = await jobService.updateJobById(jobId, updatedData);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Job updated successfully',
+        data: result
+    });
+});
+
 module.exports = {
     postJob,
     getAllJobs,
-    getSingleJobs
+    getSingleJobs,
+    updateJob
 };
