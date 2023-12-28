@@ -1,7 +1,12 @@
-const { jobSearchableFields } = require('../constant/keyChain');
+const {
+    jobSearchableFields,
+    allowedFieldsToUpdateJob
+} = require('../constant/keyChain');
 const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
+const calculateWorkingHours = require('../utils/calculateWorkingsHours');
+const checkAccess = require('../utils/checkAccess');
 
 exports.postJob = async jobData => {
     const result = await Job.create(jobData);
@@ -9,25 +14,25 @@ exports.postJob = async jobData => {
 };
 
 exports.getAllJobs = async (filters, paginationOptions) => {
-    const { searchTerm, ...filtersData } = filters;
-    const { page, limit, skip, sortBy, sortOrder } =
+    const { search, ...filtersData } = filters;
+    const { page, limit, skip, sort_by, sort_order } =
         calculatePagination(paginationOptions);
 
     const andConditions = [];
 
     // Search needs $or for searching in specified fields
-    if (searchTerm) {
+    if (search) {
         andConditions.push({
             $or: jobSearchableFields.map(field => ({
                 [field]: {
-                    $regex: searchTerm,
+                    $regex: search,
                     $options: 'i'
                 }
             }))
         });
     }
 
-    // Filters needs $and to fullfill all the conditions
+    // Filters needs $and to fulfill all the conditions
     if (Object.keys(filtersData).length) {
         andConditions.push({
             $and: Object.entries(filtersData).map(([field, value]) => ({
@@ -38,16 +43,25 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 
     // Dynamic  Sort needs  field to  do sorting
     const sortConditions = {};
-    if (sortBy && sortOrder) {
-        sortConditions[sortBy] = sortOrder;
+    if (sort_by && sort_order) {
+        sortConditions[sort_by] = sort_order;
     }
 
     const whereConditions =
         andConditions.length > 0 ? { $and: andConditions } : {};
 
     const result = await Job.find(whereConditions)
-        .populate('createdBy')
-        .populate('organization')
+        .populate({
+            path: 'createdBy',
+            select: '_id name image_url email'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name'
+        })
+        .select(
+            'job_title job_type experience_level location_type address status total_view total_application createdAt'
+        )
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
@@ -65,10 +79,59 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 };
 
 exports.getSingleJob = async jobID => {
-    const result = await Job.findOne({ _id: jobID })
+    const job = await Job.findOne({ _id: jobID })
         .populate('createdBy')
         .populate('organization');
 
-    if (!result) throw new ApiError(400, 'Invalid job ID');
+    if (!job) {
+        throw new ApiError(400, 'Invalid job ID');
+    }
+
+    const startTime = job.start_time;
+    const endTime = job.end_time;
+
+    const totalWorkingHours = calculateWorkingHours(startTime, endTime);
+    console.log('Total Working Hours:', totalWorkingHours);
+
+    // Convert the Mongoose document to a plain JavaScript object
+    const result = job.toObject();
+
+    // Add the calculated working_hours to the result object
+    result.working_hours = totalWorkingHours;
+
+    return result;
+};
+
+exports.updateJobById = async (jobID, updatedFields, user) => {
+    const job = await Job.findById(jobID)?.populate('createdBy');
+
+    if (!job || job === null) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    if (job.createdBy?._id.toString() !== user?._id.toString()) {
+        console.log('Ids not matching');
+        throw new ApiError(403, `you don't have permission to update`);
+    }
+
+    const fieldsToUpdate = {};
+
+    for (const field in updatedFields) {
+        if (allowedFieldsToUpdateJob.includes(field)) {
+            fieldsToUpdate[field] = updatedFields[field];
+        }
+    }
+
+    console.log(fieldsToUpdate);
+
+    const result = await Job.findByIdAndUpdate(jobID, fieldsToUpdate, {
+        new: true
+    })
+        .populate('createdBy')
+        .populate('organization');
+
+    if (!result)
+        throw new ApiError(400, 'Invalid job ID or no fields to update');
+
     return result;
 };

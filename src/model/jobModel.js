@@ -28,6 +28,11 @@ const jobSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        industry: {
+            type: String,
+            enum: IndustryOptions,
+            required: true
+        },
         job_type: {
             type: String,
             enum: EmploymentType,
@@ -105,15 +110,21 @@ const jobSchema = new mongoose.Schema(
             type: Boolean,
             required: true
         },
-        industry: {
-            type: String,
-            enum: IndustryOptions,
-            required: true
-        },
         status: {
             type: String,
             enum: JobStatus,
-            default: 'PUBLISHED'
+            default: 'PUBLISHED',
+            required: true
+        },
+        total_view: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        total_application: {
+            type: Number,
+            default: 0,
+            required: true
         }
     },
     {
@@ -127,10 +138,3 @@ const jobSchema = new mongoose.Schema(
 const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;
-
-// TODO need changes
-/*
-1. CHANGE the name recruiter_id    to -> recruiter || createdBy;
-2. CHANGE the name organization_id to -> organization
-
-*/
