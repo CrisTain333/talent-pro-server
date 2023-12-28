@@ -1,7 +1,11 @@
-const { jobSearchableFields } = require('../constant/keyChain');
+const {
+    jobSearchableFields,
+    allowedFieldsToUpdateJob
+} = require('../constant/keyChain');
 const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
+const checkAccess = require('../utils/checkAccess');
 
 exports.postJob = async jobData => {
     const result = await Job.create(jobData);
@@ -82,32 +86,13 @@ exports.getSingleJob = async jobID => {
     return result;
 };
 
-exports.updateJobById = async (jobID, updatedFields) => {
-    const allowedFields = [
-        'job_title',
-        'job_description',
-        'industry',
-        'job_type',
-        'experience_level',
-        'years_of_experience',
-        'required_skills',
-        'location_type',
-        'address',
-        'start_day',
-        'end_day',
-        'start_time',
-        'end_time',
-        'deadline',
-        'num_of_vacancy',
-        'salary',
-        'is_negotiable',
-        'status'
-    ];
+exports.updateJobById = async (jobID, updatedFields, user) => {
+    const checkAccess = await checkAccess(user, Job, { _id: jobID });
 
     const fieldsToUpdate = {};
 
     for (const field in updatedFields) {
-        if (allowedFields.includes(field)) {
+        if (allowedFieldsToUpdateJob.includes(field)) {
             fieldsToUpdate[field] = updatedFields[field];
         }
     }

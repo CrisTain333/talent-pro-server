@@ -61,6 +61,26 @@ const jobFilterableFields = [
 ];
 
 const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
+const allowedFieldsToUpdateJob = [
+    'job_title',
+    'job_description',
+    'industry',
+    'job_type',
+    'experience_level',
+    'years_of_experience',
+    'required_skills',
+    'location_type',
+    'address',
+    'start_day',
+    'end_day',
+    'start_time',
+    'end_time',
+    'deadline',
+    'num_of_vacancy',
+    'salary',
+    'is_negotiable',
+    'status'
+];
 
 module.exports = {
     EmployStatus,
@@ -71,5 +91,6 @@ module.exports = {
     WeekDay,
     jobSearchableFields,
     jobFilterableFields,
-    JobStatus
+    JobStatus,
+    allowedFieldsToUpdateJob
 };
