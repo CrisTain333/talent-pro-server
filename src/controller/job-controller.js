@@ -62,9 +62,25 @@ const updateJob = catchAsync(async (req, res) => {
     });
 });
 
+const updateJobStatus = catchAsync(async (req, res) => {
+    const user = req.user;
+    const jobId = req.params.id;
+    const status = req.body;
+    console.log(status);
+
+    const result = await jobService.updateJobStatus(jobId, user, status);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Job status updated successfully',
+        data: result
+    });
+});
+
 module.exports = {
     postJob,
     getAllJobs,
     getSingleJobs,
-    updateJob
+    updateJob,
+    updateJobStatus
 };
