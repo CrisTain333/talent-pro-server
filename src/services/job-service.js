@@ -78,13 +78,21 @@ exports.getAllJobs = async (filters, paginationOptions) => {
     };
 };
 
-exports.getSingleJob = async jobID => {
+exports.getSingleJob = async (user, jobID) => {
+    console.log('User: + ' + user);
+
     const job = await Job.findOne({ _id: jobID })
         .populate('createdBy')
         .populate('organization');
 
     if (!job) {
         throw new ApiError(400, 'Invalid job ID');
+    }
+
+    if (!job.viewedBy.includes(user._id)) {
+        job.views += 1;
+        job.viewedBy.push(user._id);
+        await job.save();
     }
 
     const startTime = job.start_time;
