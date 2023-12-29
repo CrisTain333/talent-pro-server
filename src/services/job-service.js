@@ -140,3 +140,18 @@ exports.updateJobById = async (jobID, updatedFields, user) => {
 
     return result;
 };
+
+exports.updateJobStatus = async (jobID, user, status) => {
+    const job = await Job.findById(jobID)?.populate('createdBy');
+
+    if (!job || job === null) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    if (job.createdBy?._id.toString() !== user?._id.toString()) {
+        throw new ApiError(403, `you don't have permission to update`);
+    }
+    const updatedJb = await Job.findByIdAndUpdate(jobID, status, { new: true });
+
+    return updatedJb;
+};

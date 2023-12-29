@@ -17,6 +17,11 @@ router.get(
     jobController.getSingleJobs
 );
 router.get('/', jobController.getAllJobs);
+router.patch(
+    '/update-status/:id',
+    auth(User_Role.RECRUITER),
+    jobController.updateJobStatus
+);
 router.patch('/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
 module.exports = router;
