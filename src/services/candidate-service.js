@@ -26,7 +26,6 @@ exports.createCandidate = async (candidateData, file) => {
             Array.isArray(candidateData?.experience) &&
             candidateData?.experience?.length > 0
         ) {
-            console.log('inside experience');
             const experienceDataArray = candidateData.experience.map(exp => ({
                 user_id: candidateData?.user_id,
                 company_name: exp.company_name,
@@ -46,7 +45,6 @@ exports.createCandidate = async (candidateData, file) => {
             Array.isArray(candidateData?.education) &&
             candidateData?.education?.length > 0
         ) {
-            console.log('education');
             const educationDataArray = candidateData.education.map(edu => ({
                 user_id: candidateData?.user_id,
                 institute_name: edu.institute_name,
@@ -83,7 +81,6 @@ exports.createCandidate = async (candidateData, file) => {
         await session.commitTransaction();
         await session.endSession();
     } catch (error) {
-        console.log(error);
         await session.abortTransaction();
         await session.endSession();
         throw error;
@@ -107,19 +104,14 @@ exports.createCandidate = async (candidateData, file) => {
     };
 
     return result;
-
-    // return candidateData;
 };
 
 exports.getCandidateProfile = async userId => {
-    console.log(userId);
     const result = await Candidate.findOne({
         user: userId
     })
         .select('-__v')
         .populate('user', '-__v -password');
-
-    console.log(result);
 
     if (!result || result === null) {
         throw new ApiError(400, 'Error fetching candidate profile');
