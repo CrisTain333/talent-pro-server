@@ -91,7 +91,6 @@ exports.getSingleJob = async jobID => {
     const endTime = job.end_time;
 
     const totalWorkingHours = calculateWorkingHours(startTime, endTime);
-    console.log('Total Working Hours:', totalWorkingHours);
 
     // Convert the Mongoose document to a plain JavaScript object
     const result = job.toObject();
@@ -110,7 +109,6 @@ exports.updateJobById = async (jobID, updatedFields, user) => {
     }
 
     if (job.createdBy?._id.toString() !== user?._id.toString()) {
-        console.log('Ids not matching');
         throw new ApiError(403, `you don't have permission to update`);
     }
 
@@ -121,8 +119,6 @@ exports.updateJobById = async (jobID, updatedFields, user) => {
             fieldsToUpdate[field] = updatedFields[field];
         }
     }
-
-    console.log(fieldsToUpdate);
 
     const result = await Job.findByIdAndUpdate(jobID, fieldsToUpdate, {
         new: true
