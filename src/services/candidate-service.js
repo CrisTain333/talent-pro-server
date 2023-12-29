@@ -104,8 +104,6 @@ exports.createCandidate = async (candidateData, file) => {
     };
 
     return result;
-
-    // return candidateData;
 };
 
 exports.getCandidateProfile = async userId => {
