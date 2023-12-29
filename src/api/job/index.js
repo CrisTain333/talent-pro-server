@@ -11,7 +11,11 @@ router.post(
     jobController.postJob
 );
 
-router.get('/:id', jobController.getSingleJobs);
+router.get(
+    '/:id',
+    auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
+    jobController.getSingleJobs
+);
 router.get('/', jobController.getAllJobs);
 router.patch('/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
