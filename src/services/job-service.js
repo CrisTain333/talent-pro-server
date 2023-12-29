@@ -114,6 +114,13 @@ exports.updateJobById = async (jobID, updatedFields, user) => {
         throw new ApiError(403, `you don't have permission to update`);
     }
 
+    if (job.total_application > 0) {
+        throw new ApiError(
+            403,
+            'Job has received applications and cannot be updated'
+        );
+    }
+
     const fieldsToUpdate = {};
 
     for (const field in updatedFields) {
