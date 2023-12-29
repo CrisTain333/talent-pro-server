@@ -116,19 +116,14 @@ const jobSchema = new mongoose.Schema(
             default: 'PUBLISHED',
             required: true
         },
-        total_view: {
-            type: Number,
-            default: 0,
-            required: true
-        },
         total_application: {
             type: Number,
             default: 0,
             required: true
-        }, // New field for view count
+        },
+
         views: { type: Number, default: 0 },
 
-        // Array to store unique user IDs who viewed the job
         viewedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     {
