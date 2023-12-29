@@ -125,7 +125,11 @@ const jobSchema = new mongoose.Schema(
             type: Number,
             default: 0,
             required: true
-        }
+        }, // New field for view count
+        views: { type: Number, default: 0 },
+
+        // Array to store unique user IDs who viewed the job
+        viewedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     {
         timestamps: true,
