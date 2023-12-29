@@ -79,8 +79,6 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 };
 
 exports.getSingleJob = async (user, jobID) => {
-    console.log('User: + ' + user);
-
     const job = await Job.findOne({ _id: jobID })
         .populate('createdBy')
         .populate('organization');
@@ -99,11 +97,7 @@ exports.getSingleJob = async (user, jobID) => {
     const endTime = job.end_time;
 
     const totalWorkingHours = calculateWorkingHours(startTime, endTime);
-
-    // Convert the Mongoose document to a plain JavaScript object
     const result = job.toObject();
-
-    // Add the calculated working_hours to the result object
     result.working_hours = totalWorkingHours;
 
     return result;
