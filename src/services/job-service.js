@@ -15,7 +15,7 @@ exports.postJob = async jobData => {
 
 exports.getAllJobs = async (filters, paginationOptions) => {
     const { search, ...filtersData } = filters;
-    const { page, limit, skip, sort_by, sort_order } =
+    const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
 
     const andConditions = [];
@@ -43,8 +43,8 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 
     // Dynamic  Sort needs  field to  do sorting
     const sortConditions = {};
-    if (sort_by && sort_order) {
-        sortConditions[sort_by] = sort_order;
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
     }
 
     const whereConditions =
@@ -60,7 +60,7 @@ exports.getAllJobs = async (filters, paginationOptions) => {
             select: '_id company_logo company_name'
         })
         .select(
-            'job_title job_type experience_level location_type address status total_view total_application createdAt'
+            'job_title job_type experience_level location_type address status total_views total_applications createdAt'
         )
         .sort(sortConditions)
         .skip(skip)
@@ -87,9 +87,9 @@ exports.getSingleJob = async (user, jobID) => {
         throw new ApiError(400, 'Invalid job ID');
     }
 
-    if (!job.viewedBy.includes(user._id)) {
-        job.views += 1;
-        job.viewedBy.push(user._id);
+    if (!job.viewed_by.includes(user._id) && user.role === 'candidate') {
+        job.total_views += 1;
+        job.viewed_by.push(user._id);
         await job.save();
     }
 

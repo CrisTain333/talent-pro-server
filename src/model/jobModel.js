@@ -116,15 +116,13 @@ const jobSchema = new mongoose.Schema(
             default: 'PUBLISHED',
             required: true
         },
-        total_application: {
+        total_views: { type: Number, default: 0, required: true },
+        total_applications: {
             type: Number,
             default: 0,
             required: true
         },
-
-        views: { type: Number, default: 0 },
-
-        viewedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+        viewed_by: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     {
         timestamps: true,
