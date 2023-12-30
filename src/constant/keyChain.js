@@ -61,6 +61,7 @@ const jobFilterableFields = [
 ];
 
 const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
+
 const allowedFieldsToUpdateJob = [
     'job_title',
     'job_description',
