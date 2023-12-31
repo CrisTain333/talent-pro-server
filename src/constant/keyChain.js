@@ -55,6 +55,7 @@ const jobSearchableFields = [
 
 const jobFilterableFields = [
     'search',
+    'status',
     'job_type',
     'location_type',
     'experience_level'
