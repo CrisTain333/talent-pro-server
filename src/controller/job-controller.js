@@ -22,8 +22,13 @@ const postJob = catchAsync(async (req, res) => {
 const getAllJobs = catchAsync(async (req, res) => {
     const filters = pick(req.query, jobFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
+    const user = req.user;
 
-    const result = await jobService.getAllJobs(filters, paginationOptions);
+    const result = await jobService.getAllJobs(
+        filters,
+        paginationOptions,
+        user
+    );
 
     sendResponse(res, {
         statusCode: 200,

@@ -6,14 +6,13 @@ const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
 const calculateWorkingHours = require('../utils/calculateWorkingsHours');
-const checkAccess = require('../utils/checkAccess');
 
 exports.postJob = async jobData => {
     const result = await Job.create(jobData);
     return result;
 };
 
-exports.getAllJobs = async (filters, paginationOptions) => {
+exports.getAllJobs = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
@@ -41,7 +40,14 @@ exports.getAllJobs = async (filters, paginationOptions) => {
         });
     }
 
-    // Dynamic  Sort needs  field to  do sorting
+    // Add condition based on user role
+    if (user.role === 'candidate') {
+        andConditions.push({
+            $or: [{ status: 'PUBLISHED' }, { status: 'ON_HOLD' }]
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
     const sortConditions = {};
     if (sortBy && sortOrder) {
         sortConditions[sortBy] = sortOrder;
