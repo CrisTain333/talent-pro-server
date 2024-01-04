@@ -80,12 +80,23 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 
 exports.getSingleJob = async (user, jobID) => {
     const job = await Job.findOne({ _id: jobID })
-        .populate('createdBy')
-        .populate('organization');
+        .populate({
+            path: 'createdBy',
+            select: '_id name image_url email'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name about_us industry company_location company_size website'
+        })
+        .select(
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by start_time end_time'
+        );
 
     if (!job) {
         throw new ApiError(400, 'Invalid job ID');
     }
+
+    console.log(user);
 
     if (!job.viewed_by.includes(user._id) && user.role === 'candidate') {
         job.total_views += 1;
