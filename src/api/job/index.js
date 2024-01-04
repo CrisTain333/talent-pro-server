@@ -16,7 +16,11 @@ router.get(
     auth(User_Role.CANDIDATE, User_Role.RECRUITER, User_Role.SUPER_ADMIN),
     jobController.getSingleJobs
 );
-router.get('/', jobController.getAllJobs);
+router.get(
+    '/',
+    auth(User_Role.CANDIDATE, User_Role.RECRUITER, User_Role.SUPER_ADMIN),
+    jobController.getAllJobs
+);
 router.patch(
     '/update-status/:id',
     auth(User_Role.RECRUITER),
