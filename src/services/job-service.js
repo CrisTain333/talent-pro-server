@@ -95,17 +95,15 @@ exports.getSingleJob = async (user, jobID) => {
             select: '_id company_logo company_name about_us industry company_location company_size website'
         })
         .select(
-            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by start_time end_time'
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by start_time end_time total_views'
         );
 
     if (!job) {
         throw new ApiError(400, 'Invalid job ID');
     }
 
-    console.log(user);
-
     if (!job.viewed_by.includes(user._id) && user.role === 'candidate') {
-        job.total_views += 1;
+        job.total_views = +job.total_views + 1;
         job.viewed_by.push(user._id);
         await job.save();
     }
