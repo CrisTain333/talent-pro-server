@@ -55,12 +55,14 @@ const jobSearchableFields = [
 
 const jobFilterableFields = [
     'search',
+    'status',
     'job_type',
     'location_type',
     'experience_level'
 ];
 
 const JobStatus = ['PUBLISHED', 'UNPUBLISHED', 'ON_HOLD', 'CLOSED'];
+
 const allowedFieldsToUpdateJob = [
     'job_title',
     'job_description',

@@ -6,16 +6,15 @@ const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const Job = require('../model/jobModel');
 const calculateWorkingHours = require('../utils/calculateWorkingsHours');
-const checkAccess = require('../utils/checkAccess');
 
 exports.postJob = async jobData => {
     const result = await Job.create(jobData);
     return result;
 };
 
-exports.getAllJobs = async (filters, paginationOptions) => {
+exports.getAllJobs = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
-    const { page, limit, skip, sort_by, sort_order } =
+    const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
 
     const andConditions = [];
@@ -41,10 +40,17 @@ exports.getAllJobs = async (filters, paginationOptions) => {
         });
     }
 
-    // Dynamic  Sort needs  field to  do sorting
+    // Add condition based on user role
+    if (user.role === 'candidate') {
+        andConditions.push({
+            $or: [{ status: 'PUBLISHED' }, { status: 'ON_HOLD' }]
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
     const sortConditions = {};
-    if (sort_by && sort_order) {
-        sortConditions[sort_by] = sort_order;
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
     }
 
     const whereConditions =
@@ -60,7 +66,7 @@ exports.getAllJobs = async (filters, paginationOptions) => {
             select: '_id company_logo company_name'
         })
         .select(
-            'job_title job_type experience_level location_type address status total_view total_application createdAt'
+            'job_title job_type experience_level location_type address status total_views total_applications createdAt'
         )
         .sort(sortConditions)
         .skip(skip)
@@ -80,16 +86,27 @@ exports.getAllJobs = async (filters, paginationOptions) => {
 
 exports.getSingleJob = async (user, jobID) => {
     const job = await Job.findOne({ _id: jobID })
-        .populate('createdBy')
-        .populate('organization');
+        .populate({
+            path: 'createdBy',
+            select: '_id name image_url email'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name about_us industry company_location company_size website'
+        })
+        .select(
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by start_time end_time'
+        );
 
     if (!job) {
         throw new ApiError(400, 'Invalid job ID');
     }
 
-    if (!job.viewedBy.includes(user._id)) {
-        job.views += 1;
-        job.viewedBy.push(user._id);
+    console.log(user);
+
+    if (!job.viewed_by.includes(user._id) && user.role === 'candidate') {
+        job.total_views += 1;
+        job.viewed_by.push(user._id);
         await job.save();
     }
 
