@@ -4,7 +4,13 @@ const router = express.Router();
 const jobController = require('../../controller/job-controller');
 const auth = require('../../middleware/auth');
 const { User_Role } = require('../../constant/user-roles');
+const savedJbCOntroller = require('../../controller/save-job-controller');
 
+router.post(
+    '/save-job/:id',
+    auth(User_Role.CANDIDATE),
+    savedJbCOntroller.saveJob
+);
 router.post(
     '/',
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
