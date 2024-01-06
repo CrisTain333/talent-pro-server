@@ -11,6 +11,12 @@ router.post(
     auth(User_Role.CANDIDATE),
     savedJbCOntroller.saveJob
 );
+
+router.get(
+    '/saved/job',
+    auth(User_Role.CANDIDATE),
+    savedJbCOntroller.getSavedJobs
+);
 router.post(
     '/',
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
