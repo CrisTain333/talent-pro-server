@@ -39,11 +39,24 @@ const getAllJobs = catchAsync(async (req, res) => {
     });
 });
 
-const getSingleJobs = catchAsync(async (req, res) => {
+const getSingleJob = catchAsync(async (req, res) => {
     const jobId = req.params.id;
     const user = req.user;
 
     const result = await jobService.getSingleJob(user, jobId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Job retrieved successfully`,
+        data: result
+    });
+});
+
+const getPublicSingleJob = catchAsync(async (req, res) => {
+    const jobId = req.params.id;
+
+    const result = await jobService.getSinglePublicJob(jobId);
 
     sendResponse(res, {
         statusCode: 200,
@@ -85,7 +98,8 @@ const updateJobStatus = catchAsync(async (req, res) => {
 module.exports = {
     postJob,
     getAllJobs,
-    getSingleJobs,
+    getSingleJob,
+    getPublicSingleJob,
     updateJob,
     updateJobStatus
 };
