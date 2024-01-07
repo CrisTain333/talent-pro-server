@@ -1,4 +1,4 @@
-const { default: mongoose, model } = require('mongoose');
+const mongoose = require('mongoose');
 
 const savedJobSchema = new mongoose.Schema(
     {

@@ -29,15 +29,14 @@ exports.saveJobs = async (userId, jobId) => {
 };
 
 exports.getSavedJobs = async userId => {
-    console.log(userId);
-    if (!userId) {
-        throw new ApiError(400, 'User Id is required');
-    }
-
-    const savedJobs = await SavedJob.find({
-        'user._id': userId
-    })
-        .populate('user')
-        .populate('job');
-    return savedJobs;
+    console.log('abcd');
+    // if (!userId) {
+    //     throw new ApiError(400, 'User Id is required');
+    // }
+    // const savedJobs = await SavedJob.find({
+    //     user: userId
+    // })
+    //     .populate('user')
+    //     .populate('job');
+    // return savedJobs;
 };

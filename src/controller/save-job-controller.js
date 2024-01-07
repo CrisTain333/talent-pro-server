@@ -1,12 +1,10 @@
 const catchAsync = require('../shared/catchAsync');
-const saveJobService = require('../services/auth-service');
+const saveJobService = require('../services/save-job-service');
 const sendResponse = require('../shared/sendResponse');
 
 const saveJob = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    console.log('user id: ' + _id);
     const jobId = req.params.id;
-    console.log('job id: ' + jobId);
 
     const result = await saveJobService.saveJobs(_id, jobId);
 
@@ -19,10 +17,9 @@ const saveJob = catchAsync(async (req, res) => {
 });
 
 const getSavedJobs = catchAsync(async (req, res) => {
-    console.log(req);
-    // const { _id } = req.user;
-    // console.log('user id:' + _id);
-    // const result = await jobService.getSavedJobs(_id);
+    const user = req.user;
+    console.log('user', user);
+    // const result = await saveJobService.getSavedJobs(_id);
     // sendResponse(res, {
     //     statusCode: 200,
     //     success: true,
