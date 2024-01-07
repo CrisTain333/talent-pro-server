@@ -34,11 +34,10 @@ exports.getSavedJobs = async userId => {
         throw new ApiError(400, 'User Id is required');
     }
 
-    // const savedJobs = await SavedJob.find({
-    //     'user._id': userId
-    // })
-    //     .populate('user')
-    //     .populate('job');
-    // return savedJobs;
-    return null;
+    const savedJobs = await SavedJob.find({
+        'user._id': userId
+    })
+        .populate('user')
+        .populate('job');
+    return savedJobs;
 };
