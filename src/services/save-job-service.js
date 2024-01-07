@@ -47,3 +47,16 @@ exports.getSavedJobs = async userId => {
         .select('job');
     return savedJobs;
 };
+
+exports.removeSavedJob = async (userId, jobId) => {
+    if (!userId || !jobId) {
+        throw new ApiError(400, 'User Id or Job Id is required');
+    }
+
+    const result = await SavedJob.findOneAndDelete({
+        job: jobId,
+        user: userId
+    });
+
+    return result;
+};

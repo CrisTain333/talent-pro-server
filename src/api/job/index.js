@@ -41,4 +41,10 @@ router.patch(
 );
 router.patch('/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
+router.delete(
+    '/save-job/:id',
+    auth(User_Role.CANDIDATE),
+    savedJobController.removeSavedJob
+);
+
 module.exports = router;

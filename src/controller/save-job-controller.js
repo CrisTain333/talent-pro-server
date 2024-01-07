@@ -27,7 +27,22 @@ const getSavedJobs = catchAsync(async (req, res) => {
     });
 });
 
+const removeSavedJob = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const jobId = req.params.id;
+
+    const result = await saveJobService.removeSavedJob(_id, jobId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Successfully removed from saved jobs',
+        data: result
+    });
+});
+
 module.exports = {
     saveJob,
-    getSavedJobs
+    getSavedJobs,
+    removeSavedJob
 };
