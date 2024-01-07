@@ -6,6 +6,12 @@ const auth = require('../../middleware/auth');
 const { User_Role } = require('../../constant/user-roles');
 const savedJobController = require('../../controller/save-job-controller');
 
+router.get(
+    '/save-job',
+    auth(User_Role.CANDIDATE),
+    savedJobController.getSavedJobs
+);
+
 router.post(
     '/save-job/:id',
     auth(User_Role.CANDIDATE),
@@ -35,9 +41,4 @@ router.patch(
 );
 router.patch('/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
-router.get(
-    '/save-job',
-    auth(User_Role.CANDIDATE),
-    savedJobController.getSavedJobs
-);
 module.exports = router;
