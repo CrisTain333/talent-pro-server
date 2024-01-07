@@ -28,6 +28,7 @@ const auth =
                     `You Don't have permission to access this.`
                 );
             }
+            console.log(verifiedUser);
             next();
         } catch (error) {
             next(error);
