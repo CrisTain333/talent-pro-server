@@ -21,10 +21,9 @@ exports.saveJobs = async (userId, jobId) => {
     });
 
     const newlySavedJob = await SavedJob.find({
-        user: userId
-    })
-        .populate('user')
-        .populate('job');
+        user: userId,
+        job: jobId
+    });
     return newlySavedJob;
 };
 
@@ -46,6 +45,21 @@ exports.getSavedJobs = async userId => {
         })
         .select('job');
     return savedJobs;
+};
+
+exports.saveJobsList = async userId => {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    }
+    const savedJobsList = await SavedJob.find({
+        user: userId
+    })
+        .populate({
+            path: 'job',
+            select: '_id'
+        })
+        .select('job');
+    return savedJobsList;
 };
 
 exports.removeSavedJob = async (userId, jobId) => {

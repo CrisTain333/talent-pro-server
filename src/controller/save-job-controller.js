@@ -22,7 +22,20 @@ const getSavedJobs = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: `Job's retrieved successfully`,
+        message: `Saved job's retrieved successfully`,
+        data: result
+    });
+});
+
+const saveJobsList = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const jobData = await saveJobService.saveJobsList(_id);
+    const result = jobData.map(savedJob => savedJob.job._id);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Saved jobs list retrieved successfully`,
         data: result
     });
 });
@@ -44,5 +57,6 @@ const removeSavedJob = catchAsync(async (req, res) => {
 module.exports = {
     saveJob,
     getSavedJobs,
+    saveJobsList,
     removeSavedJob
 };
