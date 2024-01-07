@@ -19,17 +19,15 @@ const saveJob = catchAsync(async (req, res) => {
 });
 
 const getSavedJobs = catchAsync(async (req, res) => {
-    const { _id } = req.user;
-    console.log('user id:' + _id);
-
-    const result = await jobService.getSavedJobs(_id);
-
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: `Job's retrieved successfully`,
-        data: result
-    });
+    // const { _id } = req.user;
+    // console.log('user id:' + _id);
+    // const result = await jobService.getSavedJobs(_id);
+    // sendResponse(res, {
+    //     statusCode: 200,
+    //     success: true,
+    //     message: `Job's retrieved successfully`,
+    //     data: result
+    // });
 });
 
 module.exports = {

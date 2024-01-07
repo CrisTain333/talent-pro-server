@@ -12,11 +12,6 @@ router.post(
     savedJbCOntroller.saveJob
 );
 
-router.get(
-    '/saved/job',
-    auth(User_Role.CANDIDATE),
-    savedJbCOntroller.getSavedJobs
-);
 router.post(
     '/',
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
@@ -40,4 +35,9 @@ router.patch(
 );
 router.patch('/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
+router.get(
+    '/save-job',
+    auth(User_Role.CANDIDATE),
+    savedJbCOntroller.getSavedJobs
+);
 module.exports = router;
