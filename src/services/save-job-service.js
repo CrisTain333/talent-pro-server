@@ -1,4 +1,6 @@
+const { jobSearchableFields } = require('../constant/keyChain');
 const ApiError = require('../error/ApiError');
+const calculatePagination = require('../helper/paginationHelper');
 const SavedJob = require('../model/saveJobModel');
 
 exports.saveJobs = async (userId, jobId) => {
@@ -27,13 +29,48 @@ exports.saveJobs = async (userId, jobId) => {
     return newlySavedJob;
 };
 
-exports.getSavedJobs = async userId => {
+exports.getSavedJobs = async (userId, filters, paginationOptions) => {
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     }
-    const savedJobs = await SavedJob.find({
-        user: userId
-    })
+
+    const { search, ...filtersData } = filters;
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const andConditions = [];
+
+    // Search needs $or for searching in specified fields
+    if (search) {
+        andConditions.push({
+            $or: jobSearchableFields.map(field => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }))
+        });
+    }
+
+    // Filters needs $and to fulfill all the conditions
+    if (Object.keys(filtersData).length) {
+        andConditions.push({
+            $and: Object.entries(filtersData).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const savedJobs = await SavedJob.find(whereConditions)
         .populate({
             path: 'job',
             populate: {
@@ -43,8 +80,20 @@ exports.getSavedJobs = async userId => {
             },
             select: '_id organization job_title job_type experience_level location_type address createdAt'
         })
-        .select('job');
-    return savedJobs;
+        .select('job')
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+
+    const total = await SavedJob.countDocuments(whereConditions);
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: savedJobs
+    };
 };
 
 exports.saveJobsList = async userId => {
