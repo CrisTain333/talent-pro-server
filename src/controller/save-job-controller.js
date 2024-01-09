@@ -1,9 +1,6 @@
 const catchAsync = require('../shared/catchAsync');
 const saveJobService = require('../services/save-job-service');
 const sendResponse = require('../shared/sendResponse');
-const pick = require('../shared/pick');
-const { paginationFields } = require('../constant/pagination');
-const { savedJobFilterableFields } = require('../constant/keyChain');
 
 const saveJob = catchAsync(async (req, res) => {
     const { _id } = req.user;
@@ -21,19 +18,12 @@ const saveJob = catchAsync(async (req, res) => {
 
 const getSavedJobs = catchAsync(async (req, res) => {
     const { _id } = req.user;
-    const filters = pick(req.query, savedJobFilterableFields);
-    const paginationOptions = pick(req.query, paginationFields);
-    const result = await saveJobService.getSavedJobs(
-        _id,
-        filters,
-        paginationOptions
-    );
+    const result = await saveJobService.getSavedJobs(_id);
     sendResponse(res, {
         statusCode: 200,
         success: true,
         message: `Saved job's retrieved successfully`,
-        data: result.data,
-        meta: result.meta
+        data: result
     });
 });
 
