@@ -1,4 +1,8 @@
-const { jobSearchableFields } = require('../constant/keyChain');
+const { default: mongoose } = require('mongoose');
+const {
+    jobSearchableFields,
+    savedJobSearchableFields
+} = require('../constant/keyChain');
 const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const SavedJob = require('../model/saveJobModel');
@@ -38,15 +42,17 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
 
-    const andConditions = [];
-    andConditions.push({
-        user: userId
-    });
+    const andConditions = [
+        {
+            user: new mongoose.Types.ObjectId(userId)
+        }
+    ];
 
     // Search needs $or for searching in specified fields
-    if (search) {
+    if (search && savedJobSearchableFields.length > 0) {
+        console.log(search);
         andConditions.push({
-            $or: jobSearchableFields.map(field => ({
+            $or: savedJobSearchableFields.map(field => ({
                 [field]: {
                     $regex: search,
                     $options: 'i'
@@ -55,7 +61,7 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
         });
     }
 
-    // Filters needs $and to fulfill all the conditions
+    // Filters need $and to fulfill all the conditions
     if (Object.keys(filtersData).length) {
         andConditions.push({
             $and: Object.entries(filtersData).map(([field, value]) => ({
@@ -83,7 +89,7 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
             },
             select: '_id organization job_title job_type experience_level location_type address createdAt'
         })
-        .select('job')
+        .select('_id job')
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
@@ -95,7 +101,10 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
             limit,
             total
         },
-        data: savedJobs
+        data: savedJobs.map(savedJob => ({
+            _id: savedJob._id,
+            job: savedJob.job
+        }))
     };
 };
 

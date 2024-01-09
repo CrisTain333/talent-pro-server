@@ -22,6 +22,7 @@ const saveJob = catchAsync(async (req, res) => {
 const getSavedJobs = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const filters = pick(req.query, jobFilterableFields);
+    console.log(filters);
     const paginationOptions = pick(req.query, paginationFields);
     const result = await saveJobService.getSavedJobs(
         _id,
@@ -32,7 +33,8 @@ const getSavedJobs = catchAsync(async (req, res) => {
         statusCode: 200,
         success: true,
         message: `Saved job's retrieved successfully`,
-        data: result
+        data: result.data,
+        meta: result.meta
     });
 });
 
