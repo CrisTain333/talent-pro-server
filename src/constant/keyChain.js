@@ -53,6 +53,13 @@ const jobSearchableFields = [
     'organization.company_name'
 ];
 
+const savedJobSearchableFields = [
+    'job.job_title',
+    'job.address',
+    'job.organization.company_name'
+];
+
+const savedJobFilterableFields = ['search', 'job_title'];
 const jobFilterableFields = [
     'search',
     'status',
@@ -94,5 +101,7 @@ module.exports = {
     jobSearchableFields,
     jobFilterableFields,
     JobStatus,
-    allowedFieldsToUpdateJob
+    allowedFieldsToUpdateJob,
+    savedJobSearchableFields,
+    savedJobFilterableFields
 };
