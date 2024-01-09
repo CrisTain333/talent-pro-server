@@ -39,6 +39,9 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
         calculatePagination(paginationOptions);
 
     const andConditions = [];
+    andConditions.push({
+        user: userId
+    });
 
     // Search needs $or for searching in specified fields
     if (search) {
