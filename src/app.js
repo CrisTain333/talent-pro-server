@@ -18,9 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Morgan setup
-if (config.env === 'development') {
-    app.use(morgan('dev'));
-}
+// if (config.env === 'development') {
+app.use(morgan('dev'));
+// }
 
 app.use('/api/v1', router);
 

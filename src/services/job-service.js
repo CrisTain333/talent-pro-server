@@ -118,6 +118,34 @@ exports.getSingleJob = async (user, jobID) => {
     return result;
 };
 
+exports.getSinglePublicJob = async jobID => {
+    const job = await Job.findOne({ _id: jobID })
+        .populate({
+            path: 'createdBy',
+            select: '_id name image_url email'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name about_us industry company_location company_size website'
+        })
+        .select(
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt start_time end_time'
+        );
+
+    if (!job) {
+        throw new ApiError(400, 'Invalid job ID');
+    }
+
+    const startTime = job.start_time;
+    const endTime = job.end_time;
+
+    const totalWorkingHours = calculateWorkingHours(startTime, endTime);
+    const result = job.toObject();
+    result.working_hours = totalWorkingHours;
+
+    return result;
+};
+
 exports.updateJobById = async (jobID, updatedFields, user) => {
     const job = await Job.findById(jobID)?.populate('createdBy');
 
