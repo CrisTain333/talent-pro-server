@@ -29,13 +29,15 @@ exports.saveJobs = async (userId, jobId) => {
     return newlySavedJob;
 };
 
-exports.getSavedJobs = async (userId, paginationOptions) => {
+exports.getSavedJobs = async (userId, paginationOptions, filters) => {
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     }
 
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
+
+    const { search } = filters;
 
     const andConditions = [
         {
@@ -67,7 +69,13 @@ exports.getSavedJobs = async (userId, paginationOptions) => {
         .skip(skip)
         .limit(limit);
 
-    const total = await SavedJob.countDocuments(whereConditions);
+    const filteredJobs = search
+        ? savedJobs.filter(job =>
+              job.job.job_title.match(new RegExp(search, 'i'))
+          )
+        : savedJobs;
+
+    const total = filteredJobs.length;
 
     return {
         meta: {
@@ -75,7 +83,7 @@ exports.getSavedJobs = async (userId, paginationOptions) => {
             limit,
             total
         },
-        data: savedJobs
+        data: filteredJobs
     };
 };
 
