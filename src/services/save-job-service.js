@@ -1,12 +1,7 @@
-const { default: mongoose } = require('mongoose');
-// const {
-//     jobSearchableFields,
-//     savedJobSearchableFields
-// } = require('../constant/keyChain');
 const ApiError = require('../error/ApiError');
-const calculatePagination = require('../helper/paginationHelper');
 const SavedJob = require('../model/saveJobModel');
-const { savedJobSearchableFields } = require('../constant/keyChain');
+const calculatePagination = require('../helper/paginationHelper');
+const { default: mongoose } = require('mongoose');
 
 exports.saveJobs = async (userId, jobId) => {
     if (!userId || !jobId) {
@@ -34,14 +29,15 @@ exports.saveJobs = async (userId, jobId) => {
     return newlySavedJob;
 };
 
-exports.getSavedJobs = async (userId, filters, paginationOptions) => {
+exports.getSavedJobs = async (userId, paginationOptions, filters) => {
     if (!userId) {
         throw new ApiError(400, 'User Id is required');
     }
 
-    const { search, ...otherFilters } = filters;
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
+
+    const { search } = filters;
 
     const andConditions = [
         {
@@ -49,39 +45,14 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
         }
     ];
 
-    // Search needs $or for searching in specified fields
-    if (search && savedJobSearchableFields.length > 0) {
-        andConditions.push({
-            $or: savedJobSearchableFields.map(field => ({
-                [field]: {
-                    $regex: search,
-                    $options: 'i'
-                }
-            }))
-        });
-    }
-
-    // Other filterable fields
-    if (Object.keys(otherFilters).length > 0) {
-        andConditions.push({
-            $and: Object.entries(otherFilters).map(([field, value]) => ({
-                [field]: value
-            }))
-        });
-    }
-
     // Dynamic Sort needs field to do sorting
     const sortConditions = {};
     if (sortBy && sortOrder) {
-        sortConditions[sortBy] = sortOrder.toLowerCase() === 'asc' ? 1 : -1;
+        sortConditions[sortBy] = sortOrder;
     }
 
     const whereConditions =
         andConditions.length > 0 ? { $and: andConditions } : {};
-
-    console.log('MongoDB Query:', JSON.stringify(whereConditions, null, 2));
-
-    console.log('Searchable Fields:', savedJobSearchableFields);
 
     const savedJobs = await SavedJob.find(whereConditions)
         .populate({
@@ -93,12 +64,18 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
             },
             select: '_id organization job_title job_type experience_level location_type address createdAt'
         })
-        .select('_id job')
+        .select('_id job createdAt')
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
 
-    const total = await SavedJob.countDocuments(whereConditions);
+    const filteredJobs = search
+        ? savedJobs.filter(job =>
+              job.job.job_title.match(new RegExp(search, 'i'))
+          )
+        : savedJobs;
+
+    const total = filteredJobs.length;
 
     return {
         meta: {
@@ -106,7 +83,7 @@ exports.getSavedJobs = async (userId, filters, paginationOptions) => {
             limit,
             total
         },
-        data: savedJobs
+        data: filteredJobs
     };
 };
 

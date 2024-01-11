@@ -10,6 +10,12 @@ const limiter = require('./middleware/rateLimit');
 
 const app = express();
 
+app.use(express.static('src/public'));
+app.get('/', (req, res) => {
+    // Assuming index.html is in the "src/public" folder
+    res.sendFile('index.html', { root: 'src/public' });
+});
+
 dotenv.config();
 // All Parsers
 app.use(express.json());
