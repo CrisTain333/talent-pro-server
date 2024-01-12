@@ -26,6 +26,9 @@ const applySchema = new mongoose.Schema({
 
                 value: {
                     type: String
+                },
+                new: {
+                    type: Boolean
                 }
             }
         ],
@@ -40,3 +43,6 @@ const applySchema = new mongoose.Schema({
         required: true
     }
 });
+
+const ApplyJob = mongoose.model('Apply-job', applySchema);
+module.exports = ApplyJob;

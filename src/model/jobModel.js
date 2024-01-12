@@ -122,7 +122,18 @@ const jobSchema = new mongoose.Schema(
             default: 0,
             required: true
         },
-        viewed_by: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+        viewed_by: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
+        applied_by: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ]
     },
     {
         timestamps: true,
