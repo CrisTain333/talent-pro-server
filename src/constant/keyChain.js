@@ -84,6 +84,18 @@ const allowedFieldsToUpdateJob = [
     'status'
 ];
 
+const applicationStatus = [
+    'Application Received',
+    'Application In Review',
+    'Shortlisted for Interview',
+    'Interview Scheduled',
+    'Interview Completed',
+    'Hired',
+    'Interview Rescheduled',
+    'Interview Canceled',
+    'Not Selected'
+];
+
 module.exports = {
     EmployStatus,
     EmploymentType,
@@ -94,5 +106,6 @@ module.exports = {
     jobSearchableFields,
     jobFilterableFields,
     JobStatus,
-    allowedFieldsToUpdateJob
+    allowedFieldsToUpdateJob,
+    applicationStatus
 };
