@@ -1,19 +1,21 @@
 const { default: mongoose } = require('mongoose');
 const ApplyJob = require('../model/applyModal');
 const Job = require('../model/jobModel');
+const { uploadFiles } = require('../shared/uploadFile');
+const ApiError = require('../error/ApiError');
 
-exports.applyJob = async (requestedData, user) => {
+exports.applyJob = async (requestedData, user, file) => {
     console.log(requestedData, user);
 
-    const {
-        job,
-        candidate,
-        phone,
-        years_of_experience,
-        skills,
-        resume,
-        status
-    } = requestedData;
+    const uploadedResume = await uploadFiles(file);
+    if (!uploadedResume) {
+        throw ApiError(400, 'Failed to update resume');
+    }
+
+    requestedData.resume = uploadedResume[0];
+
+    let { job, candidate, phone, years_of_experience, skills, resume, status } =
+        requestedData;
 
     const session = await mongoose.startSession();
     try {
