@@ -23,16 +23,16 @@ exports.applyJob = async (userId, resume, requestedData) => {
     }
     console.log('used not  applied . . . . . '.bgGreen);
 
-    // console.log('uploading resume . . . . ');
+    console.log('uploading resume . . . . ');
 
-    // const uploadedResume = await uploadFiles(resume);
-    // if (!uploadedResume) {
-    //     throw ApiError(400, 'Failed to update resume');
-    // }
+    const uploadedResume = await uploadFiles(resume);
+    if (!uploadedResume) {
+        throw ApiError(400, 'Failed to update resume');
+    }
 
-    // console.log('resume uploaded: ' + uploadedResume[0]);
+    console.log('resume uploaded: ' + uploadedResume[0]);
 
-    // requestedData.resume = uploadedResume[0];
+    requestedData.resume = uploadedResume[0];
 
     const session = await mongoose.startSession();
 
