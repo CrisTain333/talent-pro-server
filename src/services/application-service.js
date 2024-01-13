@@ -4,51 +4,55 @@ const Application = require('../model/applicationModel');
 const Job = require('../model/jobModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
+const color = require('colors');
 
 exports.applyJob = async (userId, resume, requestedData) => {
     const jobId = requestedData.job._id;
 
-    console.log('Checking if user already applied' + jobId);
+    console.log(`Checking if user already applied ${jobId}`.bgCyan);
     const job = await Job.findOne({
-        applied_by: jobId
+        _id: jobId
     });
 
-    if (job) {
-        console.log('Job already applied');
+    // console.log
+
+    if (job && job.applied_by && job.applied_by.includes(userId)) {
+        console.log(`Job already applied`.bgRed);
         console.log(job);
         throw new ApiError(400, 'You have already applied for this job');
     }
-    console.log('used not  applied . . . . . ');
+    console.log('used not  applied . . . . . '.bgGreen);
 
-    console.log('uploading resume . . . . ');
+    // console.log('uploading resume . . . . ');
 
-    const uploadedResume = await uploadFiles(resume);
-    if (!uploadedResume) {
-        throw ApiError(400, 'Failed to update resume');
-    }
+    // const uploadedResume = await uploadFiles(resume);
+    // if (!uploadedResume) {
+    //     throw ApiError(400, 'Failed to update resume');
+    // }
 
-    console.log('resume uploaded: ' + uploadedResume[0]);
+    // console.log('resume uploaded: ' + uploadedResume[0]);
 
-    requestedData.resume = uploadedResume[0];
+    // requestedData.resume = uploadedResume[0];
 
     const session = await mongoose.startSession();
 
     try {
         session.startTransaction();
-        console.log('applying to job . . . . ');
+        console.log('applying to job . . . . '.bgCyan);
 
-        const newlyAppliedData = await Application.create(requestedData, {
+        const newlyAppliedData = await Application.create([requestedData], {
             session
         });
         if (!newlyAppliedData) {
-            console.log('failed to create application');
+            console.log('failed to create application'.bgRed);
             throw new ApiError(400, 'Failed to create application');
         }
 
-        console.log('updating job state . . . .');
+        console.log('updating job state . . . .'.bgCyan);
 
         const updateJObState = await Job.findByIdAndUpdate(
-            newlyAppliedData.job,
+            newlyAppliedData[0].job,
+
             {
                 $inc: { total_applications: 1 },
                 $push: { applied_by: userId }
@@ -60,13 +64,11 @@ exports.applyJob = async (userId, resume, requestedData) => {
         );
 
         if (!updateJObState) {
-            console.log('failed to update job state');
+            console.log('failed to update job state'.bgRed);
             throw new ApiError(400, 'failed to update job state');
         }
-        console.log('job state updated');
-
-        console.log('applied to job successfully');
-
+        console.log('job state updated'.bgGreen);
+        console.log('applied to job successfully'.bgGreen);
         await session.commitTransaction();
         await session.endSession();
     } catch (error) {
@@ -80,9 +82,6 @@ exports.applyJob = async (userId, resume, requestedData) => {
     const application = await Application.findOne({
         user: userId,
         'job.id': requestedData.job.id
-    });
-
-    application.populate('user candidate organizations');
-
+    }).populate('user candidate organization');
     return application;
 };
