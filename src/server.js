@@ -3,9 +3,6 @@ const app = require('./app');
 const colors = require('colors');
 const connectToDatabase = require('./Database/ConnectDb');
 const config = require('./config/config');
-const cluster = require('node:cluster');
-const os = require('node:os');
-const http = require('http');
 // const https = require('http')
 
 connectToDatabase()
