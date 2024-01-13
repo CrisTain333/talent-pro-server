@@ -108,11 +108,10 @@ exports.createCandidate = async (candidateData, file) => {
 
 exports.getCandidateProfile = async userId => {
     const result = await Candidate.findOne({
-        user: userId
-    })
-        .select('-__v')
-        .populate('user', '-__v -password');
+        user_id: userId
+    }).populate('user_id');
 
+    console.log(result);
     if (!result || result === null) {
         throw new ApiError(400, 'Error fetching candidate profile');
     }

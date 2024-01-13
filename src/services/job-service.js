@@ -129,7 +129,7 @@ exports.getSinglePublicJob = async jobID => {
             select: '_id company_logo company_name about_us industry company_location company_size website'
         })
         .select(
-            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt start_time end_time'
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy start_time end_time working_hours job_type experience_level location_type address status salary createdAt'
         );
 
     if (!job) {
