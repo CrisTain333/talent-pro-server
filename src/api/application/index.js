@@ -8,7 +8,6 @@ router.post(
     '/',
     auth(User_Role.CANDIDATE),
     uploader.single('resume'),
-
     applicationController.applyJobController
 );
 

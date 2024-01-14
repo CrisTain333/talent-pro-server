@@ -81,7 +81,7 @@ exports.applyJob = async (userId, resume, requestedData) => {
 
     const application = await Application.findOne({
         user: userId,
-        'job.id': requestedData.job.id
-    }).populate('user candidate organization');
+        'job._id': requestedData.job._id
+    });
     return application;
 };

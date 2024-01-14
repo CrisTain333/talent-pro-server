@@ -85,15 +85,15 @@ const allowedFieldsToUpdateJob = [
 ];
 
 const applicationStatus = [
-    'Application Received',
-    'Application In Review',
-    'Shortlisted for Interview',
-    'Interview Scheduled',
-    'Interview Completed',
-    'Hired',
-    'Interview Rescheduled',
-    'Interview Canceled',
-    'Not Selected'
+    'application_received',
+    'application_in_review',
+    'shortlisted_for_interview',
+    'interview_scheduled',
+    'interview_completed',
+    'hired',
+    'interview_rescheduled',
+    'interview_canceled',
+    'not_selected'
 ];
 
 module.exports = {
