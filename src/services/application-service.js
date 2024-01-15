@@ -5,6 +5,7 @@ const Job = require('../model/jobModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 const color = require('colors');
+const calculatePagination = require('../helper/paginationHelper');
 
 exports.applyJob = async (userId, resume, requestedData) => {
     const jobId = requestedData.job._id;
@@ -84,4 +85,36 @@ exports.applyJob = async (userId, resume, requestedData) => {
         'job._id': requestedData.job._id
     });
     return application;
+};
+
+exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    }
+
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const { search } = filter;
+
+    const andConditions = [
+        {
+            user: new mongoose.Types.ObjectId(userId)
+        }
+    ];
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const appliedJobs = await Application.find(whereConditions).populate(
+        'candidates organization'
+    );
+
+    return appliedJobs;
 };
