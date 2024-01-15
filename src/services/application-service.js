@@ -5,6 +5,8 @@ const Job = require('../model/jobModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 const color = require('colors');
+const calculatePagination = require('../helper/paginationHelper');
+const { appliedJobSearchAbleField } = require('../constant/keyChain');
 
 exports.applyJob = async (userId, resume, requestedData) => {
     const jobId = requestedData.job._id;
@@ -84,4 +86,65 @@ exports.applyJob = async (userId, resume, requestedData) => {
         'job._id': requestedData.job._id
     });
     return application;
+};
+
+exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    }
+
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const { search, ...filterData } = filter;
+
+    const andConditions = [
+        {
+            user: new mongoose.Types.ObjectId(userId)
+        }
+    ];
+
+    if (search) {
+        andConditions.push({
+            $or: appliedJobSearchAbleField.map(field => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }))
+        });
+    }
+    if (Object.keys(filterData).length) {
+        andConditions.push({
+            $and: Object.entries(filterData).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const result = await Application.find(whereConditions)
+        .populate('candidate organization user')
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+
+    const total = await Application.countDocuments(whereConditions);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
 };

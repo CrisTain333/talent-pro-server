@@ -96,6 +96,9 @@ const applicationStatus = [
     'not_selected'
 ];
 
+const appliedJobSearchAbleField = ['job.job_title'];
+const appliedJobFilterableField = ['status'];
+
 module.exports = {
     EmployStatus,
     EmploymentType,
@@ -107,5 +110,7 @@ module.exports = {
     jobFilterableFields,
     JobStatus,
     allowedFieldsToUpdateJob,
-    applicationStatus
+    applicationStatus,
+    appliedJobSearchAbleField,
+    appliedJobFilterableField
 };

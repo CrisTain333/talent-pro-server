@@ -11,4 +11,6 @@ router.post(
     applicationController.applyJobController
 );
 
+router.get('/', auth(User_Role.CANDIDATE), applicationController.getAppliedJob);
+
 module.exports = router;
