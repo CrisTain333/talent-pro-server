@@ -111,7 +111,6 @@ exports.getCandidateProfile = async userId => {
         user_id: userId
     }).populate('user_id');
 
-    console.log(result);
     if (!result || result === null) {
         throw new ApiError(400, 'Error fetching candidate profile');
     }

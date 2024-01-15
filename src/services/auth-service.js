@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 const ApiError = require('../error/ApiError');
 const config = require('../config/config');
+const { logger } = require('../shared/logger');
 
 exports.handleRegister = async userData => {
     // Check if the user already exists
@@ -19,6 +20,7 @@ exports.handleRegister = async userData => {
     userData.password = hashedPassword;
 
     const result = await User.create(userData);
+    logger.info(`User created : Id-${result._id}`);
 
     const payload = {
         _id: result._id,
