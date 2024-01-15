@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const colors = require('colors');
 const config = require('../config/config');
+const { logger, errorLogger } = require('../shared/logger');
 const connectToDatabase = async () => {
     try {
         await mongoose.connect(config.database_url);
-        console.log('🛢 Connected To Database'.green);
+        logger.info('🛢 Connected To Database'.green);
     } catch (error) {
-        console.log('❌ Failed to Connect Database'.red);
-        console.error(error);
+        errorLogger.error('❌ Failed to Connect Database'.red);
+        errorLogger.error(error);
         process.exit(1);
     }
 };
