@@ -113,7 +113,7 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
         andConditions.length > 0 ? { $and: andConditions } : {};
 
     const appliedJobs = await Application.find(whereConditions).populate(
-        'candidates organization'
+        'candidate organization'
     );
 
     return appliedJobs;
