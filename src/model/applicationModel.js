@@ -79,7 +79,7 @@ const applicationSchema = new mongoose.Schema(
         status: {
             type: String,
             enum: applicationStatus,
-            default: 'Application Received',
+            default: 'application_received',
             required: true
         }
     },

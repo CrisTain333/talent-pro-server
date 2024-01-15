@@ -8,8 +8,9 @@ router.post(
     '/',
     auth(User_Role.CANDIDATE),
     uploader.single('resume'),
-
     applicationController.applyJobController
 );
+
+router.get('/', auth(User_Role.CANDIDATE), applicationController.getAppliedJob);
 
 module.exports = router;
