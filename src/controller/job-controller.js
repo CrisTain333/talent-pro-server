@@ -84,7 +84,6 @@ const updateJobStatus = catchAsync(async (req, res) => {
     const user = req.user;
     const jobId = req.params.id;
     const status = req.body;
-    console.log(status);
 
     const result = await jobService.updateJobStatus(jobId, user, status);
     sendResponse(res, {

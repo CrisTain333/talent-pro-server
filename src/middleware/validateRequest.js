@@ -8,7 +8,6 @@ exports.validateRequest = schema => async (req, res, next) => {
         });
         return next();
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };

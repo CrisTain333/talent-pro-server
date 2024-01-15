@@ -3,19 +3,20 @@ const app = require('./app');
 const colors = require('colors');
 const connectToDatabase = require('./Database/ConnectDb');
 const config = require('./config/config');
+const { logger, errorLogger } = require('./shared/logger');
 // const https = require('http')
 
 connectToDatabase()
     .then(() => {
         // Start the Express app after successful database connection
         app.listen(config.port, () => {
-            console.log(
+            logger.info(
                 `Server running on http://localhost:${config.port}`.cyan
             );
         });
     })
     .catch(error => {
-        console.error(
+        errorLogger.error(
             `Worker ${process.pid} failed to connect to the database:`,
             error
         );
@@ -23,14 +24,3 @@ connectToDatabase()
     });
 
 // ! Don't delete the code bellow
-
-// connectToDatabase();
-// app.listen(config.port, () => {
-//     console.log(totalCpus);
-//     console.log(process.pid);
-//     console.log(
-//         `Server running on  http://localhost:${config.port}`
-//             .cyan
-//     );
-// });
-// console.log(`Worker ${process.pid} started`);

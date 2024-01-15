@@ -7,32 +7,30 @@ const { uploadFiles } = require('../shared/uploadFile');
 const color = require('colors');
 const calculatePagination = require('../helper/paginationHelper');
 const { appliedJobSearchAbleField } = require('../constant/keyChain');
+const { logger, errorLogger } = require('../shared/logger');
 
 exports.applyJob = async (userId, resume, requestedData) => {
     const jobId = requestedData.job._id;
 
-    console.log(`Checking if user already applied ${jobId}`.bgCyan);
+    logger.info(`Checking if user already applied ${jobId}`.bgCyan);
     const job = await Job.findOne({
         _id: jobId
     });
 
-    // console.log
-
     if (job && job.applied_by && job.applied_by.includes(userId)) {
-        console.log(`Job already applied`.bgRed);
-        console.log(job);
+        errorLogger.error(`Job already applied`.bgRed);
         throw new ApiError(400, 'You have already applied for this job');
     }
-    console.log('used not  applied . . . . . '.bgGreen);
+    logger.info('user not applied . . . . . '.bgGreen);
 
-    console.log('uploading resume . . . . ');
+    logger.info('uploading resume . . . . ');
 
     const uploadedResume = await uploadFiles(resume);
     if (!uploadedResume) {
         throw ApiError(400, 'Failed to update resume');
     }
 
-    console.log('resume uploaded: ' + uploadedResume[0]);
+    logger.info('resume uploaded: ' + uploadedResume[0]);
 
     requestedData.resume = uploadedResume[0];
 
@@ -40,17 +38,16 @@ exports.applyJob = async (userId, resume, requestedData) => {
 
     try {
         session.startTransaction();
-        console.log('applying to job . . . . '.bgCyan);
+        logger.info('applying to job . . . . '.bgCyan);
 
         const newlyAppliedData = await Application.create([requestedData], {
             session
         });
         if (!newlyAppliedData) {
-            console.log('failed to create application'.bgRed);
+            errorLogger.info('failed to create application'.bgRed);
             throw new ApiError(400, 'Failed to create application');
         }
-
-        console.log('updating job state . . . .'.bgCyan);
+        logger.info('updating job state . . . .'.bgCyan);
 
         const updateJObState = await Job.findByIdAndUpdate(
             newlyAppliedData[0].job,
@@ -66,11 +63,11 @@ exports.applyJob = async (userId, resume, requestedData) => {
         );
 
         if (!updateJObState) {
-            console.log('failed to update job state'.bgRed);
+            errorLogger.error('failed to update job state'.bgRed);
             throw new ApiError(400, 'failed to update job state');
         }
-        console.log('job state updated'.bgGreen);
-        console.log('applied to job successfully'.bgGreen);
+        logger.info('job state updated'.bgGreen);
+        logger.info('applied to job successfully'.bgGreen);
         await session.commitTransaction();
         await session.endSession();
     } catch (error) {

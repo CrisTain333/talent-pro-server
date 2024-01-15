@@ -20,7 +20,7 @@ exports.handleRegister = async userData => {
     userData.password = hashedPassword;
 
     const result = await User.create(userData);
-    logger.info('User created');
+    logger.info(`User created : Id-${result._id}`);
 
     const payload = {
         _id: result._id,
