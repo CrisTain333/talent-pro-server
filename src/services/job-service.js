@@ -66,7 +66,7 @@ exports.getAllJobs = async (filters, paginationOptions, user) => {
             select: '_id company_logo company_name'
         })
         .select(
-            'job_title job_type experience_level location_type address status total_views total_applications createdAt'
+            'job_title job_type experience_level location_type address status total_views total_applications applied_by createdAt'
         )
         .sort(sortConditions)
         .skip(skip)

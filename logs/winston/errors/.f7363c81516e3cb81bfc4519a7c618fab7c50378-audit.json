@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\.f7363c81516e3cb81bfc4519a7c618fab7c50378-audit.json",
+    "files": [
+        {
+            "date": 1705381198765,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-16-01-10-error.log",
+            "hash": "d186f6bbf3a621342daa90f5654d7a87521230a9b8ed0c889d7f2ba824aea221"
+        }
+    ],
+    "hashType": "sha256"
+}

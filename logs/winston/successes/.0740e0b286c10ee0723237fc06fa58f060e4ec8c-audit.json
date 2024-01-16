@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\.0740e0b286c10ee0723237fc06fa58f060e4ec8c-audit.json",
+    "files": [
+        {
+            "date": 1705381198753,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-16-01-10-success.log",
+            "hash": "5cffaf1c7807e04c19951d03d2cd38fb80b5fd3070e949530bc37fcd5221be5c"
+        },
+        {
+            "date": 1705381201526,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-16-01-11-success.log",
+            "hash": "e20a5bc414c89d0a62124199987fcf33e103da29a305829e3324b148eab3cd9a"
+        }
+    ],
+    "hashType": "sha256"
+}
