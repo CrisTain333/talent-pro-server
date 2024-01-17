@@ -26,7 +26,7 @@ const getAppliedJob = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const paginationOptions = pick(req.query, paginationFields);
     const filters = pick(req.query, appliedJobFilterableField);
-    console.log(filters);
+
     const result = await applicationService.getAppliedJobs(
         _id,
         paginationOptions,

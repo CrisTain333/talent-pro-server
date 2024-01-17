@@ -14,6 +14,11 @@
             "date": 1705381201526,
             "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-16-01-11-success.log",
             "hash": "e20a5bc414c89d0a62124199987fcf33e103da29a305829e3324b148eab3cd9a"
+        },
+        {
+            "date": 1705484589990,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-17-01-15-success.log",
+            "hash": "1811ca8b2224bf2baa50cb165806392ed526bcf555da9b3ba092315c061e75ee"
         }
     ],
     "hashType": "sha256"

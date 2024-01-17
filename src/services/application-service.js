@@ -95,8 +95,6 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
 
     const { search, ...filterData } = filter;
 
-    console.log(search);
-
     const andConditions = [
         {
             user: new mongoose.Types.ObjectId(userId)
@@ -131,7 +129,11 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
         andConditions.length > 0 ? { $and: andConditions } : {};
 
     const result = await Application.find(whereConditions)
-        .populate('candidate organization user')
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name company_location'
+        })
+        .select('createdAt status organization job')
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);

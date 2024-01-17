@@ -9,6 +9,11 @@
             "date": 1705381198765,
             "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-16-01-10-error.log",
             "hash": "d186f6bbf3a621342daa90f5654d7a87521230a9b8ed0c889d7f2ba824aea221"
+        },
+        {
+            "date": 1705484590003,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-17-01-15-error.log",
+            "hash": "c28726b88793d1413511273b37402624b66760c4ed282ff4f0a44864ba207892"
         }
     ],
     "hashType": "sha256"
