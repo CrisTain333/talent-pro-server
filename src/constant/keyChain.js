@@ -97,7 +97,7 @@ const applicationStatus = [
 ];
 
 const appliedJobSearchAbleField = ['job.job_title'];
-const appliedJobFilterableField = ['status'];
+const appliedJobFilterableField = ['status', 'search'];
 
 module.exports = {
     EmployStatus,
