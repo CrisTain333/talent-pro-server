@@ -95,6 +95,8 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
 
     const { search, ...filterData } = filter;
 
+    console.log(search);
+
     const andConditions = [
         {
             user: new mongoose.Types.ObjectId(userId)

@@ -6,9 +6,9 @@
     "auditLog": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/errors/.662cbdc1924e38d46351799e5dbf4c28329a2b9c-audit.json",
     "files": [
         {
-            "date": 1705291439848,
-            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/errors/tp-2024-15-01-10-error.log",
-            "hash": "cd9911357c17c2b63a0e7b5d04351574e6c8df56255dd7f1e6f012e29abee6e9"
+            "date": 1705469170152,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/errors/tp-2024-17-01-11-error.log",
+            "hash": "49b526ba00a013ba45f461859eb77dddebb69808dcf4a97114cc4f9081d51217"
         }
     ],
     "hashType": "sha256"
