@@ -94,6 +94,32 @@ router.patch(
     candidateController.updateCandidateResume
 );
 
+// ** ---------------------- Candidate Saved Job Routes ----------------------
+
+router.post(
+    '/job/saved/:id',
+    auth(User_Role.CANDIDATE),
+    savedJobController.saveJob
+);
+
+router.get(
+    '/job/saved',
+    auth(User_Role.CANDIDATE),
+    savedJobController.getSavedJobs
+);
+
+router.delete(
+    '/job/saved/:id',
+    auth(User_Role.CANDIDATE),
+    savedJobController.removeSavedJob
+);
+
+router.get(
+    '/job/saved/list',
+    auth(User_Role.CANDIDATE),
+    savedJobController.saveJobsList
+);
+
 // ** ---------------------- Candidate Job Routes ----------------------
 
 router.get('/job', auth(User_Role.CANDIDATE), jobController.getGlobalJobsList);
@@ -102,14 +128,6 @@ router.get(
     '/job/:id',
     auth(User_Role.CANDIDATE),
     jobController.getCandidateSingleJob
-);
-
-// ** ---------------------- Candidate Saved Job Routes ----------------------
-
-router.post(
-    '/job/saved',
-    auth(User_Role.CANDIDATE),
-    savedJobController.saveJob
 );
 
 module.exports = router;

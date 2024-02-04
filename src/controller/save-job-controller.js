@@ -9,7 +9,7 @@ const saveJob = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const jobId = req.params.id;
 
-    const result = await saveJobService.saveJobs(_id, jobId);
+    const result = await saveJobService.saveJob(_id, jobId);
 
     sendResponse(res, {
         statusCode: 201,
