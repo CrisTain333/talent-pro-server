@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const meController = require('../../controller/me-controller');
-const candidateController = require('../../controller/candidate-controller');
 const auth = require('../../middleware/auth');
-const { validateRequest } = require('../../middleware/validateRequest');
-const userValidation = require('./validation');
-const candidateValidation = require('./candidate-validation');
+
+const meController = require('../../controller/me-controller');
+const jobController = require('../../controller/job-controller');
+const candidateController = require('../../controller/candidate-controller');
+const savedJobController = require('../../controller/save-job-controller');
+
 const { User_Role } = require('../../constant/user-roles');
+const { validateRequest } = require('../../middleware/validateRequest');
+const candidateValidation = require('./candidate-validation');
 const uploader = require('../../middleware/uploader');
+const userValidation = require('./validation');
 
 router.get('/', auth(), meController.getMe);
 router.patch(
@@ -88,6 +92,24 @@ router.patch(
     uploader.single('resume'),
     auth(),
     candidateController.updateCandidateResume
+);
+
+// ** ---------------------- Candidate Job Routes ----------------------
+
+router.get('/job', auth(User_Role.CANDIDATE), jobController.getGlobalJobsList);
+
+router.get(
+    '/job/:id',
+    auth(User_Role.CANDIDATE),
+    jobController.getCandidateSingleJob
+);
+
+// ** ---------------------- Candidate Saved Job Routes ----------------------
+
+router.post(
+    '/job/saved',
+    auth(User_Role.CANDIDATE),
+    savedJobController.saveJob
 );
 
 module.exports = router;
