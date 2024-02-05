@@ -24,4 +24,10 @@ router.get(
     jobController.getRecruiterJobList
 );
 
+router.get(
+    '/job/:id',
+    auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
+    jobController.getRecruiterSingleJob
+);
+
 module.exports = router;
