@@ -10,7 +10,7 @@ const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const calculateWorkingHours = require('../utils/calculateWorkingsHours');
 
-exports.getGlobalJobsList = async (filters, paginationOptions, user) => {
+exports.getCandidateAllJobsList = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
@@ -38,12 +38,9 @@ exports.getGlobalJobsList = async (filters, paginationOptions, user) => {
         });
     }
 
-    // Add condition based on user role
-    if (user.role === 'candidate') {
-        andConditions.push({
-            $or: [{ status: 'PUBLISHED' }, { status: 'ON_HOLD' }]
-        });
-    }
+    andConditions.push({
+        $or: [{ status: 'PUBLISHED' }, { status: 'ON_HOLD' }]
+    });
 
     // Dynamic Sort needs field to do sorting
     const sortConditions = {};
@@ -114,4 +111,73 @@ exports.getCandidateSingleJob = async (user, jobID) => {
     result.working_hours = totalWorkingHours;
 
     return result;
+};
+
+exports.getRecruiterJobList = async (filters, paginationOptions, user) => {
+    const { search, ...filtersData } = filters;
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const andConditions = [];
+
+    andConditions.push({
+        createdBy: user._id
+    });
+
+    // Search needs $or for searching in specified fields
+    if (search) {
+        andConditions.push({
+            $or: jobSearchableFields.map(field => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }))
+        });
+    }
+
+    // Filters needs $and to fulfill all the conditions
+    if (Object.keys(filtersData).length) {
+        andConditions.push({
+            $and: Object.entries(filtersData).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const result = await Job.find(whereConditions)
+        .populate({
+            path: 'createdBy',
+            select: '_id name image_url email'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name'
+        })
+        .select(
+            'job_title job_type experience_level location_type address status total_views total_applications applied_by createdAt'
+        )
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+
+    const total = await Job.countDocuments(whereConditions);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
 };

@@ -9,12 +9,12 @@ const jobService = require('../services/job-service');
 
 // Candidate Job Routes
 
-const getGlobalJobsList = catchAsync(async (req, res) => {
+const getCandidateAllJobsList = catchAsync(async (req, res) => {
     const filters = pick(req.query, jobFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
     const user = req.user;
 
-    const result = await jobService.getGlobalJobsList(
+    const result = await jobService.getCandidateAllJobsList(
         filters,
         paginationOptions,
         user
@@ -43,9 +43,30 @@ const getCandidateSingleJob = catchAsync(async (req, res) => {
     });
 });
 
-// Candidate Saved Job Routes
+// Recruiter Job Routes
+
+const getRecruiterJobList = catchAsync(async (req, res) => {
+    const filters = pick(req.query, jobFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+    const user = req.user;
+
+    const result = await jobService.getRecruiterJobList(
+        filters,
+        paginationOptions,
+        user
+    );
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Job's retrieved successfully`,
+        data: result.data,
+        meta: result.meta
+    });
+});
 
 module.exports = {
-    getGlobalJobsList,
-    getCandidateSingleJob
+    getCandidateAllJobsList,
+    getCandidateSingleJob,
+    getRecruiterJobList
 };

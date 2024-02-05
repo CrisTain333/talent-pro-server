@@ -122,7 +122,11 @@ router.get(
 
 // ** ---------------------- Candidate Job Routes ----------------------
 
-router.get('/job', auth(User_Role.CANDIDATE), jobController.getGlobalJobsList);
+router.get(
+    '/job',
+    auth(User_Role.CANDIDATE),
+    jobController.getCandidateAllJobsList
+);
 
 router.get(
     '/job/:id',

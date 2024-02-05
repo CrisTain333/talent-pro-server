@@ -6,14 +6,9 @@
     "auditLog": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\.f7363c81516e3cb81bfc4519a7c618fab7c50378-audit.json",
     "files": [
         {
-            "date": 1705381198765,
-            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-16-01-10-error.log",
-            "hash": "d186f6bbf3a621342daa90f5654d7a87521230a9b8ed0c889d7f2ba824aea221"
-        },
-        {
-            "date": 1705484590003,
-            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-17-01-15-error.log",
-            "hash": "c28726b88793d1413511273b37402624b66760c4ed282ff4f0a44864ba207892"
+            "date": 1707124055430,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\errors\\tp-2024-05-02-15-error.log",
+            "hash": "42eeae747b6215e4c5bd41bb5ade981035d35b2f71d5d46c5e8ebc52eb5f05b8"
         }
     ],
     "hashType": "sha256"
