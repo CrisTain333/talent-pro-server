@@ -214,3 +214,41 @@ exports.getRecruiterSingleJob = async jobID => {
 
     return result;
 };
+
+exports.updateJob = async (jobID, updatedFields, user) => {
+    const job = await Job.findById(jobID)?.populate('createdBy');
+
+    if (!job || job === null) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    if (job.createdBy?._id.toString() !== user?._id.toString()) {
+        throw new ApiError(403, `you don't have permission to update`);
+    }
+
+    if (job.total_applications > 0) {
+        throw new ApiError(
+            403,
+            'Job has received applications and cannot be updated'
+        );
+    }
+
+    const fieldsToUpdate = {};
+
+    for (const field in updatedFields) {
+        if (allowedFieldsToUpdateJob.includes(field)) {
+            fieldsToUpdate[field] = updatedFields[field];
+        }
+    }
+
+    const result = await Job.findByIdAndUpdate(jobID, fieldsToUpdate, {
+        new: true
+    })
+        .populate('createdBy')
+        .populate('organization');
+
+    if (!result)
+        throw new ApiError(400, 'Invalid job ID or no fields to update');
+
+    return result;
+};

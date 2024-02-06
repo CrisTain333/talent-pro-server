@@ -32,4 +32,6 @@ router.get(
     jobController.getRecruiterSingleJob
 );
 
+router.patch('/job/:id', auth(User_Role.RECRUITER), jobController.updateJob);
+
 module.exports = router;
