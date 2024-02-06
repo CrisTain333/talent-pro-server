@@ -14,6 +14,16 @@
             "date": 1707135564593,
             "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-05-02-18-success.log",
             "hash": "fc24f29aeb784eb420fc6ab1ddd2bf34074b319661c8870245949a20acd8b3f6"
+        },
+        {
+            "date": 1707213027185,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-06-02-15-success.log",
+            "hash": "f33b05e03691866130395169ef89d6a4fd07742e9fe0e0e3e002871df033f639"
+        },
+        {
+            "date": 1707214073227,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-06-02-16-success.log",
+            "hash": "1a75a4b6857a247be41366fd247423f67308a34312925fab5bb6f8cbf06c29ae"
         }
     ],
     "hashType": "sha256"

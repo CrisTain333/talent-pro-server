@@ -113,6 +113,11 @@ exports.getCandidateSingleJob = async (user, jobID) => {
     return result;
 };
 
+exports.createNewJob = async jobData => {
+    const result = await Job.create(jobData);
+    return result;
+};
+
 exports.getRecruiterJobList = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
     const { page, limit, skip, sortBy, sortOrder } =

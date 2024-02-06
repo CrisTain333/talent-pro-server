@@ -18,6 +18,8 @@ router.post(
 
 // ** ---------------------- Recruiter Job Routes ----------------------
 
+router.post('/job', auth(User_Role.RECRUITER), jobController.createNewJob);
+
 router.get(
     '/job',
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),

@@ -45,6 +45,19 @@ const getCandidateSingleJob = catchAsync(async (req, res) => {
 
 // Recruiter Job Routes
 
+const createNewJob = catchAsync(async (req, res) => {
+    const { ...jobData } = req.body;
+
+    const result = await jobService.createNewJob(jobData);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Job posted successfully',
+        data: result
+    });
+});
+
 const getRecruiterJobList = catchAsync(async (req, res) => {
     const filters = pick(req.query, jobFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
@@ -81,6 +94,7 @@ const getRecruiterSingleJob = catchAsync(async (req, res) => {
 module.exports = {
     getCandidateAllJobsList,
     getCandidateSingleJob,
+    createNewJob,
     getRecruiterJobList,
     getRecruiterSingleJob
 };
