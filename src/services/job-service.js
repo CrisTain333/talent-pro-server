@@ -9,6 +9,7 @@ const ApiError = require('../error/ApiError');
 
 const calculatePagination = require('../helper/paginationHelper');
 const calculateWorkingHours = require('../utils/calculateWorkingsHours');
+const { User_Role } = require('../constant/user-roles');
 
 exports.getCandidateAllJobsList = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
@@ -251,4 +252,27 @@ exports.updateJob = async (jobID, updatedFields, user) => {
         throw new ApiError(400, 'Invalid job ID or no fields to update');
 
     return result;
+};
+
+exports.updateJobStatus = async (jobID, user, status) => {
+    const job = await Job.findById(jobID).populate('createdBy');
+
+    if (!job) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    console.log(job.createdBy);
+    console.log(user);
+
+    if (
+        job.createdBy._id.toString() === user._id.toString() ||
+        user.role === User_Role.SUPER_ADMIN
+    ) {
+        const updatedJob = await Job.findByIdAndUpdate(jobID, status, {
+            new: true
+        });
+        return updatedJob;
+    } else {
+        throw new ApiError(403, `You don't have permission to update`);
+    }
 };

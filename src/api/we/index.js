@@ -34,4 +34,10 @@ router.get(
 
 router.patch('/job/:id', auth(User_Role.RECRUITER), jobController.updateJob);
 
+router.patch(
+    '/job/:id/status',
+    auth(User_Role.RECRUITER),
+    jobController.updateJobStatus
+);
+
 module.exports = router;
