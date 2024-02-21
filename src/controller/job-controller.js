@@ -1,30 +1,20 @@
+const pick = require('../shared/pick');
 const catchAsync = require('../shared/catchAsync');
 const sendResponse = require('../shared/sendResponse');
 
-const jobService = require('../services/job-service');
-const pick = require('../shared/pick');
 const { jobFilterableFields } = require('../constant/keyChain');
 const { paginationFields } = require('../constant/pagination');
 
-const postJob = catchAsync(async (req, res) => {
-    const { ...jobData } = req.body;
+const jobService = require('../services/job-service');
 
-    const result = await jobService.postJob(jobData);
+// Candidate Job Routes
 
-    sendResponse(res, {
-        statusCode: 201,
-        success: true,
-        message: 'Job posted successfully',
-        data: result
-    });
-});
-
-const getAllJobs = catchAsync(async (req, res) => {
+const getCandidateAllJobsList = catchAsync(async (req, res) => {
     const filters = pick(req.query, jobFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
     const user = req.user;
 
-    const result = await jobService.getAllJobs(
+    const result = await jobService.getCandidateAllJobsList(
         filters,
         paginationOptions,
         user
@@ -39,11 +29,11 @@ const getAllJobs = catchAsync(async (req, res) => {
     });
 });
 
-const getSingleJob = catchAsync(async (req, res) => {
+const getCandidateSingleJob = catchAsync(async (req, res) => {
     const jobId = req.params.id;
     const user = req.user;
 
-    const result = await jobService.getSingleJob(user, jobId);
+    const result = await jobService.getCandidateSingleJob(user, jobId);
 
     sendResponse(res, {
         statusCode: 200,
@@ -53,10 +43,45 @@ const getSingleJob = catchAsync(async (req, res) => {
     });
 });
 
-const getPublicSingleJob = catchAsync(async (req, res) => {
+// Recruiter Job Routes
+
+const createNewJob = catchAsync(async (req, res) => {
+    const { ...jobData } = req.body;
+
+    const result = await jobService.createNewJob(jobData);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Job posted successfully',
+        data: result
+    });
+});
+
+const getRecruiterJobList = catchAsync(async (req, res) => {
+    const filters = pick(req.query, jobFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+    const user = req.user;
+
+    const result = await jobService.getRecruiterJobList(
+        filters,
+        paginationOptions,
+        user
+    );
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Job's retrieved successfully`,
+        data: result.data,
+        meta: result.meta
+    });
+});
+
+const getRecruiterSingleJob = catchAsync(async (req, res) => {
     const jobId = req.params.id;
 
-    const result = await jobService.getSinglePublicJob(jobId);
+    const result = await jobService.getRecruiterSingleJob(jobId);
 
     sendResponse(res, {
         statusCode: 200,
@@ -71,7 +96,7 @@ const updateJob = catchAsync(async (req, res) => {
     const jobId = req.params.id;
     const updatedData = req.body;
 
-    const result = await jobService.updateJobById(jobId, updatedData, user);
+    const result = await jobService.updateJob(jobId, updatedData, user);
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -95,10 +120,11 @@ const updateJobStatus = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-    postJob,
-    getAllJobs,
-    getSingleJob,
-    getPublicSingleJob,
+    getCandidateAllJobsList,
+    getCandidateSingleJob,
+    createNewJob,
+    getRecruiterJobList,
+    getRecruiterSingleJob,
     updateJob,
     updateJobStatus
 };

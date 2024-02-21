@@ -6,19 +6,29 @@
     "auditLog": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\.0740e0b286c10ee0723237fc06fa58f060e4ec8c-audit.json",
     "files": [
         {
-            "date": 1705381198753,
-            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-16-01-10-success.log",
-            "hash": "5cffaf1c7807e04c19951d03d2cd38fb80b5fd3070e949530bc37fcd5221be5c"
+            "date": 1707124055411,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-05-02-15-success.log",
+            "hash": "79d3c9bec3f41e6114bcb97c4268882c4eb82468cdd84442e6a479dc85ec2fbc"
         },
         {
-            "date": 1705381201526,
-            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-16-01-11-success.log",
-            "hash": "e20a5bc414c89d0a62124199987fcf33e103da29a305829e3324b148eab3cd9a"
+            "date": 1707135564593,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-05-02-18-success.log",
+            "hash": "fc24f29aeb784eb420fc6ab1ddd2bf34074b319661c8870245949a20acd8b3f6"
         },
         {
-            "date": 1705484589990,
-            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-17-01-15-success.log",
-            "hash": "1811ca8b2224bf2baa50cb165806392ed526bcf555da9b3ba092315c061e75ee"
+            "date": 1707213027185,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-06-02-15-success.log",
+            "hash": "f33b05e03691866130395169ef89d6a4fd07742e9fe0e0e3e002871df033f639"
+        },
+        {
+            "date": 1707214073227,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-06-02-16-success.log",
+            "hash": "1a75a4b6857a247be41366fd247423f67308a34312925fab5bb6f8cbf06c29ae"
+        },
+        {
+            "date": 1707217632294,
+            "name": "C:\\Talent Pro\\talent-pro-server\\logs\\winston\\successes\\tp-2024-06-02-17-success.log",
+            "hash": "8b73dc301e101e6226aac9e6b2db45577ac858a8f0e943ef1bd4d39dd5ac27a6"
         }
     ],
     "hashType": "sha256"

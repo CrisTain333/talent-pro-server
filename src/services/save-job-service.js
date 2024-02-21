@@ -3,7 +3,7 @@ const SavedJob = require('../model/saveJobModel');
 const calculatePagination = require('../helper/paginationHelper');
 const { default: mongoose } = require('mongoose');
 
-exports.saveJobs = async (userId, jobId) => {
+exports.saveJob = async (userId, jobId) => {
     if (!userId || !jobId) {
         throw new ApiError(400, 'User Id or Job Id is required');
     }
