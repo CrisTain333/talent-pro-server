@@ -261,9 +261,6 @@ exports.updateJobStatus = async (jobID, user, status) => {
         throw new ApiError(404, 'Job not found');
     }
 
-    console.log(job.createdBy);
-    console.log(user);
-
     if (
         job.createdBy._id.toString() === user._id.toString() ||
         user.role === User_Role.SUPER_ADMIN
