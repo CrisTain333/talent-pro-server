@@ -119,6 +119,21 @@ const updateJobStatus = catchAsync(async (req, res) => {
     });
 });
 
+// Public Job Routes
+
+const getPublicSingleJob = catchAsync(async (req, res) => {
+    const jobId = req.params.id;
+
+    const result = await jobService.getPublicSingleJob(jobId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Job retrieved successfully`,
+        data: result
+    });
+});
+
 module.exports = {
     getCandidateAllJobsList,
     getCandidateSingleJob,
@@ -126,5 +141,6 @@ module.exports = {
     getRecruiterJobList,
     getRecruiterSingleJob,
     updateJob,
-    updateJobStatus
+    updateJobStatus,
+    getPublicSingleJob
 };
