@@ -3,6 +3,7 @@ const router = express.Router();
 
 const auth = require('../../middleware/auth');
 
+const applicationController = require('../../controller/application-controller');
 const meController = require('../../controller/me-controller');
 const jobController = require('../../controller/job-controller');
 const candidateController = require('../../controller/candidate-controller');
@@ -118,6 +119,21 @@ router.get(
     '/job/saved/list',
     auth(User_Role.CANDIDATE),
     savedJobController.saveJobsList
+);
+
+// ** ---------------------- Candidate Application Routes ----------------------
+
+router.post(
+    '/job/:id/apply',
+    auth(User_Role.CANDIDATE),
+    uploader.single('resume'),
+    applicationController.applyJob
+);
+
+router.get(
+    '/job/applied-job',
+    auth(User_Role.CANDIDATE),
+    applicationController.getAppliedJobs
 );
 
 // ** ---------------------- Candidate Job Routes ----------------------

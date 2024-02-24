@@ -5,12 +5,15 @@ const { paginationFields } = require('../constant/pagination');
 const pick = require('../shared/pick');
 const { appliedJobFilterableField } = require('../constant/keyChain');
 
-const applyJobController = catchAsync(async (req, res) => {
+const applyJob = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const applicationData = req.body;
+    const jobId = req.params.id;
     const resume = req.file;
+
     const result = await applicationService.applyJob(
         _id,
+        jobId,
         resume,
         applicationData
     );
@@ -22,7 +25,7 @@ const applyJobController = catchAsync(async (req, res) => {
     });
 });
 
-const getAppliedJob = catchAsync(async (req, res) => {
+const getAppliedJobs = catchAsync(async (req, res) => {
     const { _id } = req.user;
     const paginationOptions = pick(req.query, paginationFields);
     const filters = pick(req.query, appliedJobFilterableField);
@@ -43,6 +46,6 @@ const getAppliedJob = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-    applyJobController,
-    getAppliedJob
+    applyJob,
+    getAppliedJobs
 };
