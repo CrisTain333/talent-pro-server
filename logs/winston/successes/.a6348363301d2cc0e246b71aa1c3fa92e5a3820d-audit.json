@@ -19,6 +19,21 @@
             "date": 1708833721580,
             "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-10-success.log",
             "hash": "d12b1fd85355a1fddad92ed414bcb3b5b01c67b04ae3a4708c93b47c0f28efed"
+        },
+        {
+            "date": 1708837228795,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-11-success.log",
+            "hash": "2026e576dfc9886cc9559f5cd8bc4f5818612d12a3608f5011f9e7b68f3f3ebd"
+        },
+        {
+            "date": 1708849528134,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-14-success.log",
+            "hash": "1f6eaf3a18dc8ccc5d7b242e02e712f1d969eaab9652cc69f7bf8154d8306e0a"
+        },
+        {
+            "date": 1708851631311,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-15-success.log",
+            "hash": "474cfdc89ca3dd7bfd45b8f82b7136c7cc392cf5a6dae2d48c1cff242b5082c8"
         }
     ],
     "hashType": "sha256"
