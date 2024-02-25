@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
-const { EmployStatus, IndustryOptions } = require('../constant/keyChain');
+const {
+    EmployStatus,
+    IndustryOptions,
+    GenderOption
+} = require('../constant/keyChain');
 
 const candidateProfileSchema = new mongoose.Schema(
     {
@@ -21,6 +25,15 @@ const candidateProfileSchema = new mongoose.Schema(
         industry: {
             type: String,
             enum: IndustryOptions,
+            required: true
+        },
+        gender: {
+            type: String,
+            enum: GenderOption,
+            required: true
+        },
+        date_of_birth: {
+            type: String,
             required: true
         },
         phone: {

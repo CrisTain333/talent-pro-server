@@ -30,6 +30,8 @@ const IndustryOptions = [
     'TELECOMMUNICATIONS',
     'TRANSPORTATION_AND_LOGISTICS'
 ];
+const GenderOption = ['MALE', 'FEMALE', 'OTHER'];
+
 const EmployStatus = ['EMPLOYED', 'INTERNSHIP', 'UNEMPLOYED'];
 const EmploymentType = ['FULL_TIME', 'PART_TIME', 'INTERN'];
 
@@ -103,6 +105,7 @@ module.exports = {
     EmployStatus,
     EmploymentType,
     IndustryOptions,
+    GenderOption,
     LocationType,
     ExperienceLevel,
     WeekDay,

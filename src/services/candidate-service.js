@@ -146,21 +146,17 @@ exports.updateCandidateProfile = async (userId, candidateUpdatedData) => {
 exports.getInfo = async userId => {
     const candidate = await Candidate.findOne({
         user_id: userId
-    }).select('phone location -_id industry job_status');
+    }).select('-_id gender date_of_birth phone location industry job_status');
 
     return candidate;
 };
 
 exports.updateCandidateInfo = async (userID, candidateInfo) => {
-    const { phone, location, industry, job_status } = candidateInfo;
+    const { gender, date_of_birth, phone, location, industry, job_status } =
+        candidateInfo;
     await Candidate.findOneAndUpdate(
         { user_id: userID },
-        {
-            phone,
-            location,
-            industry,
-            job_status
-        },
+        { gender, date_of_birth, phone, location, industry, job_status },
         { new: true }
     );
 
