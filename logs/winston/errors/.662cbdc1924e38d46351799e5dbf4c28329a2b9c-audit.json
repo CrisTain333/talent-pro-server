@@ -14,6 +14,11 @@
             "date": 1708830008472,
             "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/errors/tp-2024-25-02-09-error.log",
             "hash": "1805c38c61438b3512e4e2575759f373da55359b7d4d8287cc16952b7790bab3"
+        },
+        {
+            "date": 1708833721584,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/errors/tp-2024-25-02-10-error.log",
+            "hash": "6da58a7933f24a0ede434f0a24e0ecf97fa459e2a830393747f0ab1a7615991d"
         }
     ],
     "hashType": "sha256"

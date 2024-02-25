@@ -319,34 +319,33 @@ exports.deleteJob = async JobId => {
     try {
         session.startTransaction();
 
-        // // Delete Job from Job collection
-        // await Job.deleteOne(
-        //     { _id: JobId },
-        //     {
-        //         session
-        //     }
-        // );
+        // Delete Job from Job collection
+        await Job.deleteOne(
+            { _id: JobId },
+            {
+                session
+            }
+        );
 
-        // // Delete application applied to this job
-        // await Application.deleteMany(
-        //     { 'job._id': JobId },
-        //     {
-        //         session
-        //     }
-        // );
+        // Delete application applied to this job
+        await Application.deleteMany(
+            { 'job._id': JobId },
+            {
+                session
+            }
+        );
 
         // Delete Job from Saved Job collection
 
-        const SavedJobByUser = await SavedJob.find({
-            'job._id': JobId
-        }).populate({
-            path: 'job',
-            select: '_id'
-        });
+        await SavedJob.deleteMany(
+            { job: JobId },
+            {
+                session
+            }
+        );
 
-        console.log(SavedJobByUser);
-
-        // await SavedJob.deleteMany({});
+        await session.commitTransaction();
+        await session.endSession();
     } catch (error) {
         await session.abortTransaction();
         await session.endSession();
