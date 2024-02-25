@@ -40,4 +40,6 @@ router.patch(
     jobController.updateJobStatus
 );
 
+router.delete('/job/:id', auth(User_Role.RECRUITER), jobController.deleteJob);
+
 module.exports = router;

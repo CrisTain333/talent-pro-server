@@ -6,9 +6,19 @@
     "auditLog": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/.a6348363301d2cc0e246b71aa1c3fa92e5a3820d-audit.json",
     "files": [
         {
-            "date": 1705469170149,
-            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-17-01-11-success.log",
-            "hash": "3e068cba784b64e8aae4d80b372b8f6c3c1732a4036898119e2ff157e9c7e9c5"
+            "date": 1708829809644,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-08-success.log",
+            "hash": "7bad5c92aab70155c3030a7b96f65e3b0fe7019167e78ee90e43b8acf29dba36"
+        },
+        {
+            "date": 1708830008468,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-09-success.log",
+            "hash": "6a9f2d726f32bbf31dac1ffeb8995334d89b24f131e530e93e1b00459db244ef"
+        },
+        {
+            "date": 1708833721580,
+            "name": "/home/cristain/projects/talent-pro/talent-pro-server/logs/winston/successes/tp-2024-25-02-10-success.log",
+            "hash": "d12b1fd85355a1fddad92ed414bcb3b5b01c67b04ae3a4708c93b47c0f28efed"
         }
     ],
     "hashType": "sha256"

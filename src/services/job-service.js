@@ -10,6 +10,9 @@ const ApiError = require('../error/ApiError');
 const calculatePagination = require('../helper/paginationHelper');
 const calculateWorkingHours = require('../utils/calculateWorkingsHours');
 const { User_Role } = require('../constant/user-roles');
+const { default: mongoose } = require('mongoose');
+const Application = require('../model/applicationModel');
+const SavedJob = require('../model/saveJobModel');
 
 exports.getCandidateAllJobsList = async (filters, paginationOptions, user) => {
     const { search, ...filtersData } = filters;
@@ -300,4 +303,54 @@ exports.getPublicSingleJob = async jobID => {
     result.working_hours = totalWorkingHours;
 
     return result;
+};
+
+exports.deleteJob = async JobId => {
+    if (!JobId) throw new ApiError(400, 'Invalid job ID');
+
+    const job = await Job.findById(JobId);
+
+    if (!job) {
+        throw new ApiError(404, 'Job not found');
+    }
+
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        // Delete Job from Job collection
+        await Job.deleteOne(
+            { _id: JobId },
+            {
+                session
+            }
+        );
+
+        // Delete application applied to this job
+        await Application.deleteMany(
+            { 'job._id': JobId },
+            {
+                session
+            }
+        );
+
+        // Delete Job from Saved Job collection
+
+        await SavedJob.deleteMany(
+            { job: JobId },
+            {
+                session
+            }
+        );
+
+        await session.commitTransaction();
+        await session.endSession();
+    } catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw error;
+    } finally {
+        await session.endSession();
+    }
 };

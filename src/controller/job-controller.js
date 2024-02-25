@@ -134,6 +134,19 @@ const getPublicSingleJob = catchAsync(async (req, res) => {
     });
 });
 
+const deleteJob = catchAsync(async (req, res) => {
+    const jobId = req.params.id;
+
+    const result = await jobService.deleteJob(jobId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: `Job deleted successfully`,
+        data: result
+    });
+});
+
 module.exports = {
     getCandidateAllJobsList,
     getCandidateSingleJob,
@@ -142,5 +155,6 @@ module.exports = {
     getRecruiterSingleJob,
     updateJob,
     updateJobStatus,
-    getPublicSingleJob
+    getPublicSingleJob,
+    deleteJob
 };
