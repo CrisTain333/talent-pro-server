@@ -29,7 +29,7 @@ router.get(
 
 // Applications section
 router.get(
-    '/job/applications',
+    '/job/application',
     auth(User_Role.RECRUITER),
     applicationController.getApplicationByOrganization
 );
