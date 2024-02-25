@@ -8,6 +8,8 @@ const uploader = require('../../middleware/uploader');
 const auth = require('../../middleware/auth');
 const { User_Role } = require('../../constant/user-roles');
 
+const OrgApplicationController = require('../../controller/org-application-controller');
+
 router.get('/', auth(User_Role.RECRUITER), weController.getOrganization);
 router.post(
     '/',
@@ -24,6 +26,25 @@ router.get(
     '/job',
     auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
     jobController.getRecruiterJobList
+);
+
+// Applications section
+router.get(
+    '/job/applications',
+    auth(User_Role.RECRUITER),
+    OrgApplicationController.getApplicationByORG
+);
+
+router.get(
+    '/job/:jobId/application/:applicationId',
+    auth(User_Role.RECRUITER),
+    OrgApplicationController.getSingleApplication
+);
+
+router.get(
+    '/job/:jobId/application',
+    auth(User_Role.RECRUITER),
+    OrgApplicationController.getApplicationByJob
 );
 
 router.get(
