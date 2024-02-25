@@ -45,7 +45,56 @@ const getAppliedJobs = catchAsync(async (req, res) => {
     });
 });
 
+const getApplicationByOrganization = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const paginationOptions = pick(req.query, paginationFields);
+    const filters = pick(req.query, appliedJobFilterableField);
+
+    const result = await applicationService.getApplicationByOrganization(
+        _id,
+        paginationOptions,
+        filters
+    );
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Applications retrieved successfully',
+        data: result.data,
+        meta: result.meta
+    });
+});
+
+const getApplicationByJob = catchAsync(async (req, res) => {
+    const { jobId } = req.params;
+
+    const result = await applicationService.getApplicationByJob(jobId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Applications retrieved successfully',
+        data: result
+    });
+});
+const getSingleApplication = catchAsync(async (req, res) => {
+    const { JobId, applicationId } = req.params;
+
+    const result = await applicationService.getSingleApplication(
+        JobId,
+        applicationId
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Applications retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     applyJob,
-    getAppliedJobs
+    getAppliedJobs,
+    getApplicationByOrganization,
+    getApplicationByJob,
+    getSingleApplication
 };

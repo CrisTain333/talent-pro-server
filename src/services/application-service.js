@@ -5,6 +5,7 @@ const Job = require('../model/jobModel');
 const { uploadFiles } = require('../shared/uploadFile');
 const calculatePagination = require('../helper/paginationHelper');
 const { appliedJobSearchAbleField } = require('../constant/keyChain');
+const Organization = require('../model/organizationModel');
 
 exports.applyJob = async (userId, jobId, resume, requestedData) => {
     const job = await Job.findOne({
@@ -130,4 +131,99 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
         },
         data: result
     };
+};
+
+exports.getApplicationByOrganization = async (
+    userId,
+    paginationOptions,
+    filter
+) => {
+    if (!userId) {
+        throw new ApiError(400, 'User Id is required');
+    }
+
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const { search, ...filterData } = filter;
+
+    const org = await Organization.findOne({
+        user_id: new mongoose.Types.ObjectId(userId)
+    });
+
+    const orgId = new mongoose.Types.ObjectId(org._id).toHexString();
+
+    const andConditions = [
+        {
+            organization: new mongoose.Types.ObjectId(orgId)
+        }
+    ];
+
+    if (search) {
+        andConditions.push({
+            $or: appliedJobSearchAbleField.map(field => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }))
+        });
+    }
+    if (Object.keys(filterData).length) {
+        andConditions.push({
+            $and: Object.entries(filterData).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const result = await Application.find(whereConditions)
+        .populate({
+            path: 'user',
+            select: 'name email image_url'
+        })
+        .populate({
+            path: 'candidate',
+            select: 'gender date_of_birth location desired_salary'
+        })
+        .select(
+            '-job.job_type -job.experience_level -job.location_type -organization -skills -updatedAt -__v'
+        )
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+
+    const total = await Application.countDocuments(whereConditions);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
+};
+
+exports.getApplicationByJob = async JobId => {
+    const allApplications = await Application.find({ 'job._id': JobId });
+    return allApplications;
+};
+
+exports.getSingleApplication = async (JobId, applicationId) => {
+    console.log(applicationId);
+
+    const singleApplication = await Application.findOne({
+        _id: applicationId
+    }).populate('user candidate organization');
+    return singleApplication;
 };

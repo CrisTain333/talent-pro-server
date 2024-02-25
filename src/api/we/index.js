@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+const applicationController = require('../../controller/application-controller');
 const jobController = require('../../controller/job-controller');
 const weController = require('../../controller/we-controller');
 
 const uploader = require('../../middleware/uploader');
 const auth = require('../../middleware/auth');
 const { User_Role } = require('../../constant/user-roles');
-
-const OrgApplicationController = require('../../controller/org-application-controller');
 
 router.get('/', auth(User_Role.RECRUITER), weController.getOrganization);
 router.post(
@@ -32,19 +31,19 @@ router.get(
 router.get(
     '/job/applications',
     auth(User_Role.RECRUITER),
-    OrgApplicationController.getApplicationByORG
+    applicationController.getApplicationByOrganization
 );
 
 router.get(
     '/job/:jobId/application/:applicationId',
     auth(User_Role.RECRUITER),
-    OrgApplicationController.getSingleApplication
+    applicationController.getSingleApplication
 );
 
 router.get(
     '/job/:jobId/application',
     auth(User_Role.RECRUITER),
-    OrgApplicationController.getApplicationByJob
+    applicationController.getApplicationByJob
 );
 
 router.get(
