@@ -202,7 +202,7 @@ exports.getRecruiterSingleJob = async jobID => {
             select: '_id company_logo company_name about_us industry company_location company_size website'
         })
         .select(
-            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by applied_by start_time end_time total_views total_applications'
+            'job_title job_description required_skills years_of_experience start_day end_day deadline num_of_vacancy working_hours job_type experience_level location_type address status salary createdAt viewed_by applied_by start_time end_time total_views total_applications is_negotiable'
         );
 
     if (!job) {
@@ -227,13 +227,13 @@ exports.updateJob = async (jobID, updatedFields, user) => {
     }
 
     if (job.createdBy?._id.toString() !== user?._id.toString()) {
-        throw new ApiError(403, `you don't have permission to update`);
+        throw new ApiError(403, `You don't have permission to update`);
     }
 
     if (job.total_applications > 0) {
         throw new ApiError(
             403,
-            'Job has received applications and cannot be updated'
+            `Job has received applications and can't be updated`
         );
     }
 
