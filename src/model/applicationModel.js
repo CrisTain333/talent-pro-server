@@ -46,6 +46,10 @@ const applicationSchema = new mongoose.Schema(
                 type: String,
                 enum: LocationType,
                 required: true
+            },
+            address: {
+                type: String,
+                required: true
             }
         },
         phone: {
