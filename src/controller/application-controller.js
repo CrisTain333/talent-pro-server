@@ -68,12 +68,20 @@ const getApplicationByOrganization = catchAsync(async (req, res) => {
 const getApplicationByJob = catchAsync(async (req, res) => {
     const { jobId } = req.params;
 
-    const result = await applicationService.getApplicationByJob(jobId);
+    const paginationOptions = pick(req.query, paginationFields);
+    const filters = pick(req.query, appliedJobFilterableField);
+
+    const result = await applicationService.getApplicationByJob(
+        jobId,
+        paginationOptions,
+        filters
+    );
     sendResponse(res, {
         statusCode: 200,
         success: true,
         message: 'Applications retrieved successfully',
-        data: result
+        data: result.data,
+        meta: result.meta
     });
 });
 const getSingleApplication = catchAsync(async (req, res) => {

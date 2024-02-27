@@ -66,8 +66,7 @@ const candidateProfileSchema = new mongoose.Schema(
             required: true
         },
         portfolio: {
-            type: String,
-            required: true
+            type: String
         },
         resume: {
             type: String,

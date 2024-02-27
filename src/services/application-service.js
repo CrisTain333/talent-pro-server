@@ -214,9 +214,67 @@ exports.getApplicationByOrganization = async (
     };
 };
 
-exports.getApplicationByJob = async JobId => {
-    const allApplications = await Application.find({ 'job._id': JobId });
-    return allApplications;
+exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+
+    const { search, ...filterData } = filter;
+
+    const andConditions = [{ 'job._id': JobId }];
+
+    if (search) {
+        andConditions.push({
+            $or: appliedJobSearchAbleField.map(field => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }))
+        });
+    }
+    if (Object.keys(filterData).length) {
+        andConditions.push({
+            $and: Object.entries(filterData).map(([field, value]) => ({
+                [field]: value
+            }))
+        });
+    }
+
+    // Dynamic Sort needs field to do sorting
+    const sortConditions = {};
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const whereConditions =
+        andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const result = await Application.find(whereConditions)
+        .populate({
+            path: 'user',
+            select: 'name email image_url'
+        })
+        .populate({
+            path: 'candidate',
+            select: 'gender date_of_birth location desired_salary'
+        })
+        .select(
+            '-job.job_type -job.experience_level -job.location_type -organization -skills -updatedAt -__v'
+        )
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+
+    const total = await Application.countDocuments(whereConditions);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
 };
 
 exports.getSingleApplication = async (JobId, applicationId) => {
