@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+const { default: mongoose, Mongoose } = require('mongoose');
 const ApiError = require('../error/ApiError');
 const Application = require('../model/applicationModel');
 const Job = require('../model/jobModel');
@@ -6,6 +6,7 @@ const { uploadFiles } = require('../shared/uploadFile');
 const calculatePagination = require('../helper/paginationHelper');
 const { appliedJobSearchAbleField } = require('../constant/keyChain');
 const Organization = require('../model/organizationModel');
+const User = require('../model/userModel');
 
 exports.applyJob = async (userId, jobId, resume, requestedData) => {
     const job = await Job.findOne({
@@ -142,141 +143,218 @@ exports.getApplicationByOrganization = async (
         throw new ApiError(400, 'User Id is required');
     }
 
-    const { page, limit, skip, sortBy, sortOrder } =
-        calculatePagination(paginationOptions);
-
-    const { search, ...filterData } = filter;
-
     const org = await Organization.findOne({
         user_id: new mongoose.Types.ObjectId(userId)
     });
 
     const orgId = new mongoose.Types.ObjectId(org._id).toHexString();
 
-    const andConditions = [
+    const { page, limit, skip, sortBy, sortOrder } =
+        calculatePagination(paginationOptions);
+    const { search, ...filterData } = filter;
+
+    const pipeline = [
         {
-            organization: new mongoose.Types.ObjectId(orgId)
+            $match: {
+                organization: new mongoose.Types.ObjectId(orgId)
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user'
+            }
+        },
+        { $unwind: '$user' },
+        {
+            $lookup: {
+                from: 'candidates',
+                localField: 'candidate',
+                foreignField: '_id',
+                as: 'candidate'
+            }
+        },
+        { $unwind: '$candidate' },
+        {
+            $project: {
+                _id: 1,
+                job: {
+                    _id: 1,
+                    job_title: 1
+                },
+                user: {
+                    name: 1,
+                    email: 1,
+                    image_url: 1
+                },
+                candidate: {
+                    gender: 1,
+                    date_of_birth: 1,
+                    location: 1,
+                    desired_salary: 1
+                },
+                phone: 1,
+                years_of_experience: 1,
+                resume: 1,
+                status: 1,
+                createdAt: 1
+            }
         }
     ];
 
     if (search) {
-        andConditions.push({
-            $or: appliedJobSearchAbleField.map(field => ({
-                [field]: {
-                    $regex: search,
-                    $options: 'i'
-                }
-            }))
+        pipeline.push({
+            $match: {
+                $or: appliedJobSearchAbleField.map(field => ({
+                    [field]: {
+                        $regex: search,
+                        $options: 'i'
+                    }
+                }))
+            }
         });
     }
+
     if (Object.keys(filterData).length) {
-        andConditions.push({
-            $and: Object.entries(filterData).map(([field, value]) => ({
-                [field]: value
-            }))
+        pipeline.push({
+            $match: filterData
         });
     }
 
-    // Dynamic Sort needs field to do sorting
-    const sortConditions = {};
     if (sortBy && sortOrder) {
-        sortConditions[sortBy] = sortOrder;
+        const sortStage = {
+            $sort: {
+                [sortBy]: sortOrder === 'ascending' ? 1 : -1
+            }
+        };
+        pipeline.push(sortStage);
     }
 
-    const whereConditions =
-        andConditions.length > 0 ? { $and: andConditions } : {};
+    pipeline.push({ $skip: skip }, { $limit: limit });
 
-    const result = await Application.find(whereConditions)
-        .populate({
-            path: 'user',
-            select: 'name email image_url'
-        })
-        .populate({
-            path: 'candidate',
-            select: 'gender date_of_birth location desired_salary'
-        })
-        .select(
-            '-job.job_type -job.experience_level -job.location_type -organization -skills -updatedAt -__v'
-        )
-        .sort(sortConditions)
-        .skip(skip)
-        .limit(limit);
+    const applications = await Application.aggregate(pipeline);
 
-    const total = await Application.countDocuments(whereConditions);
+    const totalPipeline = [...pipeline];
+
+    totalPipeline.pop();
+    totalPipeline.pop();
+    const total = await Application.aggregate([
+        ...totalPipeline,
+        { $count: 'total' }
+    ]);
 
     return {
         meta: {
             page,
             limit,
-            total
+            total: total.length > 0 ? total[0].total : 0
         },
-        data: result
+        data: applications
     };
 };
 
 exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
     const { page, limit, skip, sortBy, sortOrder } =
         calculatePagination(paginationOptions);
-
     const { search, ...filterData } = filter;
 
-    const andConditions = [{ 'job._id': JobId }];
+    const pipeline = [
+        { $match: { 'job._id': new mongoose.Types.ObjectId(JobId) } },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user'
+            }
+        },
+        { $unwind: '$user' },
+        {
+            $lookup: {
+                from: 'candidates',
+                localField: 'candidate',
+                foreignField: '_id',
+                as: 'candidate'
+            }
+        },
+        { $unwind: '$candidate' },
+        {
+            $project: {
+                _id: 1,
+                job: {
+                    _id: 1,
+                    job_title: 1
+                },
+                user: {
+                    name: 1,
+                    email: 1,
+                    image_url: 1
+                },
+                candidate: {
+                    gender: 1,
+                    date_of_birth: 1,
+                    location: 1,
+                    desired_salary: 1
+                },
+                phone: 1,
+                years_of_experience: 1,
+                resume: 1,
+                status: 1,
+                createdAt: 1
+            }
+        }
+    ];
 
     if (search) {
-        andConditions.push({
-            $or: appliedJobSearchAbleField.map(field => ({
-                [field]: {
-                    $regex: search,
-                    $options: 'i'
-                }
-            }))
+        pipeline.push({
+            $match: {
+                $or: appliedJobSearchAbleField.map(field => ({
+                    [field]: {
+                        $regex: search,
+                        $options: 'i'
+                    }
+                }))
+            }
         });
     }
 
     if (Object.keys(filterData).length) {
-        andConditions.push({
-            $and: Object.entries(filterData).map(([field, value]) => ({
-                [field]: value
-            }))
+        pipeline.push({
+            $match: filterData
         });
     }
 
-    // Dynamic Sort needs field to do sorting
-    const sortConditions = {};
     if (sortBy && sortOrder) {
-        sortConditions[sortBy] = sortOrder;
+        const sortStage = {
+            $sort: {
+                [sortBy]: sortOrder === 'ascending' ? 1 : -1
+            }
+        };
+        pipeline.push(sortStage);
     }
 
-    const whereConditions =
-        andConditions.length > 0 ? { $and: andConditions } : {};
+    pipeline.push({ $skip: skip }, { $limit: limit });
 
-    const result = await Application.find()
-        .populate({
-            path: 'user',
-            select: 'name email image_url'
-        })
-        .populate({
-            path: 'candidate',
-            select: 'gender date_of_birth location desired_salary'
-        })
+    const applications = await Application.aggregate(pipeline);
 
-        .select(
-            '-job.job_type -job.experience_level -job.location_type -organization -skills -updatedAt -__v'
-        )
-        .find(whereConditions)
-        .sort(sortConditions)
-        .skip(skip)
-        .limit(limit);
+    const totalPipeline = [...pipeline];
 
-    const total = await Application.countDocuments(whereConditions);
+    totalPipeline.pop();
+    totalPipeline.pop();
+    const total = await Application.aggregate([
+        ...totalPipeline,
+        { $count: 'total' }
+    ]);
 
     return {
         meta: {
             page,
             limit,
-            total
+            total: total.length > 0 ? total[0].total : 0
         },
-        data: result
+        data: applications
     };
 };
 

@@ -95,6 +95,15 @@ const applicationSchema = new mongoose.Schema(
     }
 );
 
+// applicationSchema.pre(/^find/, function (next) {
+//     this.populate({
+//         path: 'user',
+//         select: 'name email image_url'
+//     });
+
+//     next();
+// });
+
 const Application = mongoose.model('Application', applicationSchema);
 
 module.exports = Application;

@@ -98,7 +98,13 @@ const applicationStatus = [
     'not_selected'
 ];
 
-const appliedJobSearchAbleField = ['job.job_title', 'user.email', 'phone'];
+const appliedJobSearchAbleField = [
+    'job.job_title',
+    'user.email',
+    'phone',
+    'user.name.first_name',
+    'user.name.last_name'
+];
 const appliedJobFilterableField = ['status', 'search'];
 
 module.exports = {
