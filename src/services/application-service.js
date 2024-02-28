@@ -232,6 +232,7 @@ exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
             }))
         });
     }
+
     if (Object.keys(filterData).length) {
         andConditions.push({
             $and: Object.entries(filterData).map(([field, value]) => ({
@@ -249,7 +250,7 @@ exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
     const whereConditions =
         andConditions.length > 0 ? { $and: andConditions } : {};
 
-    const result = await Application.find(whereConditions)
+    const result = await Application.find()
         .populate({
             path: 'user',
             select: 'name email image_url'
@@ -258,9 +259,11 @@ exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
             path: 'candidate',
             select: 'gender date_of_birth location desired_salary'
         })
+
         .select(
             '-job.job_type -job.experience_level -job.location_type -organization -skills -updatedAt -__v'
         )
+        .find(whereConditions)
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
