@@ -358,11 +358,47 @@ exports.getApplicationByJob = async (JobId, paginationOptions, filter) => {
     };
 };
 
-exports.getSingleApplication = async (JobId, applicationId) => {
-    console.log(applicationId);
+exports.getSingleApplication = async (jobId, applicationId, user) => {
+    const organization = await Organization.findOne({
+        user_id: user._id
+    });
+
+    if (!organization) {
+        throw new ApiError(400, 'Organization not found');
+    }
+
+    const isOwnJob = await Job.findOne({
+        _id: jobId,
+        organization: organization._id
+    });
+
+    if (!isOwnJob) {
+        throw new ApiError(
+            400,
+            'You are not authorized to view this application'
+        );
+    }
 
     const singleApplication = await Application.findOne({
+        'job._id': jobId,
         _id: applicationId
     }).populate('user candidate organization');
+
+    if (singleApplication.status === 'application_received') {
+        const updatedSingleApplication = await Application.findByIdAndUpdate(
+            applicationId,
+            {
+                $set: {
+                    status: 'application_in_review'
+                }
+            },
+            {
+                new: true
+            }
+        );
+
+        return updatedSingleApplication;
+    }
+
     return singleApplication;
 };

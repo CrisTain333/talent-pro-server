@@ -85,11 +85,13 @@ const getApplicationByJob = catchAsync(async (req, res) => {
     });
 });
 const getSingleApplication = catchAsync(async (req, res) => {
-    const { JobId, applicationId } = req.params;
+    const { jobId, applicationId } = req.params;
+    const user = req.user;
 
     const result = await applicationService.getSingleApplication(
-        JobId,
-        applicationId
+        jobId,
+        applicationId,
+        user
     );
     sendResponse(res, {
         statusCode: 200,
