@@ -1,0 +1,4 @@
+{
+    "DEPLOYPATH": "/home/talentpr/git/talent-pro-server",
+    "task": ["git pull origin main", "npm install", "npm run build"]
+}
