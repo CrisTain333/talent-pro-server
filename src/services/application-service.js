@@ -7,6 +7,8 @@ const calculatePagination = require('../helper/paginationHelper');
 const { appliedJobSearchAbleField } = require('../constant/keyChain');
 const Organization = require('../model/organizationModel');
 const User = require('../model/userModel');
+const Education = require('../model/educationModel');
+const Experience = require('../model/experienceModel');
 
 exports.applyJob = async (userId, jobId, resume, requestedData) => {
     const job = await Job.findOne({
@@ -379,10 +381,20 @@ exports.getSingleApplication = async (jobId, applicationId, user) => {
         );
     }
 
-    const singleApplication = await Application.findOne({
+    let singleApplication;
+
+    singleApplication = await Application.findOne({
         'job._id': jobId,
         _id: applicationId
     }).populate('user candidate organization');
+
+    const educations = await Education.find({
+        user_id: singleApplication.user._id
+    });
+
+    const experiences = await Experience.find({
+        user_id: singleApplication.user._id
+    });
 
     if (singleApplication.status === 'application_received') {
         const updatedSingleApplication = await Application.findByIdAndUpdate(
@@ -400,5 +412,9 @@ exports.getSingleApplication = async (jobId, applicationId, user) => {
         return updatedSingleApplication;
     }
 
+    singleApplication = singleApplication.toObject();
+
+    singleApplication.educations = educations;
+    singleApplication.experiences = experiences;
     return singleApplication;
 };
