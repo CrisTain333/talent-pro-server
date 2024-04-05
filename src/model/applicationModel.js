@@ -60,6 +60,14 @@ const applicationSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
+        current_company: {
+            type: String,
+            default: ''
+        },
+        current_role: {
+            type: String,
+            default: ''
+        },
         skills: {
             type: [
                 {
