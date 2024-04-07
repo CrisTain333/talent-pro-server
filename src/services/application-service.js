@@ -136,6 +136,44 @@ exports.getAppliedJobs = async function (userId, paginationOptions, filter) {
     };
 };
 
+exports.getSingleApplicationForCandidate = async (applicationId, user) => {
+    const application = await Application.findOne({
+        _id: applicationId,
+        user: user._id
+    })
+        .populate({
+            path: 'user',
+            select: '_id name email image_url'
+        })
+        .populate({
+            path: 'candidate',
+            select: '_id gender date_of_birth portfolio location'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name'
+        });
+
+    if (!application) {
+        throw new ApiError(400, 'Application not found');
+    }
+
+    const currentApplication = application.toObject();
+
+    const educations = await Education.find({
+        user_id: user._id
+    });
+
+    const experiences = await Experience.find({
+        user_id: user._id
+    });
+
+    currentApplication.educations = educations;
+    currentApplication.experiences = experiences;
+
+    return currentApplication;
+};
+
 exports.getApplicationByOrganization = async (
     userId,
     paginationOptions,
@@ -386,7 +424,19 @@ exports.getSingleApplication = async (jobId, applicationId, user) => {
     singleApplication = await Application.findOne({
         'job._id': jobId,
         _id: applicationId
-    }).populate('user candidate organization');
+    })
+        .populate({
+            path: 'user',
+            select: '_id name email image_url'
+        })
+        .populate({
+            path: 'candidate',
+            select: '_id gender date_of_birth portfolio location'
+        })
+        .populate({
+            path: 'organization',
+            select: '_id company_logo company_name'
+        });
 
     const educations = await Education.find({
         user_id: singleApplication.user._id

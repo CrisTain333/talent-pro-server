@@ -136,6 +136,12 @@ router.get(
     applicationController.getAppliedJobs
 );
 
+router.get(
+    '/job/applied-job/:applicationId',
+    auth(User_Role.CANDIDATE),
+    applicationController.getSingleApplicationForCandidate
+);
+
 // ** ---------------------- Candidate Job Routes ----------------------
 
 router.get(

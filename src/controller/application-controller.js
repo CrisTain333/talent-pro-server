@@ -39,9 +39,25 @@ const getAppliedJobs = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: `applied job's retrieved successfully`,
+        message: `Applied job's retrieved successfully`,
         data: result.data,
         meta: result.meta
+    });
+});
+
+const getSingleApplicationForCandidate = catchAsync(async (req, res) => {
+    const { applicationId } = req.params;
+    const user = req.user;
+
+    const result = await applicationService.getSingleApplicationForCandidate(
+        applicationId,
+        user
+    );
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Application retrieved successfully',
+        data: result
     });
 });
 
@@ -84,6 +100,7 @@ const getApplicationByJob = catchAsync(async (req, res) => {
         meta: result.meta
     });
 });
+
 const getSingleApplication = catchAsync(async (req, res) => {
     const { jobId, applicationId } = req.params;
     const user = req.user;
@@ -96,7 +113,7 @@ const getSingleApplication = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: 'Applications retrieved successfully',
+        message: 'Application retrieved successfully',
         data: result
     });
 });
@@ -104,6 +121,7 @@ const getSingleApplication = catchAsync(async (req, res) => {
 module.exports = {
     applyJob,
     getAppliedJobs,
+    getSingleApplicationForCandidate,
     getApplicationByOrganization,
     getApplicationByJob,
     getSingleApplication
