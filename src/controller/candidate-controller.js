@@ -204,6 +204,19 @@ const updateCandidateResume = catchAsync(async (req, res) => {
     });
 });
 
+// ** --------------------------- Candidate Dashboard section ----------------------
+
+const getDashboard = catchAsync(async (req, res) => {
+    const { _id } = req.user;
+    const result = await candidateService.getDashboard(_id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Candidate dashboard retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     createCandidate,
     getCandidateProfile,
@@ -220,5 +233,6 @@ module.exports = {
     updateEducation,
     removeEducation,
     updateCandidateResume,
-    updateSkillExpertise
+    updateSkillExpertise,
+    getDashboard
 };

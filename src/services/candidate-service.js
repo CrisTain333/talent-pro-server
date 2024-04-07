@@ -5,6 +5,8 @@ const Experience = require('../model/experienceModel');
 const User = require('../model/userModel');
 const { uploadFiles } = require('../shared/uploadFile');
 const Education = require('../model/educationModel');
+const Application = require('../model/applicationModel');
+const SavedJob = require('../model/saveJobModel');
 
 exports.createCandidate = async (candidateData, file) => {
     let newData;
@@ -365,4 +367,53 @@ exports.updateResume = async (userId, resume) => {
     }
 
     return data;
+};
+
+// ** --------------------------- Candidate dashboard section ----------------------
+
+exports.getDashboard = async userId => {
+    // Total Applied Jobs
+    const totalAppliedJobs = await Application.countDocuments({
+        user: userId
+    });
+
+    // Total Saved Jobs
+    const totalSavedJobs = await SavedJob.countDocuments({
+        user: userId
+    });
+
+    // Total Jobs Offers
+    const totalJobOffers = await Application.countDocuments({
+        user: userId,
+        status: 'hired'
+    });
+
+    // Total In Review
+    const totalInReview = await Application.countDocuments({
+        user: userId,
+        status: 'application_in_review'
+    });
+
+    // Total Shortlisted
+    const totalShortlisted = await Application.countDocuments({
+        user: userId,
+        status: 'shortlisted_for_interview'
+    });
+
+    // Total Rejected
+    const totalRejected = await Application.countDocuments({
+        user: userId,
+        status: 'not_selected'
+    });
+
+    const result = {
+        totalAppliedJobs,
+        totalSavedJobs,
+        totalJobOffers,
+        totalInReview,
+        totalShortlisted,
+        totalRejected
+    };
+
+    return result;
 };

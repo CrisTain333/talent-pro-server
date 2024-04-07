@@ -156,4 +156,12 @@ router.get(
     jobController.getCandidateSingleJob
 );
 
+// ** ---------------------- Candidate Dashboard Route ----------------------
+
+router.get(
+    '/dashboard',
+    auth(User_Role.CANDIDATE),
+    candidateController.getDashboard
+);
+
 module.exports = router;
