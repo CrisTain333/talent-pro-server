@@ -62,4 +62,12 @@ router.patch(
 
 router.delete('/job/:id', auth(User_Role.RECRUITER), jobController.deleteJob);
 
+// ** ---------------------- Recruiter Dashboard Routes ----------------------
+
+router.get(
+    '/dashboard',
+    auth(User_Role.RECRUITER, User_Role.SUPER_ADMIN),
+    weController.getOrganizationDashboard
+);
+
 module.exports = router;

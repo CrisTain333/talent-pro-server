@@ -35,7 +35,23 @@ const getOrganization = catchAsync(async (req, res) => {
     });
 });
 
+// Organization dashboard section
+
+const getOrganizationDashboard = catchAsync(async (req, res) => {
+    const user = req.user;
+
+    const result = await weService.getOrganizationDashboard(user?._id);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Organization dashboard retrieved successfully',
+        data: result
+    });
+});
+
 module.exports = {
     createOrganization,
-    getOrganization
+    getOrganization,
+    getOrganizationDashboard
 };

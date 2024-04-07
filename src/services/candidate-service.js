@@ -372,47 +372,50 @@ exports.updateResume = async (userId, resume) => {
 // ** --------------------------- Candidate dashboard section ----------------------
 
 exports.getDashboard = async userId => {
+    if (!userId)
+        throw new ApiError(403, "You Don't have permission to access this.");
+
     // Total Applied Jobs
-    const totalAppliedJobs = await Application.countDocuments({
+    const total_applied_jobs = await Application.countDocuments({
         user: userId
     });
 
     // Total Saved Jobs
-    const totalSavedJobs = await SavedJob.countDocuments({
+    const total_saved_jobs = await SavedJob.countDocuments({
         user: userId
     });
 
     // Total Jobs Offers
-    const totalJobOffers = await Application.countDocuments({
+    const total_job_offers = await Application.countDocuments({
         user: userId,
         status: 'hired'
     });
 
     // Total In Review
-    const totalInReview = await Application.countDocuments({
+    const total_in_review = await Application.countDocuments({
         user: userId,
         status: 'application_in_review'
     });
 
     // Total Shortlisted
-    const totalShortlisted = await Application.countDocuments({
+    const total_shortlisted = await Application.countDocuments({
         user: userId,
         status: 'shortlisted_for_interview'
     });
 
     // Total Rejected
-    const totalRejected = await Application.countDocuments({
+    const total_rejected = await Application.countDocuments({
         user: userId,
         status: 'not_selected'
     });
 
     const result = {
-        totalAppliedJobs,
-        totalSavedJobs,
-        totalJobOffers,
-        totalInReview,
-        totalShortlisted,
-        totalRejected
+        total_applied_jobs,
+        total_saved_jobs,
+        total_job_offers,
+        total_in_review,
+        total_shortlisted,
+        total_rejected
     };
 
     return result;
