@@ -36,6 +36,14 @@ const candidateProfileSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        current_company: {
+            type: String,
+            default: ''
+        },
+        current_role: {
+            type: String,
+            default: ''
+        },
         phone: {
             type: String,
             required: true
@@ -44,7 +52,6 @@ const candidateProfileSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-
         job_status: {
             type: String,
             enum: EmployStatus,
