@@ -85,7 +85,7 @@ exports.getOrganizationDashboard = async userId => {
     });
 
     // not selected applications
-    const notSelected_applications = await Application.countDocuments({
+    const not_selected_applications = await Application.countDocuments({
         organization: organization?._id,
         status: 'not_selected'
     });
@@ -125,7 +125,7 @@ exports.getOrganizationDashboard = async userId => {
         interview_scheduled_application,
         interview_completed_applications,
         hired_applications,
-        notSelected_applications,
+        not_selected_applications,
         total_jobs,
         published_jobs,
         unpublished_jobs,
